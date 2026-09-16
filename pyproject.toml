@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "world-cup-predictor"
+version = "1.0.0"
+description = "Predictor del Mundial 2026 con modelo bayesiano de fuerzas, Monte Carlo y Breaking News Engine"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2.0",
+    "pydantic>=2.7.0",
+    "python-dotenv>=1.0.0",
+    "anthropic>=0.28.0",
+    # scrapers de datos enriquecidos
+    "requests>=2.32.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=5.2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.2.0", "pytest-cov>=5.0.0", "ruff>=0.4.0", "mypy>=1.10.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]

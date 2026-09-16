@@ -1,0 +1,870 @@
+{
+  "fixed": {
+    "A|0": [
+      2,
+      0
+    ],
+    "A|5": [
+      2,
+      1
+    ],
+    "B|0": [
+      1,
+      1
+    ],
+    "D|0": [
+      4,
+      1
+    ],
+    "B|5": [
+      1,
+      1
+    ],
+    "C|0": [
+      1,
+      1
+    ],
+    "C|5": [
+      0,
+      1
+    ],
+    "D|5": [
+      2,
+      0
+    ],
+    "E|0": [
+      7,
+      1
+    ],
+    "E|5": [
+      1,
+      0
+    ],
+    "F|0": [
+      2,
+      2
+    ],
+    "F|5": [
+      5,
+      1
+    ],
+    "G|0": [
+      1,
+      1
+    ],
+    "G|5": [
+      2,
+      2
+    ],
+    "H|0": [
+      0,
+      0
+    ],
+    "H|5": [
+      1,
+      1
+    ],
+    "I|0": [
+      3,
+      1
+    ],
+    "I|5": [
+      1,
+      4
+    ],
+    "J|0": [
+      3,
+      0
+    ],
+    "J|5": [
+      3,
+      1
+    ],
+    "K|0": [
+      1,
+      1
+    ],
+    "K|5": [
+      1,
+      3
+    ],
+    "L|0": [
+      4,
+      2
+    ],
+    "L|5": [
+      1,
+      0
+    ],
+    "A|4": [
+      1,
+      1
+    ],
+    "A|1": [
+      1,
+      0
+    ],
+    "B|4": [
+      1,
+      4
+    ],
+    "B|1": [
+      6,
+      0
+    ],
+    "C|4": [
+      1,
+      0
+    ],
+    "C|1": [
+      3,
+      0
+    ],
+    "D|1": [
+      2,
+      0
+    ],
+    "D|4": [
+      1,
+      0
+    ],
+    "E|1": [
+      2,
+      1
+    ],
+    "E|4": [
+      0,
+      0
+    ],
+    "F|1": [
+      5,
+      1
+    ],
+    "F|4": [
+      4,
+      0
+    ],
+    "G|1": [
+      0,
+      0
+    ],
+    "G|4": [
+      3,
+      1
+    ],
+    "H|1": [
+      4,
+      0
+    ],
+    "H|4": [
+      2,
+      2
+    ],
+    "I|1": [
+      3,
+      0
+    ],
+    "I|4": [
+      2,
+      3
+    ],
+    "J|1": [
+      2,
+      0
+    ],
+    "J|4": [
+      2,
+      1
+    ],
+    "K|1": [
+      5,
+      0
+    ],
+    "K|4": [
+      0,
+      1
+    ],
+    "L|1": [
+      0,
+      0
+    ],
+    "L|4": [
+      1,
+      0
+    ],
+    "A|2": [
+      3,
+      0
+    ],
+    "A|3": [
+      1,
+      0
+    ],
+    "B|2": [
+      1,
+      2
+    ],
+    "B|3": [
+      3,
+      1
+    ],
+    "C|2": [
+      3,
+      0
+    ],
+    "C|3": [
+      4,
+      2
+    ],
+    "D|2": [
+      2,
+      3
+    ],
+    "D|3": [
+      0,
+      0
+    ],
+    "E|3": [
+      0,
+      2
+    ],
+    "E|2": [
+      1,
+      2
+    ],
+    "F|3": [
+      1,
+      1
+    ],
+    "F|2": [
+      3,
+      1
+    ],
+    "G|3": [
+      1,
+      1
+    ],
+    "G|2": [
+      5,
+      1
+    ],
+    "H|3": [
+      0,
+      0
+    ],
+    "H|2": [
+      1,
+      0
+    ],
+    "I|2": [
+      4,
+      1
+    ],
+    "I|3": [
+      5,
+      0
+    ],
+    "J|3": [
+      3,
+      3
+    ],
+    "J|2": [
+      3,
+      1
+    ],
+    "K|2": [
+      0,
+      0
+    ],
+    "K|3": [
+      3,
+      1
+    ],
+    "L|2": [
+      2,
+      0
+    ],
+    "L|3": [
+      2,
+      1
+    ]
+  },
+  "matches": [
+    {
+      "key": "A|0",
+      "date": "2026-06-11",
+      "group": "A",
+      "home": "MEX",
+      "away": "RSA",
+      "score": "2-0"
+    },
+    {
+      "key": "A|5",
+      "date": "2026-06-11",
+      "group": "A",
+      "home": "KOR",
+      "away": "CZE",
+      "score": "2-1"
+    },
+    {
+      "key": "B|0",
+      "date": "2026-06-12",
+      "group": "B",
+      "home": "CAN",
+      "away": "BIH",
+      "score": "1-1"
+    },
+    {
+      "key": "D|0",
+      "date": "2026-06-12",
+      "group": "D",
+      "home": "USA",
+      "away": "PAR",
+      "score": "4-1"
+    },
+    {
+      "key": "B|5",
+      "date": "2026-06-13",
+      "group": "B",
+      "home": "QAT",
+      "away": "SUI",
+      "score": "1-1"
+    },
+    {
+      "key": "C|0",
+      "date": "2026-06-13",
+      "group": "C",
+      "home": "BRA",
+      "away": "MAR",
+      "score": "1-1"
+    },
+    {
+      "key": "C|5",
+      "date": "2026-06-13",
+      "group": "C",
+      "home": "HAI",
+      "away": "SCO",
+      "score": "0-1"
+    },
+    {
+      "key": "D|5",
+      "date": "2026-06-13",
+      "group": "D",
+      "home": "AUS",
+      "away": "TUR",
+      "score": "2-0"
+    },
+    {
+      "key": "E|0",
+      "date": "2026-06-14",
+      "group": "E",
+      "home": "GER",
+      "away": "CUW",
+      "score": "7-1"
+    },
+    {
+      "key": "E|5",
+      "date": "2026-06-14",
+      "group": "E",
+      "home": "CIV",
+      "away": "ECU",
+      "score": "1-0"
+    },
+    {
+      "key": "F|0",
+      "date": "2026-06-14",
+      "group": "F",
+      "home": "NED",
+      "away": "JPN",
+      "score": "2-2"
+    },
+    {
+      "key": "F|5",
+      "date": "2026-06-14",
+      "group": "F",
+      "home": "SWE",
+      "away": "TUN",
+      "score": "5-1"
+    },
+    {
+      "key": "G|0",
+      "date": "2026-06-15",
+      "group": "G",
+      "home": "BEL",
+      "away": "EGY",
+      "score": "1-1"
+    },
+    {
+      "key": "G|5",
+      "date": "2026-06-15",
+      "group": "G",
+      "home": "IRN",
+      "away": "NZL",
+      "score": "2-2"
+    },
+    {
+      "key": "H|0",
+      "date": "2026-06-15",
+      "group": "H",
+      "home": "ESP",
+      "away": "CPV",
+      "score": "0-0"
+    },
+    {
+      "key": "H|5",
+      "date": "2026-06-15",
+      "group": "H",
+      "home": "KSA",
+      "away": "URU",
+      "score": "1-1"
+    },
+    {
+      "key": "I|0",
+      "date": "2026-06-16",
+      "group": "I",
+      "home": "FRA",
+      "away": "SEN",
+      "score": "3-1"
+    },
+    {
+      "key": "I|5",
+      "date": "2026-06-16",
+      "group": "I",
+      "home": "IRQ",
+      "away": "NOR",
+      "score": "1-4"
+    },
+    {
+      "key": "J|0",
+      "date": "2026-06-16",
+      "group": "J",
+      "home": "ARG",
+      "away": "ALG",
+      "score": "3-0"
+    },
+    {
+      "key": "J|5",
+      "date": "2026-06-16",
+      "group": "J",
+      "home": "AUT",
+      "away": "JOR",
+      "score": "3-1"
+    },
+    {
+      "key": "K|0",
+      "date": "2026-06-17",
+      "group": "K",
+      "home": "POR",
+      "away": "COD",
+      "score": "1-1"
+    },
+    {
+      "key": "K|5",
+      "date": "2026-06-17",
+      "group": "K",
+      "home": "UZB",
+      "away": "COL",
+      "score": "1-3"
+    },
+    {
+      "key": "L|0",
+      "date": "2026-06-17",
+      "group": "L",
+      "home": "ENG",
+      "away": "CRO",
+      "score": "4-2"
+    },
+    {
+      "key": "L|5",
+      "date": "2026-06-17",
+      "group": "L",
+      "home": "GHA",
+      "away": "PAN",
+      "score": "1-0"
+    },
+    {
+      "key": "A|4",
+      "date": "2026-06-18",
+      "group": "A",
+      "home": "CZE",
+      "away": "RSA",
+      "score": "1-1"
+    },
+    {
+      "key": "A|1",
+      "date": "2026-06-18",
+      "group": "A",
+      "home": "MEX",
+      "away": "KOR",
+      "score": "1-0"
+    },
+    {
+      "key": "B|4",
+      "date": "2026-06-18",
+      "group": "B",
+      "home": "SUI",
+      "away": "BIH",
+      "score": "4-1"
+    },
+    {
+      "key": "B|1",
+      "date": "2026-06-18",
+      "group": "B",
+      "home": "CAN",
+      "away": "QAT",
+      "score": "6-0"
+    },
+    {
+      "key": "C|4",
+      "date": "2026-06-19",
+      "group": "C",
+      "home": "SCO",
+      "away": "MAR",
+      "score": "0-1"
+    },
+    {
+      "key": "C|1",
+      "date": "2026-06-19",
+      "group": "C",
+      "home": "BRA",
+      "away": "HAI",
+      "score": "3-0"
+    },
+    {
+      "key": "D|1",
+      "date": "2026-06-19",
+      "group": "D",
+      "home": "USA",
+      "away": "AUS",
+      "score": "2-0"
+    },
+    {
+      "key": "D|4",
+      "date": "2026-06-19",
+      "group": "D",
+      "home": "TUR",
+      "away": "PAR",
+      "score": "0-1"
+    },
+    {
+      "key": "E|1",
+      "date": "2026-06-20",
+      "group": "E",
+      "home": "GER",
+      "away": "CIV",
+      "score": "2-1"
+    },
+    {
+      "key": "E|4",
+      "date": "2026-06-20",
+      "group": "E",
+      "home": "ECU",
+      "away": "CUW",
+      "score": "0-0"
+    },
+    {
+      "key": "F|1",
+      "date": "2026-06-20",
+      "group": "F",
+      "home": "NED",
+      "away": "SWE",
+      "score": "5-1"
+    },
+    {
+      "key": "F|4",
+      "date": "2026-06-20",
+      "group": "F",
+      "home": "TUN",
+      "away": "JPN",
+      "score": "0-4"
+    },
+    {
+      "key": "G|1",
+      "date": "2026-06-21",
+      "group": "G",
+      "home": "BEL",
+      "away": "IRN",
+      "score": "0-0"
+    },
+    {
+      "key": "G|4",
+      "date": "2026-06-21",
+      "group": "G",
+      "home": "NZL",
+      "away": "EGY",
+      "score": "1-3"
+    },
+    {
+      "key": "H|1",
+      "date": "2026-06-21",
+      "group": "H",
+      "home": "ESP",
+      "away": "KSA",
+      "score": "4-0"
+    },
+    {
+      "key": "H|4",
+      "date": "2026-06-21",
+      "group": "H",
+      "home": "URU",
+      "away": "CPV",
+      "score": "2-2"
+    },
+    {
+      "key": "I|1",
+      "date": "2026-06-22",
+      "group": "I",
+      "home": "FRA",
+      "away": "IRQ",
+      "score": "3-0"
+    },
+    {
+      "key": "I|4",
+      "date": "2026-06-22",
+      "group": "I",
+      "home": "NOR",
+      "away": "SEN",
+      "score": "3-2"
+    },
+    {
+      "key": "J|1",
+      "date": "2026-06-22",
+      "group": "J",
+      "home": "ARG",
+      "away": "AUT",
+      "score": "2-0"
+    },
+    {
+      "key": "J|4",
+      "date": "2026-06-22",
+      "group": "J",
+      "home": "JOR",
+      "away": "ALG",
+      "score": "1-2"
+    },
+    {
+      "key": "K|1",
+      "date": "2026-06-23",
+      "group": "K",
+      "home": "POR",
+      "away": "UZB",
+      "score": "5-0"
+    },
+    {
+      "key": "K|4",
+      "date": "2026-06-23",
+      "group": "K",
+      "home": "COL",
+      "away": "COD",
+      "score": "1-0"
+    },
+    {
+      "key": "L|1",
+      "date": "2026-06-23",
+      "group": "L",
+      "home": "ENG",
+      "away": "GHA",
+      "score": "0-0"
+    },
+    {
+      "key": "L|4",
+      "date": "2026-06-23",
+      "group": "L",
+      "home": "PAN",
+      "away": "CRO",
+      "score": "0-1"
+    },
+    {
+      "key": "A|2",
+      "date": "2026-06-24",
+      "group": "A",
+      "home": "MEX",
+      "away": "CZE",
+      "score": "3-0"
+    },
+    {
+      "key": "A|3",
+      "date": "2026-06-24",
+      "group": "A",
+      "home": "RSA",
+      "away": "KOR",
+      "score": "1-0"
+    },
+    {
+      "key": "B|2",
+      "date": "2026-06-24",
+      "group": "B",
+      "home": "CAN",
+      "away": "SUI",
+      "score": "1-2"
+    },
+    {
+      "key": "B|3",
+      "date": "2026-06-24",
+      "group": "B",
+      "home": "BIH",
+      "away": "QAT",
+      "score": "3-1"
+    },
+    {
+      "key": "C|2",
+      "date": "2026-06-24",
+      "group": "C",
+      "home": "SCO",
+      "away": "BRA",
+      "score": "0-3"
+    },
+    {
+      "key": "C|3",
+      "date": "2026-06-24",
+      "group": "C",
+      "home": "MAR",
+      "away": "HAI",
+      "score": "4-2"
+    },
+    {
+      "key": "D|2",
+      "date": "2026-06-25",
+      "group": "D",
+      "home": "USA",
+      "away": "TUR",
+      "score": "2-3"
+    },
+    {
+      "key": "D|3",
+      "date": "2026-06-25",
+      "group": "D",
+      "home": "PAR",
+      "away": "AUS",
+      "score": "0-0"
+    },
+    {
+      "key": "E|3",
+      "date": "2026-06-25",
+      "group": "E",
+      "home": "CUW",
+      "away": "CIV",
+      "score": "0-2"
+    },
+    {
+      "key": "E|2",
+      "date": "2026-06-25",
+      "group": "E",
+      "home": "ECU",
+      "away": "GER",
+      "score": "2-1"
+    },
+    {
+      "key": "F|3",
+      "date": "2026-06-25",
+      "group": "F",
+      "home": "JPN",
+      "away": "SWE",
+      "score": "1-1"
+    },
+    {
+      "key": "F|2",
+      "date": "2026-06-25",
+      "group": "F",
+      "home": "TUN",
+      "away": "NED",
+      "score": "1-3"
+    },
+    {
+      "key": "G|3",
+      "date": "2026-06-26",
+      "group": "G",
+      "home": "EGY",
+      "away": "IRN",
+      "score": "1-1"
+    },
+    {
+      "key": "G|2",
+      "date": "2026-06-26",
+      "group": "G",
+      "home": "NZL",
+      "away": "BEL",
+      "score": "1-5"
+    },
+    {
+      "key": "H|3",
+      "date": "2026-06-26",
+      "group": "H",
+      "home": "CPV",
+      "away": "KSA",
+      "score": "0-0"
+    },
+    {
+      "key": "H|2",
+      "date": "2026-06-26",
+      "group": "H",
+      "home": "URU",
+      "away": "ESP",
+      "score": "0-1"
+    },
+    {
+      "key": "I|2",
+      "date": "2026-06-26",
+      "group": "I",
+      "home": "NOR",
+      "away": "FRA",
+      "score": "1-4"
+    },
+    {
+      "key": "I|3",
+      "date": "2026-06-26",
+      "group": "I",
+      "home": "SEN",
+      "away": "IRQ",
+      "score": "5-0"
+    },
+    {
+      "key": "J|3",
+      "date": "2026-06-27",
+      "group": "J",
+      "home": "ALG",
+      "away": "AUT",
+      "score": "3-3"
+    },
+    {
+      "key": "J|2",
+      "date": "2026-06-27",
+      "group": "J",
+      "home": "JOR",
+      "away": "ARG",
+      "score": "1-3"
+    },
+    {
+      "key": "K|2",
+      "date": "2026-06-27",
+      "group": "K",
+      "home": "COL",
+      "away": "POR",
+      "score": "0-0"
+    },
+    {
+      "key": "K|3",
+      "date": "2026-06-27",
+      "group": "K",
+      "home": "COD",
+      "away": "UZB",
+      "score": "3-1"
+    },
+    {
+      "key": "L|2",
+      "date": "2026-06-27",
+      "group": "L",
+      "home": "PAN",
+      "away": "ENG",
+      "score": "0-2"
+    },
+    {
+      "key": "L|3",
+      "date": "2026-06-27",
+      "group": "L",
+      "home": "CRO",
+      "away": "GHA",
+      "score": "2-1"
+    }
+  ]
+}
