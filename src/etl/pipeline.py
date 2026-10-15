@@ -21,6 +21,12 @@ from src.etl.scrapers.elo import get_elo_for_fifa_codes
 
 RAW_PATH = Path("data/raw/teams_2026.csv")
 PROCESSED_PATH = Path("data/processed/strengths_2026.json")
+XG_PATH = Path("data/processed/xg_statsbomb.json")
+
+# Peso del xG de StatsBomb frente al xG curado del CSV: n_eff / (n_eff + SB_SHRINK).
+# n_eff es la suma de pesos de recencia (Euro/Copa 2024 ~0.35 por partido), así
+# que un equipo con Mundial 2022 + Euro 2024 completos (~3) queda en ~60% StatsBomb.
+SB_SHRINK = 2.0
 
 # Sigmoide del ELO: centro 1750 (mediana de selecciones mundialistas), escala 100.
 # 1750 -> 0.5, 1850 -> 0.73, 1950 -> 0.88, 2050 -> 0.96, 2150 -> 0.98.
@@ -250,12 +256,67 @@ def enrich_with_transfermarkt(teams: list[Team]) -> list[Team]:
     return enriched
 
 
+def enrich_with_statsbomb(teams: list[Team], xg_path: Path = XG_PATH) -> list[Team]:
+    """Reemplaza (en parte) el xG curado del CSV por xG real de StatsBomb.
+
+    Ajusta ratings por rival sobre los torneos de selecciones del open data y
+    mezcla cada equipo con su valor del CSV según cuánta muestra reciente tiene.
+    El xG de StatsBomb se reescala a la media del CSV para no mover la escala
+    que usan el likelihood y att/defe. Sin red usa la caché; sin caché, CSV.
+    """
+    from src.etl.scrapers.statsbomb import load_team_matches
+    from src.etl.xg_ratings import fit_ratings
+
+    try:
+        rows = load_team_matches()
+    except Exception as exc:  # noqa: BLE001
+        print(f"⚠️  StatsBomb sin red ({exc}); usando solo la caché")
+        try:
+            rows = load_team_matches(offline=True)
+        except Exception:  # noqa: BLE001
+            rows = []
+    ratings = fit_ratings(rows)
+    if not ratings:
+        print("⚠️  Sin datos de StatsBomb; xG del CSV")
+        return teams
+
+    xg_path.parent.mkdir(parents=True, exist_ok=True)
+    xg_path.write_text(json.dumps(
+        sorted((r.to_dict() for r in ratings.values()), key=lambda r: r["team"]),
+        indent=1, ensure_ascii=False), encoding="utf-8")
+
+    by_code = {r.fifa_code: r for r in ratings.values() if r.fifa_code}
+    matched = [t for t in teams if t.fifa_code in by_code]
+    if not matched:
+        return teams
+    scale_f = (sum(t.xg_for for t in matched)
+               / sum(by_code[t.fifa_code].xg_for for t in matched))
+    scale_a = (sum(t.xg_against for t in matched)
+               / sum(by_code[t.fifa_code].xg_against for t in matched))
+
+    enriched: list[Team] = []
+    for t in teams:
+        r = by_code.get(t.fifa_code)
+        if r is None:
+            enriched.append(t)
+            continue
+        w = r.n_eff / (r.n_eff + SB_SHRINK)
+        enriched.append(t.model_copy(update={
+            "xg_for": round(w * r.xg_for * scale_f + (1 - w) * t.xg_for, 3),
+            "xg_against": round(w * r.xg_against * scale_a + (1 - w) * t.xg_against, 3),
+        }))
+    print(f"📊 StatsBomb: {len(rows) // 2} partidos, xG real para "
+          f"{len(matched)}/{len(teams)} equipos")
+    return enriched
+
+
 def run_pipeline() -> list[TeamStrength]:
     """Orquesta E -> T -> L y retorna las fuerzas calculadas."""
     df = extract()
     teams = validate_rows(df)
     teams = enrich_with_elo(teams)
     teams = enrich_with_transfermarkt(teams)
+    teams = enrich_with_statsbomb(teams)
     strengths = transform(teams)
     out = load(strengths)
     print(f"✅ ETL completo: {len(strengths)} equipos -> {out}")

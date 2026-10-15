@@ -33,6 +33,7 @@ K = 1.2            # sensibilidad a la diferencia de clase. Calibrado con set BA
                    # funciona en todo el rango realista. Ver tools/calibrate_k.py
 RHO = -0.13        # correlación Dixon-Coles para marcadores bajos
 MIN_LAMBDA, MAX_LAMBDA = 0.15, 4.5
+EXTRA_TIME_FACTOR = 1.0 / 3.0  # 30 min de prórroga ≈ 1/3 de la intensidad de 90'
 
 # Resiliencia: aplica un bonus defensivo cuando un equipo enfrenta a otro con
 # clara superioridad de clase. Captura el concepto "aguantar al grande".
@@ -62,11 +63,12 @@ def expected_goals_pair(
     home: TeamStrength, away: TeamStrength,
     ctx_home: float = 0.5, ctx_away: float = 0.5,
     k: float = K,
+    base: float = BASE,
 ) -> tuple[float, float]:
     """(λ_home, λ_away) con el modelo Maher + clase global.
 
-    `k` controla la sensibilidad a la diferencia de clase. Valor por defecto
-    es la constante del módulo; se puede overridear desde calibración.
+    `k` y `base` por defecto son las constantes del módulo; se pueden
+    overridear desde calibración (ver src/evaluation/backtest.py).
     """
     s_h = home.final_strength(ctx_home)
     s_a = away.final_strength(ctx_away)
@@ -76,10 +78,15 @@ def expected_goals_pair(
     # por prior+likelihood).
     defe_home_eff = home.defe * resilience_modifier(home.resilience, s_a - s_h)
     defe_away_eff = away.defe * resilience_modifier(away.resilience, s_h - s_a)
-    lam_h = BASE * home.att * defe_away_eff * math.exp(k * (s_h - s_a))
-    lam_a = BASE * away.att * defe_home_eff * math.exp(k * (s_a - s_h))
+    lam_h = base * home.att * defe_away_eff * math.exp(k * (s_h - s_a))
+    lam_a = base * away.att * defe_home_eff * math.exp(k * (s_a - s_h))
     clamp = lambda x: min(MAX_LAMBDA, max(MIN_LAMBDA, x))
     return clamp(lam_h), clamp(lam_a)
+
+
+def penalty_win_probability(s_home: float, s_away: float) -> float:
+    """P(gana el home la tanda): moneda cargada por la diferencia de clase."""
+    return min(0.78, max(0.22, 0.5 + 0.55 * (s_home - s_away)))
 
 
 def poisson_sample(lam: float, rng: random.Random) -> int:
@@ -143,13 +150,12 @@ def simulate_match(
         went_et = True
         # Prórroga: 30 min ≈ 1/3 de intensidad; Poisson simple (DC corrige
         # marcadores de partido completo, no fracciones de tiempo)
-        hg += poisson_sample(lam_h / 3.0, rng)
-        ag += poisson_sample(lam_a / 3.0, rng)
+        hg += poisson_sample(lam_h * EXTRA_TIME_FACTOR, rng)
+        ag += poisson_sample(lam_a * EXTRA_TIME_FACTOR, rng)
         if hg == ag:
             went_pens = True
-            s_h = home.final_strength(context_home)
-            s_a = away.final_strength(context_away)
-            p_home = min(0.78, max(0.22, 0.5 + 0.55 * (s_h - s_a)))
+            p_home = penalty_win_probability(home.final_strength(context_home),
+                                             away.final_strength(context_away))
             pen_winner = home.fifa_code if rng.random() < p_home else away.fifa_code
 
     return MatchResult(

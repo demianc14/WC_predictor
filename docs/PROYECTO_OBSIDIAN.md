@@ -27,6 +27,8 @@ Datos crudos → ETL → Fuerzas por equipo → Motor de partido (Poisson)
 world_cup_predictor/
 ├── data/
 │   ├── raw/teams_2026.csv          ← datos crudos, INTOCABLES
+│   ├── raw/wc2026_results.csv      ← los 104 resultados reales (congelados)
+│   ├── snapshots/                  ← entradas del modelo al 15-jun (backtest)
 │   └── processed/strengths_2026.json ← salida del ETL
 ├── src/
 │   ├── etl/
@@ -38,9 +40,12 @@ world_cup_predictor/
 │   ├── agents/
 │   │   ├── breaking_news.py        ← Eventos Canónicos (contexto 30%)
 │   │   └── narrator.py             ← crónicas (LLM opcional)
+│   ├── evaluation/
+│   │   ├── elo.py                  ← ELO reconstruido con fecha de corte
+│   │   └── backtest.py             ← calibración vs resultados reales (§10.1)
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── app/index.html                  ← interfaz web autocontenida
-├── tests/                          ← 14 tests con pytest
+├── tests/                          ← 46 tests con pytest
 └── docs/                           ← este archivo
 ```
 
@@ -248,6 +253,40 @@ El contexto **mueve el resultado sin romper el modelo**: Brasil sigue siendo má
 
 Nota el test de **jerarquía sensata**: no testea código, testea *el modelo*. En proyectos de datos, los tests de plausibilidad valen tanto como los unitarios.
 
+### 10.1 Backtest: el modelo contra los 104 partidos reales
+
+Los tests de plausibilidad dicen que el modelo *no está roto*; el backtest dice *qué tan bueno es*. Con el Mundial terminado, `python -m src.cli backtest` compara las probabilidades que el modelo daba **antes** de cada partido con lo que pasó (`src/evaluation/backtest.py`).
+
+**Cómo se evita hacer trampa (fuga de datos):**
+- El modelo se evalúa con el snapshot del ETL del 15-jun (`data/snapshots/strengths_2026-06-15.json`), no con el ETL de hoy, que ya "vio" el torneo entero.
+- Ese ETL ya había visto la jornada 1, y BASE/K se ajustaron mirando partidos hasta el 17-jun. Por eso se reporta aparte el tramo **fuera de muestra**: los 48 partidos de grupos posteriores al 17-jun.
+- Los resultados reales están congelados en `data/raw/wc2026_results.csv` (`tools/snapshot_wc2026.py`). El backtest nunca lee cachés que se refrescan solas.
+
+**Contra qué se compara.** Un modelo solo "es bueno" en relación a una alternativa:
+- **ELO pre-torneo**: reconstruido con la metodología de eloratings.net sobre el historial martj42, usando solo partidos anteriores al 11-jun (`src/evaluation/elo.py`). Es el baseline serio, porque eloratings.net solo publica el rating actual. Para convertir ELO en 1X2 se usa un modelo de empate de un parámetro, ajustado con los Mundiales 1998–2022.
+- **Uniforme**: 1/3 por resultado. Es el piso de "no sé nada".
+
+**Métricas** (en todas, menor = mejor): Brier (0 = perfecto, 0.667 = uniforme), **RPS**, que es la métrica estándar en fútbol porque decir "empate" cuando gana el local es un error menor que decir "gana el visitante", y log-loss. En eliminatorias el dataset registra el marcador tras la prórroga, así que se evalúa *quién clasifica*, integrando prórroga y penales igual que `simulate_match()`.
+
+| Tramo | Modelo (Brier) | ELO (Brier) | Uniforme | Modelo − ELO, IC 95% |
+|---|---|---|---|---|
+| Grupos, 72 partidos | **0.478** | 0.541 | 0.667 | −0.062 [−0.118, −0.010] |
+| Grupos fuera de muestra, 48 | **0.408** | 0.442 | 0.667 | −0.034 [−0.091, +0.020] |
+| Eliminatorias, 32 (¿quién clasifica?) | **0.134** | 0.148 | 0.250 | −0.014 [−0.047, +0.017] |
+
+Los intervalos salen de un **bootstrap pareado** (5.000 remuestreos de partidos): si el intervalo cruza el 0, la diferencia puede ser ruido.
+
+**Cómo leerlo:**
+1. El modelo le gana con claridad al azar en todos los tramos, y le gana al ELO en la estimación puntual de los tres.
+2. En los 72 partidos de grupos la ventaja sobre ELO es significativa, pero ese tramo incluye los 24 partidos que el modelo pudo "ver". En el tramo limpio (48) y en eliminatorias (32) la ventaja **no es estadísticamente significativa**. La conclusión honesta: el modelo es *al menos tan bueno* como un ELO bien hecho, y probablemente algo mejor, pero 80 partidos limpios no alcanzan para afirmarlo.
+3. **Calibración**: cuando el modelo dice 10% pasa el 9%; 28% → 29%; 68% → 70%; en el tramo de 80–100% (n=15) dice 90% y pasa el 80%, un leve exceso de confianza en los grandes favoritos. Goles por partido: predicho 3.08, real 2.99.
+4. **Empates**: el modelo predijo 21% y hubo 27.8% (15 esperados vs 20 reales, z = 1.4). No es significativo, pero es el sesgo a vigilar.
+
+**¿Hay que recalibrar K/BASE/ρ?** `backtest --refit` busca los valores que maximizan la verosimilitud del marcador exacto en grupos y los valida en eliminatorias. Encuentra K=1.3, BASE=1.35, ρ=−0.20 (más empates, coherente con el punto 4), pero la ganancia es de 0.35 unidades de log-verosimilitud con 3 parámetros libres (una prueba de razón de verosimilitud pediría ~3.9) y en eliminatorias mejora el Brier en 0.0008, con un IC que cruza el 0. **Decisión: los valores actuales se quedan.** La superficie es casi plana alrededor de K=1.2 / BASE=1.4, así que cambiarlos sería ajustar ruido y además rompería la paridad con el motor JS de la app.
+
+> [!warning] Los tests del ETL tocan la red
+> `transform()` llama a los scrapers de resiliencia y forma, que refrescan `data/cache/` cuando vence el TTL semanal. Correr `pytest` puede reemplazar los cachés por datos posteriores al torneo. Por eso el backtest solo lee `data/snapshots/` y `data/raw/`.
+
 ---
 
 ## 11. Cómo correr todo
@@ -270,6 +309,10 @@ python -m src.cli montecarlo -n 2000
 python -m src.cli h2h BRA MAR -n 10000
 python -m src.cli h2h BRA MAR --ctx-home 0.25 --ctx-away 0.6   # con drama
 
+# ¿qué tan bien predijo? (§10.1)
+python -m src.cli backtest
+python -m src.cli backtest --refit   # + reajuste de K/BASE/ρ validado en eliminatorias
+
 # tests
 pytest
 ```
@@ -287,9 +330,10 @@ Puedes subirla gratis a GitHub Pages o Netlify Drop y mandarles el link.
 
 ## 12. Limitaciones honestas (para tu defensa)
 
-1. **Los datos de forma y xG son estimaciones curadas**, no scrapeadas de una API en vivo. El punto de extensión es `extract()`: cambiar el CSV por una llamada a football-data.org y el resto del pipeline no se entera (gracias a la separación de capas).
-2. ~~Poisson asume independencia entre goles~~ → **resuelto en v3** con la corrección Dixon-Coles (ρ=−0.13). El siguiente refinamiento sería estimar ρ por máxima verosimilitud sobre datos reales del torneo en curso, con decaimiento temporal ξ.
+1. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla ya se scrapean (§13.1), pero el xG del CSV es una estimación manual porque FBref bloquea el scraping. El punto de extensión es `extract()`: cambiar la fuente y el resto del pipeline no se entera (gracias a la separación de capas).
+2. ~~Poisson asume independencia entre goles~~ → **resuelto en v3** con la corrección Dixon-Coles (ρ=−0.13). Estimar ρ por máxima verosimilitud sobre el Mundial 2026 da −0.20, pero la mejora no es significativa (§10.1).
 3. El "Bayes" es una combinación lineal inspirada en el marco bayesiano, no inferencia formal (§4.1).
+4. **La validación tiene poca muestra.** En el backtest (§10.1) el modelo supera al azar con claridad y al ELO en la estimación puntual, pero en los 80 partidos fuera de muestra esa ventaja sobre ELO no es significativa. Subestima un poco los empates (21% vs 27.8%) y se confía de más en los favoritos del 80–100%.
 
 Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en una entrevista.
 
@@ -316,8 +360,9 @@ El prior y el likelihood de §4 ya no dependen solo del CSV curado: el ETL enriq
 
 ### 13.3 Escalar el modelo estadístico
 
-- Estimar ρ (Dixon-Coles) y un decaimiento temporal ξ por máxima verosimilitud sobre el historial real, en vez del valor fijo de la literatura (§5.2)
-- **Calibración formal**: comparar las probabilidades del modelo contra los resultados reales del Mundial 2026 a medida que se juega (Brier score / log-loss), no solo el sanity check de "se ve razonable" (§10)
+- [x] **Calibración formal** contra los 104 partidos reales del Mundial 2026 (Brier, RPS, log-loss, bootstrap vs ELO): ver §10.1
+- Estimar ρ y un decaimiento temporal ξ por máxima verosimilitud sobre el **historial completo** (miles de partidos), no solo sobre el Mundial: con 72 partidos la superficie es demasiado plana para decidir (§10.1)
+- Corregir la subestimación de empates: un parámetro de inflación de empates o un ρ ajustado sobre muestra grande, validado con el mismo backtest
 - Reemplazar la combinación lineal 20/50/30 (§4.1) por un modelo entrenado (regresión logística o gradient boosting) sobre partidos históricos, usando prior/likelihood/contexto como *features* en vez de pesos fijados a mano
 - Extender Maher/Dixon-Coles con decaimiento temporal en el att/def (un gol de hace 2 años no debería pesar igual que uno del mes pasado — hoy eso solo se aplica en `resilience.py`/`form.py`, no en el att/def base del CSV)
 

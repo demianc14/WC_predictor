@@ -1,0 +1,1397 @@
+[
+ {
+  "team": "Albania",
+  "fifa_code": null,
+  "xg_for": 0.893,
+  "xg_against": 1.031,
+  "raw_xg_for": 0.677,
+  "raw_xg_against": 1.325,
+  "att": 0.9438,
+  "defe": 1.0897,
+  "n_matches": 3,
+  "n_eff": 0.94,
+  "goals": 3,
+  "goals_against": 5,
+  "last_match": "2024-06-24",
+  "competitions": [
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Algeria",
+  "fifa_code": "ALG",
+  "xg_for": 1.011,
+  "xg_against": 0.88,
+  "raw_xg_for": 1.169,
+  "raw_xg_against": 0.662,
+  "att": 1.0686,
+  "defe": 0.9305,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 3,
+  "goals_against": 4,
+  "last_match": "2024-01-23",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Angola",
+  "fifa_code": null,
+  "xg_for": 1.019,
+  "xg_against": 0.959,
+  "raw_xg_for": 1.098,
+  "raw_xg_against": 0.956,
+  "att": 1.0777,
+  "defe": 1.0136,
+  "n_matches": 5,
+  "n_eff": 1.28,
+  "goals": 9,
+  "goals_against": 4,
+  "last_match": "2024-02-02",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Argentina",
+  "fifa_code": "ARG",
+  "xg_for": 1.313,
+  "xg_against": 0.649,
+  "raw_xg_for": 1.562,
+  "raw_xg_against": 0.455,
+  "att": 1.3878,
+  "defe": 0.6858,
+  "n_matches": 13,
+  "n_eff": 2.93,
+  "goals": 24,
+  "goals_against": 9,
+  "last_match": "2024-07-15",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Australia",
+  "fifa_code": "AUS",
+  "xg_for": 0.853,
+  "xg_against": 1.04,
+  "raw_xg_for": 0.367,
+  "raw_xg_against": 1.491,
+  "att": 0.9021,
+  "defe": 1.0998,
+  "n_matches": 4,
+  "n_eff": 0.57,
+  "goals": 4,
+  "goals_against": 6,
+  "last_match": "2022-12-03",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Austria",
+  "fifa_code": "AUT",
+  "xg_for": 1.07,
+  "xg_against": 1.067,
+  "raw_xg_for": 1.209,
+  "raw_xg_against": 1.307,
+  "att": 1.131,
+  "defe": 1.1278,
+  "n_matches": 8,
+  "n_eff": 1.54,
+  "goals": 12,
+  "goals_against": 11,
+  "last_match": "2024-07-02",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Belgium",
+  "fifa_code": "BEL",
+  "xg_for": 0.994,
+  "xg_against": 0.938,
+  "raw_xg_for": 1.043,
+  "raw_xg_against": 0.953,
+  "att": 1.0512,
+  "defe": 0.9913,
+  "n_matches": 12,
+  "n_eff": 2.04,
+  "goals": 12,
+  "goals_against": 7,
+  "last_match": "2024-07-01",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Bolivia",
+  "fifa_code": null,
+  "xg_for": 0.77,
+  "xg_against": 1.249,
+  "raw_xg_for": 0.316,
+  "raw_xg_against": 1.934,
+  "att": 0.8141,
+  "defe": 1.3202,
+  "n_matches": 3,
+  "n_eff": 0.95,
+  "goals": 1,
+  "goals_against": 10,
+  "last_match": "2024-07-02",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Brazil",
+  "fifa_code": "BRA",
+  "xg_for": 1.139,
+  "xg_against": 0.751,
+  "raw_xg_for": 1.356,
+  "raw_xg_against": 0.549,
+  "att": 1.2039,
+  "defe": 0.7943,
+  "n_matches": 9,
+  "n_eff": 1.99,
+  "goals": 13,
+  "goals_against": 5,
+  "last_match": "2024-07-07",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Burkina Faso",
+  "fifa_code": null,
+  "xg_for": 0.836,
+  "xg_against": 0.935,
+  "raw_xg_for": 0.571,
+  "raw_xg_against": 0.924,
+  "att": 0.884,
+  "defe": 0.9889,
+  "n_matches": 4,
+  "n_eff": 1.02,
+  "goals": 4,
+  "goals_against": 6,
+  "last_match": "2024-01-30",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Cameroon",
+  "fifa_code": null,
+  "xg_for": 0.872,
+  "xg_against": 1.058,
+  "raw_xg_for": 0.73,
+  "raw_xg_against": 1.231,
+  "att": 0.9217,
+  "defe": 1.1186,
+  "n_matches": 7,
+  "n_eff": 1.45,
+  "goals": 9,
+  "goals_against": 12,
+  "last_match": "2024-01-27",
+  "competitions": [
+   "Mundial 2022",
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Canada",
+  "fifa_code": "CAN",
+  "xg_for": 1.071,
+  "xg_against": 1.094,
+  "raw_xg_for": 1.077,
+  "raw_xg_against": 1.339,
+  "att": 1.1329,
+  "defe": 1.1567,
+  "n_matches": 9,
+  "n_eff": 2.34,
+  "goals": 6,
+  "goals_against": 14,
+  "last_match": "2024-07-14",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Cape Verde Islands",
+  "fifa_code": "CPV",
+  "xg_for": 0.98,
+  "xg_against": 0.967,
+  "raw_xg_for": 1.038,
+  "raw_xg_against": 0.932,
+  "att": 1.0358,
+  "defe": 1.0229,
+  "n_matches": 5,
+  "n_eff": 1.28,
+  "goals": 8,
+  "goals_against": 3,
+  "last_match": "2024-02-03",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Chile",
+  "fifa_code": null,
+  "xg_for": 0.824,
+  "xg_against": 1.025,
+  "raw_xg_for": 0.501,
+  "raw_xg_against": 1.3,
+  "att": 0.871,
+  "defe": 1.0837,
+  "n_matches": 3,
+  "n_eff": 0.95,
+  "goals": 0,
+  "goals_against": 1,
+  "last_match": "2024-06-30",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Colombia",
+  "fifa_code": "COL",
+  "xg_for": 1.039,
+  "xg_against": 0.731,
+  "raw_xg_for": 1.071,
+  "raw_xg_against": 0.547,
+  "att": 1.0991,
+  "defe": 0.7726,
+  "n_matches": 6,
+  "n_eff": 1.92,
+  "goals": 12,
+  "goals_against": 3,
+  "last_match": "2024-07-15",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Congo DR",
+  "fifa_code": "COD",
+  "xg_for": 1.112,
+  "xg_against": 0.717,
+  "raw_xg_for": 1.264,
+  "raw_xg_against": 0.418,
+  "att": 1.1753,
+  "defe": 0.7586,
+  "n_matches": 7,
+  "n_eff": 1.8,
+  "goals": 6,
+  "goals_against": 5,
+  "last_match": "2024-02-10",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Costa Rica",
+  "fifa_code": null,
+  "xg_for": 0.692,
+  "xg_against": 1.233,
+  "raw_xg_for": 0.22,
+  "raw_xg_against": 1.805,
+  "att": 0.7316,
+  "defe": 1.3032,
+  "n_matches": 6,
+  "n_eff": 1.38,
+  "goals": 5,
+  "goals_against": 15,
+  "last_match": "2024-07-03",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Croatia",
+  "fifa_code": "CRO",
+  "xg_for": 1.069,
+  "xg_against": 0.985,
+  "raw_xg_for": 1.082,
+  "raw_xg_against": 1.111,
+  "att": 1.1303,
+  "defe": 1.0418,
+  "n_matches": 14,
+  "n_eff": 2.23,
+  "goals": 18,
+  "goals_against": 21,
+  "last_match": "2024-06-24",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Czech Republic",
+  "fifa_code": "CZE",
+  "xg_for": 1.028,
+  "xg_against": 0.982,
+  "raw_xg_for": 1.293,
+  "raw_xg_against": 1.065,
+  "att": 1.0871,
+  "defe": 1.0383,
+  "n_matches": 8,
+  "n_eff": 1.29,
+  "goals": 9,
+  "goals_against": 9,
+  "last_match": "2024-06-26",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Côte d'Ivoire",
+  "fifa_code": "CIV",
+  "xg_for": 0.948,
+  "xg_against": 0.804,
+  "raw_xg_for": 0.874,
+  "raw_xg_against": 0.658,
+  "att": 1.0025,
+  "defe": 0.8499,
+  "n_matches": 7,
+  "n_eff": 1.8,
+  "goals": 8,
+  "goals_against": 8,
+  "last_match": "2024-02-11",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Denmark",
+  "fifa_code": null,
+  "xg_for": 1.0,
+  "xg_against": 0.933,
+  "raw_xg_for": 1.025,
+  "raw_xg_against": 0.936,
+  "att": 1.0574,
+  "defe": 0.9862,
+  "n_matches": 13,
+  "n_eff": 2.11,
+  "goals": 15,
+  "goals_against": 14,
+  "last_match": "2024-06-29",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Ecuador",
+  "fifa_code": "ECU",
+  "xg_for": 0.918,
+  "xg_against": 0.87,
+  "raw_xg_for": 0.799,
+  "raw_xg_against": 0.852,
+  "att": 0.9709,
+  "defe": 0.9203,
+  "n_matches": 7,
+  "n_eff": 1.7,
+  "goals": 9,
+  "goals_against": 7,
+  "last_match": "2024-07-05",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Egypt",
+  "fifa_code": "EGY",
+  "xg_for": 0.989,
+  "xg_against": 0.846,
+  "raw_xg_for": 1.025,
+  "raw_xg_against": 0.637,
+  "att": 1.0462,
+  "defe": 0.8947,
+  "n_matches": 4,
+  "n_eff": 1.02,
+  "goals": 7,
+  "goals_against": 7,
+  "last_match": "2024-01-28",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "England",
+  "fifa_code": "ENG",
+  "xg_for": 0.91,
+  "xg_against": 0.773,
+  "raw_xg_for": 0.88,
+  "raw_xg_against": 0.706,
+  "att": 0.9624,
+  "defe": 0.817,
+  "n_matches": 19,
+  "n_eff": 3.44,
+  "goals": 32,
+  "goals_against": 12,
+  "last_match": "2024-07-14",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Equatorial Guinea",
+  "fifa_code": null,
+  "xg_for": 0.925,
+  "xg_against": 1.134,
+  "raw_xg_for": 0.776,
+  "raw_xg_against": 1.464,
+  "att": 0.9776,
+  "defe": 1.199,
+  "n_matches": 4,
+  "n_eff": 1.02,
+  "goals": 9,
+  "goals_against": 4,
+  "last_match": "2024-01-28",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Finland",
+  "fifa_code": null,
+  "xg_for": 0.909,
+  "xg_against": 0.968,
+  "raw_xg_for": 0.468,
+  "raw_xg_against": 1.128,
+  "att": 0.9616,
+  "defe": 1.0239,
+  "n_matches": 3,
+  "n_eff": 0.21,
+  "goals": 1,
+  "goals_against": 3,
+  "last_match": "2021-06-21",
+  "competitions": [
+   "Euro 2020"
+  ]
+ },
+ {
+  "team": "France",
+  "fifa_code": "FRA",
+  "xg_for": 1.134,
+  "xg_against": 0.721,
+  "raw_xg_for": 1.189,
+  "raw_xg_against": 0.652,
+  "att": 1.1988,
+  "defe": 0.7622,
+  "n_matches": 17,
+  "n_eff": 3.2,
+  "goals": 27,
+  "goals_against": 17,
+  "last_match": "2024-07-09",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Gambia",
+  "fifa_code": null,
+  "xg_for": 0.92,
+  "xg_against": 1.164,
+  "raw_xg_for": 0.782,
+  "raw_xg_against": 1.692,
+  "att": 0.9723,
+  "defe": 1.2312,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 2,
+  "goals_against": 7,
+  "last_match": "2024-01-23",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Georgia",
+  "fifa_code": null,
+  "xg_for": 0.826,
+  "xg_against": 1.447,
+  "raw_xg_for": 0.616,
+  "raw_xg_against": 2.462,
+  "att": 0.8736,
+  "defe": 1.5295,
+  "n_matches": 4,
+  "n_eff": 1.26,
+  "goals": 5,
+  "goals_against": 8,
+  "last_match": "2024-06-30",
+  "competitions": [
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Germany",
+  "fifa_code": "GER",
+  "xg_for": 1.253,
+  "xg_against": 0.846,
+  "raw_xg_for": 1.492,
+  "raw_xg_against": 0.793,
+  "att": 1.3247,
+  "defe": 0.8949,
+  "n_matches": 12,
+  "n_eff": 2.29,
+  "goals": 23,
+  "goals_against": 16,
+  "last_match": "2024-07-05",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Ghana",
+  "fifa_code": "GHA",
+  "xg_for": 0.877,
+  "xg_against": 1.097,
+  "raw_xg_for": 0.692,
+  "raw_xg_against": 1.377,
+  "att": 0.9276,
+  "defe": 1.16,
+  "n_matches": 6,
+  "n_eff": 1.19,
+  "goals": 10,
+  "goals_against": 13,
+  "last_match": "2024-01-22",
+  "competitions": [
+   "Mundial 2022",
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Guinea",
+  "fifa_code": null,
+  "xg_for": 0.899,
+  "xg_against": 0.804,
+  "raw_xg_for": 0.849,
+  "raw_xg_against": 0.583,
+  "att": 0.9508,
+  "defe": 0.8505,
+  "n_matches": 5,
+  "n_eff": 1.28,
+  "goals": 4,
+  "goals_against": 6,
+  "last_match": "2024-02-02",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Guinea-Bissau",
+  "fifa_code": null,
+  "xg_for": 0.863,
+  "xg_against": 0.985,
+  "raw_xg_for": 0.595,
+  "raw_xg_against": 1.075,
+  "att": 0.9126,
+  "defe": 1.0419,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 2,
+  "goals_against": 7,
+  "last_match": "2024-01-22",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Hungary",
+  "fifa_code": null,
+  "xg_for": 0.965,
+  "xg_against": 1.034,
+  "raw_xg_for": 0.926,
+  "raw_xg_against": 1.291,
+  "att": 1.0204,
+  "defe": 1.0932,
+  "n_matches": 6,
+  "n_eff": 1.15,
+  "goals": 5,
+  "goals_against": 11,
+  "last_match": "2024-06-23",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Iran",
+  "fifa_code": "IRN",
+  "xg_for": 0.951,
+  "xg_against": 0.985,
+  "raw_xg_for": 0.9,
+  "raw_xg_against": 1.109,
+  "att": 1.0059,
+  "defe": 1.0419,
+  "n_matches": 3,
+  "n_eff": 0.43,
+  "goals": 4,
+  "goals_against": 7,
+  "last_match": "2022-11-29",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Italy",
+  "fifa_code": null,
+  "xg_for": 0.93,
+  "xg_against": 0.809,
+  "raw_xg_for": 0.911,
+  "raw_xg_against": 0.723,
+  "att": 0.9831,
+  "defe": 0.8556,
+  "n_matches": 11,
+  "n_eff": 1.75,
+  "goals": 16,
+  "goals_against": 9,
+  "last_match": "2024-06-29",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Jamaica",
+  "fifa_code": null,
+  "xg_for": 0.889,
+  "xg_against": 1.09,
+  "raw_xg_for": 0.67,
+  "raw_xg_against": 1.413,
+  "att": 0.9404,
+  "defe": 1.1529,
+  "n_matches": 3,
+  "n_eff": 0.95,
+  "goals": 1,
+  "goals_against": 7,
+  "last_match": "2024-07-01",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Japan",
+  "fifa_code": "JPN",
+  "xg_for": 0.947,
+  "xg_against": 0.91,
+  "raw_xg_for": 0.934,
+  "raw_xg_against": 0.857,
+  "att": 1.0013,
+  "defe": 0.9625,
+  "n_matches": 4,
+  "n_eff": 0.57,
+  "goals": 5,
+  "goals_against": 4,
+  "last_match": "2022-12-05",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Mali",
+  "fifa_code": null,
+  "xg_for": 0.944,
+  "xg_against": 0.831,
+  "raw_xg_for": 0.923,
+  "raw_xg_against": 0.582,
+  "att": 0.9977,
+  "defe": 0.8784,
+  "n_matches": 5,
+  "n_eff": 1.28,
+  "goals": 6,
+  "goals_against": 4,
+  "last_match": "2024-02-03",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Mauritania",
+  "fifa_code": null,
+  "xg_for": 0.919,
+  "xg_against": 0.963,
+  "raw_xg_for": 0.843,
+  "raw_xg_against": 0.995,
+  "att": 0.9721,
+  "defe": 1.0181,
+  "n_matches": 4,
+  "n_eff": 1.02,
+  "goals": 3,
+  "goals_against": 5,
+  "last_match": "2024-01-29",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Mexico",
+  "fifa_code": "MEX",
+  "xg_for": 1.0,
+  "xg_against": 0.727,
+  "raw_xg_for": 1.077,
+  "raw_xg_against": 0.419,
+  "att": 1.0571,
+  "defe": 0.7691,
+  "n_matches": 6,
+  "n_eff": 1.38,
+  "goals": 3,
+  "goals_against": 4,
+  "last_match": "2024-07-01",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Morocco",
+  "fifa_code": "MAR",
+  "xg_for": 1.07,
+  "xg_against": 0.806,
+  "raw_xg_for": 1.183,
+  "raw_xg_against": 0.694,
+  "att": 1.1317,
+  "defe": 0.8524,
+  "n_matches": 11,
+  "n_eff": 2.04,
+  "goals": 11,
+  "goals_against": 8,
+  "last_match": "2024-01-30",
+  "competitions": [
+   "Mundial 2022",
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Mozambique",
+  "fifa_code": null,
+  "xg_for": 0.839,
+  "xg_against": 0.86,
+  "raw_xg_for": 0.556,
+  "raw_xg_against": 0.612,
+  "att": 0.887,
+  "defe": 0.9096,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 4,
+  "goals_against": 7,
+  "last_match": "2024-01-22",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Namibia",
+  "fifa_code": null,
+  "xg_for": 0.929,
+  "xg_against": 1.006,
+  "raw_xg_for": 0.87,
+  "raw_xg_against": 1.08,
+  "att": 0.9819,
+  "defe": 1.0638,
+  "n_matches": 4,
+  "n_eff": 1.02,
+  "goals": 1,
+  "goals_against": 7,
+  "last_match": "2024-01-27",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Netherlands",
+  "fifa_code": "NED",
+  "xg_for": 1.077,
+  "xg_against": 0.851,
+  "raw_xg_for": 1.162,
+  "raw_xg_against": 0.824,
+  "att": 1.1383,
+  "defe": 0.8995,
+  "n_matches": 15,
+  "n_eff": 2.9,
+  "goals": 28,
+  "goals_against": 15,
+  "last_match": "2024-07-10",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Nigeria",
+  "fifa_code": null,
+  "xg_for": 0.987,
+  "xg_against": 0.813,
+  "raw_xg_for": 1.053,
+  "raw_xg_against": 0.628,
+  "att": 1.0439,
+  "defe": 0.8597,
+  "n_matches": 7,
+  "n_eff": 1.8,
+  "goals": 8,
+  "goals_against": 4,
+  "last_match": "2024-02-11",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "North Macedonia",
+  "fifa_code": null,
+  "xg_for": 0.949,
+  "xg_against": 1.069,
+  "raw_xg_for": 0.884,
+  "raw_xg_against": 2.266,
+  "att": 1.0034,
+  "defe": 1.1304,
+  "n_matches": 3,
+  "n_eff": 0.21,
+  "goals": 2,
+  "goals_against": 8,
+  "last_match": "2021-06-21",
+  "competitions": [
+   "Euro 2020"
+  ]
+ },
+ {
+  "team": "Panama",
+  "fifa_code": "PAN",
+  "xg_for": 0.89,
+  "xg_against": 0.913,
+  "raw_xg_for": 0.765,
+  "raw_xg_against": 0.873,
+  "att": 0.9411,
+  "defe": 0.9653,
+  "n_matches": 4,
+  "n_eff": 1.27,
+  "goals": 6,
+  "goals_against": 10,
+  "last_match": "2024-07-06",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Paraguay",
+  "fifa_code": "PAR",
+  "xg_for": 0.958,
+  "xg_against": 0.959,
+  "raw_xg_for": 0.929,
+  "raw_xg_against": 0.98,
+  "att": 1.0132,
+  "defe": 1.0144,
+  "n_matches": 3,
+  "n_eff": 0.95,
+  "goals": 3,
+  "goals_against": 8,
+  "last_match": "2024-07-03",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Peru",
+  "fifa_code": null,
+  "xg_for": 0.797,
+  "xg_against": 0.937,
+  "raw_xg_for": 0.442,
+  "raw_xg_against": 1.024,
+  "att": 0.8426,
+  "defe": 0.9911,
+  "n_matches": 3,
+  "n_eff": 0.95,
+  "goals": 0,
+  "goals_against": 3,
+  "last_match": "2024-06-30",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Poland",
+  "fifa_code": null,
+  "xg_for": 0.945,
+  "xg_against": 0.964,
+  "raw_xg_for": 0.85,
+  "raw_xg_against": 1.117,
+  "att": 0.999,
+  "defe": 1.0196,
+  "n_matches": 10,
+  "n_eff": 1.72,
+  "goals": 10,
+  "goals_against": 17,
+  "last_match": "2024-06-25",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Portugal",
+  "fifa_code": "POR",
+  "xg_for": 1.136,
+  "xg_against": 0.805,
+  "raw_xg_for": 1.362,
+  "raw_xg_against": 0.731,
+  "att": 1.2011,
+  "defe": 0.8507,
+  "n_matches": 14,
+  "n_eff": 2.58,
+  "goals": 24,
+  "goals_against": 16,
+  "last_match": "2024-07-05",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Qatar",
+  "fifa_code": "QAT",
+  "xg_for": 0.881,
+  "xg_against": 0.943,
+  "raw_xg_for": 0.44,
+  "raw_xg_against": 0.937,
+  "att": 0.9314,
+  "defe": 0.9967,
+  "n_matches": 3,
+  "n_eff": 0.43,
+  "goals": 1,
+  "goals_against": 7,
+  "last_match": "2022-11-29",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Romania",
+  "fifa_code": null,
+  "xg_for": 0.857,
+  "xg_against": 1.099,
+  "raw_xg_for": 0.708,
+  "raw_xg_against": 1.356,
+  "att": 0.9063,
+  "defe": 1.1625,
+  "n_matches": 4,
+  "n_eff": 1.26,
+  "goals": 4,
+  "goals_against": 6,
+  "last_match": "2024-07-02",
+  "competitions": [
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Russia",
+  "fifa_code": null,
+  "xg_for": 0.92,
+  "xg_against": 1.004,
+  "raw_xg_for": 0.573,
+  "raw_xg_against": 1.508,
+  "att": 0.9732,
+  "defe": 1.0618,
+  "n_matches": 3,
+  "n_eff": 0.21,
+  "goals": 2,
+  "goals_against": 7,
+  "last_match": "2021-06-21",
+  "competitions": [
+   "Euro 2020"
+  ]
+ },
+ {
+  "team": "Saudi Arabia",
+  "fifa_code": "KSA",
+  "xg_for": 0.948,
+  "xg_against": 1.065,
+  "raw_xg_for": 0.744,
+  "raw_xg_against": 1.744,
+  "att": 1.0019,
+  "defe": 1.1265,
+  "n_matches": 3,
+  "n_eff": 0.43,
+  "goals": 3,
+  "goals_against": 5,
+  "last_match": "2022-11-30",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Scotland",
+  "fifa_code": "SCO",
+  "xg_for": 0.778,
+  "xg_against": 0.899,
+  "raw_xg_for": 0.47,
+  "raw_xg_against": 0.921,
+  "att": 0.8228,
+  "defe": 0.9502,
+  "n_matches": 6,
+  "n_eff": 1.15,
+  "goals": 3,
+  "goals_against": 12,
+  "last_match": "2024-06-23",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Senegal",
+  "fifa_code": "SEN",
+  "xg_for": 0.996,
+  "xg_against": 0.831,
+  "raw_xg_for": 1.028,
+  "raw_xg_against": 0.653,
+  "att": 1.0526,
+  "defe": 0.8781,
+  "n_matches": 8,
+  "n_eff": 1.59,
+  "goals": 14,
+  "goals_against": 9,
+  "last_match": "2024-01-29",
+  "competitions": [
+   "Mundial 2022",
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Serbia",
+  "fifa_code": null,
+  "xg_for": 0.879,
+  "xg_against": 1.076,
+  "raw_xg_for": 0.735,
+  "raw_xg_against": 1.274,
+  "att": 0.9297,
+  "defe": 1.1375,
+  "n_matches": 6,
+  "n_eff": 1.37,
+  "goals": 6,
+  "goals_against": 10,
+  "last_match": "2024-06-25",
+  "competitions": [
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Slovakia",
+  "fifa_code": null,
+  "xg_for": 0.875,
+  "xg_against": 1.073,
+  "raw_xg_for": 0.756,
+  "raw_xg_against": 1.225,
+  "att": 0.9247,
+  "defe": 1.1347,
+  "n_matches": 7,
+  "n_eff": 1.47,
+  "goals": 6,
+  "goals_against": 12,
+  "last_match": "2024-06-30",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Slovenia",
+  "fifa_code": null,
+  "xg_for": 0.898,
+  "xg_against": 0.978,
+  "raw_xg_for": 0.763,
+  "raw_xg_against": 1.054,
+  "att": 0.9491,
+  "defe": 1.0345,
+  "n_matches": 4,
+  "n_eff": 1.26,
+  "goals": 2,
+  "goals_against": 2,
+  "last_match": "2024-07-01",
+  "competitions": [
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "South Africa",
+  "fifa_code": "RSA",
+  "xg_for": 0.833,
+  "xg_against": 1.029,
+  "raw_xg_for": 0.63,
+  "raw_xg_against": 1.156,
+  "att": 0.8804,
+  "defe": 1.0875,
+  "n_matches": 7,
+  "n_eff": 1.8,
+  "goals": 7,
+  "goals_against": 3,
+  "last_match": "2024-02-10",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "South Korea",
+  "fifa_code": "KOR",
+  "xg_for": 0.943,
+  "xg_against": 0.979,
+  "raw_xg_for": 0.825,
+  "raw_xg_against": 1.182,
+  "att": 0.9969,
+  "defe": 1.0351,
+  "n_matches": 4,
+  "n_eff": 0.58,
+  "goals": 5,
+  "goals_against": 8,
+  "last_match": "2022-12-05",
+  "competitions": [
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Spain",
+  "fifa_code": "ESP",
+  "xg_for": 1.197,
+  "xg_against": 0.774,
+  "raw_xg_for": 1.36,
+  "raw_xg_against": 0.701,
+  "att": 1.2654,
+  "defe": 0.8182,
+  "n_matches": 17,
+  "n_eff": 3.22,
+  "goals": 37,
+  "goals_against": 13,
+  "last_match": "2024-07-14",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Sweden",
+  "fifa_code": "SWE",
+  "xg_for": 0.937,
+  "xg_against": 0.982,
+  "raw_xg_for": 0.79,
+  "raw_xg_against": 1.216,
+  "att": 0.9905,
+  "defe": 1.0379,
+  "n_matches": 4,
+  "n_eff": 0.28,
+  "goals": 5,
+  "goals_against": 4,
+  "last_match": "2021-06-29",
+  "competitions": [
+   "Euro 2020"
+  ]
+ },
+ {
+  "team": "Switzerland",
+  "fifa_code": "SUI",
+  "xg_for": 1.05,
+  "xg_against": 0.974,
+  "raw_xg_for": 1.071,
+  "raw_xg_against": 1.03,
+  "att": 1.1097,
+  "defe": 1.03,
+  "n_matches": 14,
+  "n_eff": 2.5,
+  "goals": 21,
+  "goals_against": 22,
+  "last_match": "2024-07-06",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Tanzania",
+  "fifa_code": null,
+  "xg_for": 0.743,
+  "xg_against": 0.996,
+  "raw_xg_for": 0.143,
+  "raw_xg_against": 1.168,
+  "att": 0.7858,
+  "defe": 1.0533,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 1,
+  "goals_against": 4,
+  "last_match": "2024-01-24",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Tunisia",
+  "fifa_code": "TUN",
+  "xg_for": 0.88,
+  "xg_against": 0.92,
+  "raw_xg_for": 0.748,
+  "raw_xg_against": 0.851,
+  "att": 0.9308,
+  "defe": 0.9729,
+  "n_matches": 6,
+  "n_eff": 1.19,
+  "goals": 2,
+  "goals_against": 3,
+  "last_match": "2024-01-24",
+  "competitions": [
+   "Mundial 2022",
+   "AFCON 2023"
+  ]
+ },
+ {
+  "team": "Turkey",
+  "fifa_code": "TUR",
+  "xg_for": 1.01,
+  "xg_against": 1.19,
+  "raw_xg_for": 1.161,
+  "raw_xg_against": 1.548,
+  "att": 1.068,
+  "defe": 1.2585,
+  "n_matches": 8,
+  "n_eff": 1.79,
+  "goals": 9,
+  "goals_against": 16,
+  "last_match": "2024-07-06",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "Ukraine",
+  "fifa_code": null,
+  "xg_for": 0.92,
+  "xg_against": 0.937,
+  "raw_xg_for": 0.937,
+  "raw_xg_against": 0.893,
+  "att": 0.9732,
+  "defe": 0.9903,
+  "n_matches": 8,
+  "n_eff": 1.29,
+  "goals": 8,
+  "goals_against": 14,
+  "last_match": "2024-06-26",
+  "competitions": [
+   "Euro 2020",
+   "Euro 2024"
+  ]
+ },
+ {
+  "team": "United States",
+  "fifa_code": "USA",
+  "xg_for": 0.999,
+  "xg_against": 0.863,
+  "raw_xg_for": 1.091,
+  "raw_xg_against": 0.725,
+  "att": 1.0567,
+  "defe": 0.9124,
+  "n_matches": 7,
+  "n_eff": 1.52,
+  "goals": 6,
+  "goals_against": 7,
+  "last_match": "2024-07-02",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Uruguay",
+  "fifa_code": "URU",
+  "xg_for": 1.083,
+  "xg_against": 0.829,
+  "raw_xg_for": 1.193,
+  "raw_xg_against": 0.755,
+  "att": 1.1453,
+  "defe": 0.8764,
+  "n_matches": 9,
+  "n_eff": 2.35,
+  "goals": 13,
+  "goals_against": 6,
+  "last_match": "2024-07-14",
+  "competitions": [
+   "Mundial 2022",
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Venezuela",
+  "fifa_code": null,
+  "xg_for": 1.005,
+  "xg_against": 0.973,
+  "raw_xg_for": 1.09,
+  "raw_xg_against": 1.028,
+  "att": 1.0624,
+  "defe": 1.029,
+  "n_matches": 4,
+  "n_eff": 1.27,
+  "goals": 7,
+  "goals_against": 2,
+  "last_match": "2024-07-06",
+  "competitions": [
+   "Copa América 2024"
+  ]
+ },
+ {
+  "team": "Wales",
+  "fifa_code": null,
+  "xg_for": 0.866,
+  "xg_against": 1.103,
+  "raw_xg_for": 0.583,
+  "raw_xg_against": 1.558,
+  "att": 0.9152,
+  "defe": 1.1666,
+  "n_matches": 7,
+  "n_eff": 0.71,
+  "goals": 4,
+  "goals_against": 12,
+  "last_match": "2022-11-29",
+  "competitions": [
+   "Euro 2020",
+   "Mundial 2022"
+  ]
+ },
+ {
+  "team": "Zambia",
+  "fifa_code": null,
+  "xg_for": 0.832,
+  "xg_against": 1.155,
+  "raw_xg_for": 0.415,
+  "raw_xg_against": 1.721,
+  "att": 0.8796,
+  "defe": 1.2211,
+  "n_matches": 3,
+  "n_eff": 0.76,
+  "goals": 2,
+  "goals_against": 3,
+  "last_match": "2024-01-24",
+  "competitions": [
+   "AFCON 2023"
+  ]
+ }
+]

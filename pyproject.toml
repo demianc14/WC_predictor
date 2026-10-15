@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "world-cup-predictor"
 version = "1.0.0"
-description = "Predictor del Mundial 2026 con modelo bayesiano de fuerzas, Monte Carlo y Breaking News Engine"
+description = "Predictor de fútbol de selecciones: fuerzas bayesianas, xG de StatsBomb, Dixon-Coles y Breaking News Engine"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

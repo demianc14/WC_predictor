@@ -17,6 +17,7 @@ from urllib.request import Request, urlopen
 
 RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
 GOALS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/goalscorers.csv"
+SHOOTOUTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/shootouts.csv"
 CACHE_DIR = Path("data/cache/history")
 TTL_SECONDS = 7 * 24 * 3600
 
@@ -79,6 +80,14 @@ def ensure_cache(force: bool = False) -> tuple[Path, Path]:
     if force or not _is_fresh(goals_path):
         _download(GOALS_URL, goals_path)
     return results_path, goals_path
+
+
+def ensure_shootouts(force: bool = False) -> Path:
+    """Garantiza shootouts.csv (ganador de cada tanda de penales) en cache."""
+    path = CACHE_DIR / "shootouts.csv"
+    if force or not _is_fresh(path):
+        _download(SHOOTOUTS_URL, path)
+    return path
 
 
 # ─── Parsing ─────────────────────────────────────────────────────────

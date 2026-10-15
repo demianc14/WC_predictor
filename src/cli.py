@@ -7,6 +7,7 @@ Uso:
   python -m src.cli h2h BRA MAR -n 10000           # cara a cara (contexto neutro)
   python -m src.cli h2h BRA MAR --ctx-home 0.36    # con noticias (p.ej. figura lesionada)
   python -m src.cli h2h BRA MAR --group            # partido de fase de grupos (admite empate)
+  python -m src.cli backtest [--refit]             # calibración vs los 104 partidos reales
 """
 from __future__ import annotations
 
@@ -18,6 +19,7 @@ from pathlib import Path
 from src.agents.narrator import narrate
 from src.etl.models import Stage, TeamStrength
 from src.etl.pipeline import run_pipeline
+from src.evaluation import backtest
 from src.simulation.match_engine import simulate_match
 from src.simulation.tournament import GROUPS, TournamentSimulator, monte_carlo
 
@@ -125,6 +127,10 @@ def main() -> None:
     p_h2h.add_argument("--ctx-home", type=float, default=None, help="Contexto equipo A [0-1], 0.5 neutro")
     p_h2h.add_argument("--ctx-away", type=float, default=None, help="Contexto equipo B [0-1]")
 
+    p_bt = sub.add_parser("backtest", help="Calibración contra los resultados reales del 2026")
+    p_bt.add_argument("--refit", action="store_true",
+                      help="Reajusta K/BASE/ρ en grupos y los valida en eliminatorias")
+
     args = parser.parse_args()
     if args.cmd == "etl":
         run_pipeline()
@@ -134,6 +140,8 @@ def main() -> None:
         cmd_montecarlo(args)
     elif args.cmd == "h2h":
         cmd_h2h(args)
+    elif args.cmd == "backtest":
+        backtest.main(refit=args.refit)
 
 
 if __name__ == "__main__":

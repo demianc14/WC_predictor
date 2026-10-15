@@ -9,3 +9,6 @@ __pycache__/
 .ipynb_checkpoints/
 dist/
 build/
+.ruff_cache/
+.impeccable/
+.DS_Store
