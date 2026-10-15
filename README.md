@@ -16,7 +16,7 @@
 
 `src/etl/scrapers/statsbomb.py` baja los eventos de cada partido una sola vez y guarda solo un resumen de tiros (`data/cache/statsbomb/shots/`, ~1.8 MB para los 250 partidos). `src/etl/xg_ratings.py` ajusta `npxG(i vs j) ≈ MU × ataque_i × defensa_j` por mínimos cuadrados ponderados, con peso `exp(-edad/730 días)` y 2 partidos ficticios de shrinkage. El ETL mezcla ese xG con el del CSV según la muestra efectiva de cada equipo (`n_eff / (n_eff + 2)`) y escribe el detalle en `data/processed/xg_statsbomb.json`.
 
-Cobertura: 40 de las 48 mundialistas. Sin datos: Bosnia, Haití, Curazao, Nueva Zelanda, Irak, Noruega, Jordania y Uzbekistán (usan el xG del CSV). El Mundial 2026 todavía no está en el open data.
+Cobertura: 40 de las 48 selecciones del modelo. Sin datos: Bosnia, Haití, Curazao, Nueva Zelanda, Irak, Noruega, Jordania y Uzbekistán (usan el xG del CSV). El Mundial 2026 todavía no está en el open data.
 
 ## Arquitectura
 
@@ -45,6 +45,19 @@ pytest                                 # 53 tests
 **Interfaz para amigos:** abre `app/index.html` en el navegador. Sin servidor, sin instalación. Tras cada `etl`, correr `python -m tools.export_frontend` para actualizarla. La vista "Última ventana" compara contra `data/snapshots/strengths_2026-09-22.json` (fuerzas congeladas antes de la ventana); en la próxima fecha FIFA, guardar un snapshot nuevo y actualizar `WINDOW_SNAPSHOT`/`WINDOW_FROM` en `tools/export_frontend.py`.
 
 ## ¿Qué tan bien predijo?
+
+### Última ventana (23-sep al 6-oct-2026)
+
+127 partidos de las 48 selecciones (UEFA y Concacaf Nations League, clasificación a la Copa África, amistosos). En los 35 que enfrentaron a dos selecciones del modelo, con las fuerzas congeladas al 22-sep (`data/snapshots/strengths_2026-09-22.json`):
+
+| Métrica | Modelo | Azar |
+|---|---|---|
+| Acierta el resultado más probable | **57%** (20/35) | 33% |
+| Brier 1X2 | **0.529** | 0.667 |
+
+Más subieron: Bosnia (+0.029), Estados Unidos (+0.023), Suecia (+0.021). Más bajaron: Ghana (−0.031), Turquía (−0.026), Egipto (−0.015). La muestra es chica: sirve para seguir al modelo fecha a fecha, no para sacar conclusiones. El detalle partido a partido está en la vista "Última ventana" de la web.
+
+### Archivo: Mundial 2026
 
 Backtest contra los 104 partidos reales del Mundial 2026, usando el modelo tal como estaba el 15-jun (sin ver resultados posteriores). Se compara contra un ELO pre-torneo reconstruido desde el historial y contra el azar. En Brier score, menor es mejor:
 
