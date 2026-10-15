@@ -111,6 +111,11 @@ body{background:var(--paper);color:var(--ink);font-family:'Barlow',sans-serif;fo
 .wpbar{display:flex;height:8px;border-radius:4px;overflow:hidden;min-width:110px;margin-bottom:3px}
 .wpbar i:nth-child(1){background:var(--blue)}.wpbar i:nth-child(2){background:var(--line)}.wpbar i:nth-child(3){background:var(--red)}
 .wpct{font-size:12px;color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
+#rankTable td{white-space:nowrap}
+.form5{display:inline-flex;gap:3px}
+.form5 i{width:18px;height:18px;border-radius:4px;font-style:normal;font-size:10.5px;font-weight:800;color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-family:'Barlow Condensed'}
+.form5 .W{background:var(--green)}.form5 .D{background:#B8B0A2}.form5 .L{background:var(--red)}
 .hit{color:var(--green);font-weight:800}.miss{color:var(--red);font-weight:800}
 
 /* ─── Vistas y tarjetas ─── */
@@ -361,6 +366,8 @@ td.num,th.num{text-align:right}
 .br-team.dim{opacity:.5}
 .br-team.locked{cursor:default}
 .br-team .realtag{margin-left:0}
+.br-team .ok{color:var(--green);font-weight:800;font-size:13px}.br-team .ko{color:var(--red);font-weight:800;font-size:13px}
+.br-champ.model{background:linear-gradient(135deg,#DCE3FF,#B9C6FF)}
 .br-champ{margin-top:18px;text-align:center;padding:22px;border-radius:var(--radius);
   background:linear-gradient(135deg,var(--gold),#F0C45A);border:2px solid var(--ink);box-shadow:var(--shadow)}
 .br-champ .lbl{font-family:'Barlow Condensed';font-weight:800;letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:var(--ink)}
@@ -400,7 +407,7 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
     <button data-v="home" class="on">Inicio</button>
     <button data-v="win">Última ventana</button>
     <button data-v="h2h">Partido & Cuotas</button>
-    <button data-v="rank">Ranking xG</button>
+    <button data-v="rank">Ranking</button>
     <span class="navsep" aria-hidden="true"></span>
     <button data-v="cup" class="arch" title="Archivo: el torneo para el que nació el proyecto">Archivo · Mundial 2026</button>
   </nav>
@@ -425,11 +432,11 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
       <span class="go">Abrir →</span></button>
     <button class="tool" style="--accent:var(--magenta)" data-v="h2h">
       <span class="ico">⚔️</span><h3>Partido & Cuotas</h3>
-      <p>Cualquier cruce entre selecciones, a partido único o eliminación directa. Probabilidades, factores clave, posibles goleadores y todos los mercados de apuestas con detector de valor (EV/Kelly). Podés agregar noticias y variables de ambiente.</p>
+      <p>Cualquier cruce entre selecciones a 90'. Probabilidades, factores clave, posibles goleadores y todos los mercados de apuestas con detector de valor (EV/Kelly). Podés agregar noticias y variables de ambiente.</p>
       <span class="go">Abrir →</span></button>
     <button class="tool" style="--accent:var(--blue)" data-v="rank">
-      <span class="ico">📊</span><h3>Ranking xG</h3>
-      <p>Las 48 selecciones ordenadas por fuerza, con su xG sin penales a favor y en contra ajustado por rival (StatsBomb Open Data). ¿Quién genera más de lo que concede?</p>
+      <span class="ico">📊</span><h3>Ranking</h3>
+      <p>Las 48 selecciones por fuerza del modelo, con ELO, forma de los últimos 5, cuánto se movieron en la ventana, valor de plantilla y xG sin penales a favor y en contra (StatsBomb).</p>
       <span class="go">Abrir →</span></button>
   </div>
   <div class="toolsec"><h2>Archivo</h2><p>Para lo que fue creado el proyecto.</p></div>
@@ -464,14 +471,7 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
   <div class="card">
     <div class="kicker b">Simulador de partido</div>
     <h2>Cualquier cruce, miles de veces</h2>
-    <p class="note">Elige el tipo de partido, las dos selecciones y agrega noticias pre-partido desde el menú. Las fuerzas son las actuales (al 6-oct-2026, con xG de StatsBomb). Cada noticia mueve el contexto (el 30% del modelo) de ese equipo.</p>
-
-    <div class="runbar" style="margin-top:18px">
-      <div class="seg" id="modeSeg">
-        <button class="on" data-m="ko">Eliminación directa</button>
-        <button data-m="gr">Admite empate (liga, grupos, amistoso)</button>
-      </div>
-    </div>
+    <p class="note">Partido a 90' (amistoso, Nations League, eliminatorias): elige las dos selecciones y agrega noticias pre-partido desde el menú. Las fuerzas son las actuales (al 6-oct-2026, con xG de StatsBomb). Cada noticia mueve el contexto (el 30% del modelo) de ese equipo.</p>
 
     <div class="h2h-grid">
       <div class="side A">
@@ -572,9 +572,18 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
   <div class="card">
     <div class="kicker gd">Archivo · 11-jun al 19-jul-2026</div>
     <h2>Así se jugó el Mundial 2026</h2>
-    <p class="note">El cuadro oficial (M73–M104) con los 32 resultados reales de eliminación directa; el número junto a cada selección son sus goles (<b>(p)</b> = pasó por penales). El <b>%</b> es la probabilidad de avanzar que le daba el modelo <b>antes del torneo</b> (fuerzas del 15-jun + forma de grupos), no con las fuerzas de hoy.</p>
+    <p class="note">Dos cuadros del mismo torneo: cómo terminó de verdad y cómo lo veía el modelo. Los dieciseisavos son los reales (salen de la fase de grupos); desde ahí el modelo usa sus fuerzas del <b>15-jun</b> (antes del Mundial) ajustadas por la forma de grupos, sin ver ningún resultado de eliminación directa.</p>
+    <div class="wfilter" id="brTabs">
+      <button class="on" data-br="real">🏁 Cómo terminó</button>
+      <button data-br="model">🔮 Lo que esperaba el modelo</button>
+    </div>
+    <p class="note" id="brHint"></p>
     <div class="bracket-scroll"><div class="bracket" id="bracketOut"></div></div>
     <div id="brChamp"></div>
+
+    <h3>Probabilidad de llegar a cada ronda (según el modelo)</h3>
+    <p class="note">Cálculo exacto sobre el cuadro real de dieciseisavos: cada cruce posible pesado por su probabilidad, equivalente a simular el torneo infinitas veces. La última columna es hasta dónde llegó de verdad.</p>
+    <div class="tbl-scroll"><table id="brOdds"></table></div>
 
     <h3>¿Qué tan bien predijo?</h3>
     <p class="note">Brier score contra los 104 partidos reales, con el modelo congelado el 15-jun (menor es mejor). Supera con claridad al azar y queda por delante de un ELO pre-torneo, aunque en los tramos fuera de muestra la ventaja sobre ELO cae dentro del margen de error.</p>
@@ -592,8 +601,16 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
 <!-- ════════ RANKING xG ════════ -->
 <section class="view" id="v-rank"><div class="wrap">
   <div class="card">
-    <div class="kicker b">StatsBomb xG · ajustado por rival</div>
+    <div class="kicker b">Fuerza · ELO · forma · plantilla · xG</div>
     <h2>Ranking de selecciones</h2>
+    <p class="note">La <b>fuerza</b> es la clase global del modelo (0 a 1: ELO, historia, forma, plantilla y xG). <b>Δ ventana</b> es cuánto cambió desde el 22-sep. ELO y puesto mundial de eloratings.net; valor de plantilla y edad promedio de Transfermarkt (oct-2026).</p>
+
+    <h3>Tabla completa</h3>
+    <div class="wfilter" id="rankTabs"></div>
+    <p class="note" id="rankHint">Hacé clic en una columna para ordenar.</p>
+    <div class="tbl-scroll"><table id="rankTable" class="sortable"></table></div>
+
+    <h3>xG: quién genera más de lo que concede</h3>
     <p class="note">xG sin penales por 90' que cada selección genera (a favor) y concede (en contra) frente a un rival medio. Sale de 250 partidos de StatsBomb Open Data (Euro 2020, Mundial 2022, AFCON 2023, Euro 2024 y Copa América 2024), con más peso para lo reciente y corregido por la calidad del rival. El Mundial 2026 todavía no está en el open data. La <b>fuerza</b> es la clase global del modelo (ELO, historia, forma, plantilla y xG).</p>
 
     <div class="chartbox" id="xgBox">
@@ -602,9 +619,6 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
       <p class="note" style="margin-top:6px">Arriba a la derecha: generan mucho y conceden poco. El eje vertical está invertido (arriba = concede menos). Las líneas punteadas son la mediana. Pasá el cursor por un punto para ver el detalle.</p>
     </div>
 
-    <h3>Tabla completa</h3>
-    <p class="note">Hacé clic en una columna para ordenar. "—" = sin partidos en el open data de StatsBomb (el modelo usa el xG del CSV para esas selecciones).</p>
-    <div class="tbl-scroll"><table id="rankTable" class="sortable"></table></div>
   </div>
 </div></section>
 
@@ -612,7 +626,7 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;font
 
 <script>
 /* ════════════════ DATOS (salida del ETL) ════════════════ */
-const TEAMS=[{"c":"MEX","n":"México","g":"A","p":0.6574,"a":1.0139,"d":0.7932,"r":0.415,"xf":1.0,"xa":0.727,"xn":6,"xt":["Mundial 2022","Copa América 2024"]},{"c":"RSA","n":"Sudáfrica","g":"A","p":0.3873,"a":0.8031,"d":0.9637,"r":0.548,"xf":0.833,"xa":1.029,"xn":7,"xt":["AFCON 2023"]},{"c":"KOR","n":"Corea del Sur","g":"A","p":0.5503,"a":0.9054,"d":0.9821,"r":0.51,"xf":0.943,"xa":0.979,"xn":4,"xt":["Mundial 2022"]},{"c":"CZE","n":"Chequia","g":"A","p":0.5327,"a":0.9306,"d":1.1802,"r":0.405,"xf":1.028,"xa":0.982,"xn":8,"xt":["Euro 2020","Euro 2024"]},{"c":"CAN","n":"Canadá","g":"B","p":0.5391,"a":0.841,"d":0.8529,"r":0.456,"xf":1.071,"xa":1.094,"xn":9,"xt":["Mundial 2022","Copa América 2024"]},{"c":"BIH","n":"Bosnia y Herzegovina","g":"B","p":0.4709,"a":0.8076,"d":1.2002,"r":0.38},{"c":"QAT","n":"Catar","g":"B","p":0.2728,"a":0.6128,"d":1.2886,"r":0.487,"xf":0.881,"xa":0.943,"xn":3,"xt":["Mundial 2022"]},{"c":"SUI","n":"Suiza","g":"B","p":0.7017,"a":1.1523,"d":0.9239,"r":0.426,"xf":1.05,"xa":0.974,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"BRA","n":"Brasil","g":"C","p":0.8536,"a":1.3759,"d":0.8481,"r":0.47,"xf":1.139,"xa":0.751,"xn":9,"xt":["Mundial 2022","Copa América 2024"]},{"c":"MAR","n":"Marruecos","g":"C","p":0.7506,"a":1.1794,"d":0.7104,"r":0.589,"xf":1.07,"xa":0.806,"xn":11,"xt":["Mundial 2022","AFCON 2023"]},{"c":"HAI","n":"Haití","g":"C","p":0.2762,"a":0.7897,"d":1.3645,"r":0.489},{"c":"SCO","n":"Escocia","g":"C","p":0.512,"a":0.7626,"d":1.0789,"r":0.44,"xf":0.778,"xa":0.899,"xn":6,"xt":["Euro 2020","Euro 2024"]},{"c":"USA","n":"Estados Unidos","g":"D","p":0.6242,"a":1.3278,"d":0.9972,"r":0.46,"xf":0.999,"xa":0.863,"xn":7,"xt":["Mundial 2022","Copa América 2024"]},{"c":"PAR","n":"Paraguay","g":"D","p":0.5839,"a":0.8724,"d":0.8528,"r":0.418,"xf":0.958,"xa":0.959,"xn":3,"xt":["Copa América 2024"]},{"c":"AUS","n":"Australia","g":"D","p":0.5204,"a":0.8374,"d":1.0614,"r":0.419,"xf":0.853,"xa":1.04,"xn":4,"xt":["Mundial 2022"]},{"c":"TUR","n":"Turquía","g":"D","p":0.6309,"a":1.0052,"d":1.2417,"r":0.405,"xf":1.01,"xa":1.19,"xn":8,"xt":["Euro 2020","Euro 2024"]},{"c":"GER","n":"Alemania","g":"E","p":0.8473,"a":1.2049,"d":0.9014,"r":0.573,"xf":1.253,"xa":0.846,"xn":12,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"CUW","n":"Curazao","g":"E","p":0.2973,"a":0.9076,"d":1.3803,"r":0.482},{"c":"CIV","n":"Costa de Marfil","g":"E","p":0.6124,"a":0.9612,"d":0.7781,"r":0.563,"xf":0.948,"xa":0.804,"xn":7,"xt":["AFCON 2023"]},{"c":"ECU","n":"Ecuador","g":"E","p":0.5786,"a":0.7427,"d":0.865,"r":0.569,"xf":0.918,"xa":0.87,"xn":7,"xt":["Mundial 2022","Copa América 2024"]},{"c":"NED","n":"Países Bajos","g":"F","p":0.7597,"a":1.2093,"d":0.9527,"r":0.576,"xf":1.077,"xa":0.851,"xn":15,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"JPN","n":"Japón","g":"F","p":0.7,"a":1.0372,"d":0.826,"r":0.595,"xf":0.947,"xa":0.91,"xn":4,"xt":["Mundial 2022"]},{"c":"SWE","n":"Suecia","g":"F","p":0.6287,"a":0.9845,"d":1.1744,"r":0.321,"xf":0.937,"xa":0.982,"xn":4,"xt":["Euro 2020"]},{"c":"TUN","n":"Túnez","g":"F","p":0.424,"a":0.7434,"d":1.2427,"r":0.469,"xf":0.88,"xa":0.92,"xn":6,"xt":["Mundial 2022","AFCON 2023"]},{"c":"BEL","n":"Bélgica","g":"G","p":0.7461,"a":1.2499,"d":0.8597,"r":0.424,"xf":0.994,"xa":0.938,"xn":12,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"EGY","n":"Egipto","g":"G","p":0.539,"a":0.9586,"d":0.8142,"r":0.635,"xf":0.989,"xa":0.846,"xn":4,"xt":["AFCON 2023"]},{"c":"IRN","n":"Irán","g":"G","p":0.5007,"a":0.8431,"d":1.1561,"r":0.559,"xf":0.951,"xa":0.985,"xn":3,"xt":["Mundial 2022"]},{"c":"NZL","n":"Nueva Zelanda","g":"G","p":0.3425,"a":0.7552,"d":1.5265,"r":0.425},{"c":"ESP","n":"España","g":"H","p":0.8906,"a":1.5115,"d":0.6312,"r":0.656,"xf":1.197,"xa":0.774,"xn":17,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"CPV","n":"Cabo Verde","g":"H","p":0.4087,"a":0.8766,"d":1.211,"r":0.533,"xf":0.98,"xa":0.967,"xn":5,"xt":["AFCON 2023"]},{"c":"KSA","n":"Arabia Saudita","g":"H","p":0.364,"a":0.7198,"d":0.9403,"r":0.495,"xf":0.948,"xa":1.065,"xn":3,"xt":["Mundial 2022"]},{"c":"URU","n":"Uruguay","g":"H","p":0.7421,"a":1.098,"d":0.9617,"r":0.544,"xf":1.083,"xa":0.829,"xn":9,"xt":["Mundial 2022","Copa América 2024"]},{"c":"FRA","n":"Francia","g":"I","p":0.8789,"a":1.5169,"d":0.6828,"r":0.647,"xf":1.134,"xa":0.721,"xn":17,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"SEN","n":"Senegal","g":"I","p":0.6723,"a":1.0244,"d":0.8345,"r":0.429,"xf":0.996,"xa":0.831,"xn":8,"xt":["Mundial 2022","AFCON 2023"]},{"c":"IRQ","n":"Irak","g":"I","p":0.3612,"a":0.7257,"d":1.3093,"r":0.46},{"c":"NOR","n":"Noruega","g":"I","p":0.764,"a":1.3318,"d":1.0164,"r":0.456},{"c":"ARG","n":"Argentina","g":"J","p":0.894,"a":1.6415,"d":0.6182,"r":0.617,"xf":1.313,"xa":0.649,"xn":13,"xt":["Mundial 2022","Copa América 2024"]},{"c":"ALG","n":"Argelia","g":"J","p":0.5934,"a":1.0606,"d":0.9169,"r":0.567,"xf":1.011,"xa":0.88,"xn":3,"xt":["AFCON 2023"]},{"c":"AUT","n":"Austria","g":"J","p":0.6551,"a":1.0557,"d":1.0964,"r":0.485,"xf":1.07,"xa":1.067,"xn":8,"xt":["Euro 2020","Euro 2024"]},{"c":"JOR","n":"Jordania","g":"J","p":0.3718,"a":0.7644,"d":1.1342,"r":0.361},{"c":"POR","n":"Portugal","g":"K","p":0.7368,"a":1.2114,"d":0.7592,"r":0.652,"xf":1.136,"xa":0.805,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"COD","n":"RD Congo","g":"K","p":0.544,"a":0.8837,"d":0.8466,"r":0.558,"xf":1.112,"xa":0.717,"xn":7,"xt":["AFCON 2023"]},{"c":"UZB","n":"Uzbekistán","g":"K","p":0.4569,"a":0.8407,"d":1.1711,"r":0.456},{"c":"COL","n":"Colombia","g":"K","p":0.7035,"a":0.9231,"d":0.6681,"r":0.574,"xf":1.039,"xa":0.731,"xn":6,"xt":["Copa América 2024"]},{"c":"ENG","n":"Inglaterra","g":"L","p":0.8802,"a":1.517,"d":0.6811,"r":0.577,"xf":0.91,"xa":0.773,"xn":19,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"CRO","n":"Croacia","g":"L","p":0.6948,"a":1.095,"d":1.1264,"r":0.488,"xf":1.069,"xa":0.985,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"]},{"c":"GHA","n":"Ghana","g":"L","p":0.446,"a":0.7328,"d":1.2431,"r":0.52,"xf":0.877,"xa":1.097,"xn":6,"xt":["Mundial 2022","AFCON 2023"]},{"c":"PAN","n":"Panamá","g":"L","p":0.4252,"a":0.801,"d":1.2075,"r":0.402,"xf":0.89,"xa":0.913,"xn":4,"xt":["Copa América 2024"]}];
+const TEAMS=[{"c":"MEX","n":"México","g":"A","p":0.6574,"a":1.0139,"d":0.7932,"r":0.415,"xf":1.0,"xa":0.727,"xn":6,"xt":["Mundial 2022","Copa América 2024"],"er":16,"e":1868,"v":237.8,"ag":25.7,"f":[["L",0,2,"Chile","2026-10-06"],["L",0,3,"Estados Unidos","2026-10-03"],["D",1,1,"Perú","2026-09-29"],["D",1,1,"Colombia","2026-09-26"],["L",2,3,"Inglaterra","2026-07-05"]]},{"c":"RSA","n":"Sudáfrica","g":"A","p":0.3873,"a":0.8031,"d":0.9637,"r":0.548,"xf":0.833,"xa":1.029,"xn":7,"xt":["AFCON 2023"],"er":65,"e":1595,"v":51.6,"ag":27.3,"f":[["W",1,0,"Egipto","2026-10-04"],["W",5,0,"Eritrea","2026-09-30"],["W",2,1,"Guinea","2026-09-26"],["L",0,1,"Canadá","2026-06-28"],["W",1,0,"Corea del Sur","2026-06-24"]]},{"c":"KOR","n":"Corea del Sur","g":"A","p":0.5503,"a":0.9054,"d":0.9821,"r":0.51,"xf":0.943,"xa":0.979,"xn":4,"xt":["Mundial 2022"],"er":34,"e":1730,"v":139.3,"ag":28.5,"f":[["W",2,0,"Uzbekistán","2026-10-06"],["D",0,0,"Venezuela","2026-10-02"],["L",1,4,"Uruguay","2026-09-28"],["W",3,0,"Ecuador","2026-09-24"],["L",0,1,"Sudáfrica","2026-06-24"]]},{"c":"CZE","n":"Chequia","g":"A","p":0.5327,"a":0.9306,"d":1.1802,"r":0.405,"xf":1.028,"xa":0.982,"xn":8,"xt":["Euro 2020","Euro 2024"],"er":53,"e":1656,"v":195.9,"ag":26.2,"f":[["L",0,3,"Inglaterra","2026-10-06"],["L",1,3,"España","2026-10-03"],["L",0,2,"Inglaterra","2026-09-29"],["L",1,2,"Croacia","2026-09-26"],["L",0,3,"México","2026-06-24"]]},{"c":"CAN","n":"Canadá","g":"B","p":0.5391,"a":0.841,"d":0.8529,"r":0.456,"xf":1.071,"xa":1.094,"xn":9,"xt":["Mundial 2022","Copa América 2024"],"er":31,"e":1739,"v":142.2,"ag":26.4,"f":[["L",0,1,"Estados Unidos","2026-10-06"],["W",2,0,"Perú","2026-10-03"],["W",1,0,"Chile","2026-09-26"],["L",0,3,"Marruecos","2026-07-04"],["W",1,0,"Sudáfrica","2026-06-28"]]},{"c":"BIH","n":"Bosnia y Herzegovina","g":"B","p":0.4709,"a":0.8076,"d":1.2002,"r":0.38,"er":51,"e":1672,"v":192.3,"ag":25.2,"f":[["W",1,0,"Polonia","2026-10-05"],["D",1,1,"Suecia","2026-10-02"],["W",4,2,"Rumania","2026-09-28"],["D",0,0,"Polonia","2026-09-25"],["L",0,2,"Estados Unidos","2026-07-01"]]},{"c":"QAT","n":"Catar","g":"B","p":0.2728,"a":0.6128,"d":1.2886,"r":0.487,"xf":0.881,"xa":0.943,"xn":3,"xt":["Mundial 2022"],"er":87,"e":1469,"v":19.9,"ag":29.3,"f":[["D",0,0,"Arabia Saudita","2026-10-03"],["D",1,1,"Emiratos Árabes","2026-09-30"],["W",1,0,"Yemen","2026-09-27"],["W",2,0,"Baréin","2026-09-24"],["L",1,3,"Bosnia y Herzegovina","2026-06-24"]]},{"c":"SUI","n":"Suiza","g":"B","p":0.7017,"a":1.1523,"d":0.9239,"r":0.426,"xf":1.05,"xa":0.974,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":8,"e":1975,"v":305.9,"ag":27.2,"f":[["W",3,0,"Macedonia del Norte","2026-10-06"],["W",2,1,"Eslovenia","2026-10-03"],["W",3,0,"Escocia","2026-09-29"],["W",3,0,"Macedonia del Norte","2026-09-26"],["L",1,3,"Argentina","2026-07-11"]]},{"c":"BRA","n":"Brasil","g":"C","p":0.8536,"a":1.3759,"d":0.8481,"r":0.47,"xf":1.139,"xa":0.751,"xn":9,"xt":["Mundial 2022","Copa América 2024"],"er":6,"e":2001,"v":904.5,"ag":25.1,"f":[["W",4,0,"India","2026-10-03"],["W",4,2,"Australia","2026-09-29"],["D",1,1,"Australia","2026-09-25"],["L",1,2,"Noruega","2026-07-05"],["W",2,1,"Japón","2026-06-29"]]},{"c":"MAR","n":"Marruecos","g":"C","p":0.7506,"a":1.1794,"d":0.7104,"r":0.589,"xf":1.07,"xa":0.806,"xn":11,"xt":["Mundial 2022","AFCON 2023"],"er":14,"e":1896,"v":605.9,"ag":25.8,"f":[["D",1,1,"Malí","2026-10-04"],["W",2,0,"Lesoto","2026-09-29"],["W",2,0,"Gabón","2026-09-25"],["L",0,2,"Francia","2026-07-09"],["W",3,0,"Canadá","2026-07-04"]]},{"c":"HAI","n":"Haití","g":"C","p":0.2762,"a":0.7897,"d":1.3645,"r":0.489,"er":67,"e":1563,"v":52.4,"ag":26.3,"f":[["L",0,2,"Costa Rica","2026-10-04"],["W",4,1,"Rep. Dominicana","2026-10-01"],["W",2,0,"Costa Rica","2026-09-27"],["W",3,2,"Trinidad y Tobago","2026-09-24"],["L",2,4,"Marruecos","2026-06-24"]]},{"c":"SCO","n":"Escocia","g":"C","p":0.512,"a":0.7626,"d":1.0789,"r":0.44,"xf":0.778,"xa":0.899,"xn":6,"xt":["Euro 2020","Euro 2024"],"er":39,"e":1718,"v":173.6,"ag":26.6,"f":[["L",1,2,"Eslovenia","2026-10-06"],["W",2,0,"Macedonia del Norte","2026-10-03"],["L",0,3,"Suiza","2026-09-29"],["D",0,0,"Eslovenia","2026-09-26"],["L",0,3,"Brasil","2026-06-24"]]},{"c":"USA","n":"Estados Unidos","g":"D","p":0.6242,"a":1.3278,"d":0.9972,"r":0.46,"xf":0.999,"xa":0.863,"xn":7,"xt":["Mundial 2022","Copa América 2024"],"er":25,"e":1792,"v":269.0,"ag":22.9,"f":[["W",1,0,"Canadá","2026-10-06"],["W",3,0,"México","2026-10-03"],["W",4,2,"Chile","2026-09-29"],["W",4,1,"Perú","2026-09-26"],["L",1,4,"Bélgica","2026-07-06"]]},{"c":"PAR","n":"Paraguay","g":"D","p":0.5839,"a":0.8724,"d":0.8528,"r":0.418,"xf":0.958,"xa":0.959,"xn":3,"xt":["Copa América 2024"],"er":22,"e":1836,"v":164.4,"ag":27.8,"f":[["W",1,0,"Colombia","2026-10-02"],["W",2,0,"Bolivia","2026-09-27"],["L",0,1,"Francia","2026-07-04"],["D",1,1,"Alemania","2026-06-29"],["D",0,0,"Australia","2026-06-25"]]},{"c":"AUS","n":"Australia","g":"D","p":0.5204,"a":0.8374,"d":1.0614,"r":0.419,"xf":0.853,"xa":1.04,"xn":4,"xt":["Mundial 2022"],"er":26,"e":1786,"v":75.3,"ag":25.9,"f":[["L",2,4,"Brasil","2026-09-29"],["D",1,1,"Brasil","2026-09-25"],["D",1,1,"Egipto","2026-07-03"],["D",0,0,"Paraguay","2026-06-25"],["L",0,2,"Estados Unidos","2026-06-19"]]},{"c":"TUR","n":"Turquía","g":"D","p":0.6309,"a":1.0052,"d":1.2417,"r":0.405,"xf":1.01,"xa":1.19,"xn":8,"xt":["Euro 2020","Euro 2024"],"er":29,"e":1768,"v":440.3,"ag":26.8,"f":[["L",1,3,"Italia","2026-10-05"],["L",0,3,"Bélgica","2026-10-02"],["L",1,4,"Italia","2026-09-28"],["L",0,1,"Francia","2026-09-25"],["W",3,2,"Estados Unidos","2026-06-25"]]},{"c":"GER","n":"Alemania","g":"E","p":0.8473,"a":1.2049,"d":0.9014,"r":0.573,"xf":1.253,"xa":0.846,"xn":12,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":15,"e":1895,"v":1360.0,"ag":25.8,"f":[["D",0,0,"Grecia","2026-10-04"],["W",2,0,"Serbia","2026-10-01"],["L",0,1,"Grecia","2026-09-27"],["D",1,1,"Países Bajos","2026-09-24"],["D",1,1,"Paraguay","2026-06-29"]]},{"c":"CUW","n":"Curazao","g":"E","p":0.2973,"a":0.9076,"d":1.3803,"r":0.482,"er":84,"e":1491,"v":22.4,"ag":27.4,"f":[["D",1,1,"Trinidad y Tobago","2026-10-04"],["W",1,0,"Trinidad y Tobago","2026-10-01"],["W",6,1,"Nicaragua","2026-09-27"],["W",4,3,"Costa Rica","2026-09-24"],["L",0,2,"Costa de Marfil","2026-06-25"]]},{"c":"CIV","n":"Costa de Marfil","g":"E","p":0.6124,"a":0.9612,"d":0.7781,"r":0.563,"xf":0.948,"xa":0.804,"xn":7,"xt":["AFCON 2023"],"er":37,"e":1723,"v":474.5,"ag":24.4,"f":[["L",0,1,"Camerún","2026-10-03"],["W",2,0,"Somalia","2026-09-29"],["W",2,0,"Ghana","2026-09-24"],["L",1,2,"Noruega","2026-06-30"],["W",2,0,"Curazao","2026-06-25"]]},{"c":"ECU","n":"Ecuador","g":"E","p":0.5786,"a":0.7427,"d":0.865,"r":0.569,"xf":0.918,"xa":0.87,"xn":7,"xt":["Mundial 2022","Copa América 2024"],"er":20,"e":1849,"v":190.1,"ag":25.8,"f":[["D",1,1,"Panamá","2026-10-05"],["D",0,0,"Japón","2026-10-01"],["L",0,3,"Corea del Sur","2026-09-24"],["L",0,2,"México","2026-06-30"],["W",2,1,"Alemania","2026-06-25"]]},{"c":"NED","n":"Países Bajos","g":"F","p":0.7597,"a":1.2093,"d":0.9527,"r":0.576,"xf":1.077,"xa":0.851,"xn":15,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":9,"e":1974,"v":686.0,"ag":26.5,"f":[["W",2,1,"Serbia","2026-10-04"],["D",2,2,"Grecia","2026-10-01"],["W",2,1,"Serbia","2026-09-27"],["D",1,1,"Alemania","2026-09-24"],["D",1,1,"Marruecos","2026-06-29"]]},{"c":"JPN","n":"Japón","g":"F","p":0.7,"a":1.0372,"d":0.826,"r":0.595,"xf":0.947,"xa":0.91,"xn":4,"xt":["Mundial 2022"],"er":13,"e":1897,"v":297.6,"ag":26.4,"f":[["W",2,1,"Nueva Zelanda","2026-10-05"],["D",0,0,"Ecuador","2026-10-01"],["W",2,1,"Venezuela","2026-09-28"],["L",1,2,"Brasil","2026-06-29"],["D",1,1,"Suecia","2026-06-25"]]},{"c":"SWE","n":"Suecia","g":"F","p":0.6287,"a":0.9845,"d":1.1744,"r":0.321,"xf":0.937,"xa":0.982,"xn":4,"xt":["Euro 2020"],"er":28,"e":1774,"v":451.3,"ag":25.7,"f":[["W",1,0,"Rumania","2026-10-05"],["D",1,1,"Bosnia y Herzegovina","2026-10-02"],["W",3,1,"Polonia","2026-09-28"],["W",2,1,"Rumania","2026-09-25"],["L",0,3,"Francia","2026-06-30"]]},{"c":"TUN","n":"Túnez","g":"F","p":0.424,"a":0.7434,"d":1.2427,"r":0.469,"xf":0.88,"xa":0.92,"xn":6,"xt":["Mundial 2022","AFCON 2023"],"er":76,"e":1533,"v":50.7,"ag":26.4,"f":[["D",2,2,"Botsuana","2026-09-28"],["D",1,1,"Uganda","2026-09-24"],["L",1,3,"Países Bajos","2026-06-25"],["L",0,4,"Japón","2026-06-20"],["L",1,5,"Suecia","2026-06-14"]]},{"c":"BEL","n":"Bélgica","g":"G","p":0.7461,"a":1.2499,"d":0.8597,"r":0.424,"xf":0.994,"xa":0.938,"xn":12,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":10,"e":1956,"v":632.8,"ag":26.2,"f":[["L",1,4,"Francia","2026-10-05"],["W",3,0,"Turquía","2026-10-02"],["L",0,1,"Francia","2026-09-28"],["W",2,0,"Italia","2026-09-25"],["L",1,2,"España","2026-07-10"]]},{"c":"EGY","n":"Egipto","g":"G","p":0.539,"a":0.9586,"d":0.8142,"r":0.635,"xf":0.989,"xa":0.846,"xn":4,"xt":["AFCON 2023"],"er":41,"e":1716,"v":102.2,"ag":27.9,"f":[["L",0,1,"Sudáfrica","2026-10-04"],["W",5,0,"Sudán del Sur","2026-09-29"],["D",0,0,"Angola","2026-09-25"],["L",2,3,"Argentina","2026-07-07"],["D",1,1,"Australia","2026-07-03"]]},{"c":"IRN","n":"Irán","g":"G","p":0.5007,"a":0.8431,"d":1.1561,"r":0.559,"xf":0.951,"xa":0.985,"xn":3,"xt":["Mundial 2022"],"er":32,"e":1738,"v":25.5,"ag":29.6,"f":[["L",0,2,"Rusia","2026-09-29"],["L",1,3,"Uzbekistán","2026-09-24"],["D",1,1,"Egipto","2026-06-26"],["D",0,0,"Bélgica","2026-06-21"],["D",2,2,"Nueva Zelanda","2026-06-15"]]},{"c":"NZL","n":"Nueva Zelanda","g":"G","p":0.3425,"a":0.7552,"d":1.5265,"r":0.425,"er":71,"e":1559,"v":29.2,"ag":26.9,"f":[["L",1,2,"Japón","2026-10-05"],["D",1,1,"Panamá","2026-10-01"],["W",3,0,"China","2026-09-27"],["D",2,2,"Palestina","2026-09-24"],["L",1,5,"Bélgica","2026-06-26"]]},{"c":"ESP","n":"España","g":"H","p":0.8906,"a":1.5115,"d":0.6312,"r":0.656,"xf":1.197,"xa":0.774,"xn":17,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":1,"e":2287,"v":1310.0,"ag":26.2,"f":[["W",2,1,"Croacia","2026-10-06"],["W",3,1,"Chequia","2026-10-03"],["W",4,1,"Croacia","2026-09-29"],["W",3,2,"Inglaterra","2026-09-26"],["W",1,0,"Argentina","2026-07-19"]]},{"c":"CPV","n":"Cabo Verde","g":"H","p":0.4087,"a":0.8766,"d":1.211,"r":0.533,"xf":0.98,"xa":0.967,"xn":5,"xt":["AFCON 2023"],"er":69,"e":1560,"v":64.6,"ag":28.9,"f":[["L",1,2,"Ruanda","2026-09-29"],["L",1,3,"Malí","2026-09-25"],["L",2,3,"Argentina","2026-07-03"],["D",0,0,"Arabia Saudita","2026-06-26"],["D",2,2,"Uruguay","2026-06-21"]]},{"c":"KSA","n":"Arabia Saudita","g":"H","p":0.364,"a":0.7198,"d":0.9403,"r":0.495,"xf":0.948,"xa":1.065,"xn":3,"xt":["Mundial 2022"],"er":56,"e":1639,"v":21.4,"ag":29.2,"f":[["W",2,0,"Emiratos Árabes","2026-10-06"],["D",0,0,"Catar","2026-10-03"],["W",2,0,"Irak","2026-09-29"],["W",3,0,"Omán","2026-09-26"],["W",1,0,"Kuwait","2026-09-23"]]},{"c":"URU","n":"Uruguay","g":"H","p":0.7421,"a":1.098,"d":0.9617,"r":0.544,"xf":1.083,"xa":0.829,"xn":9,"xt":["Mundial 2022","Copa América 2024"],"er":19,"e":1851,"v":294.9,"ag":28.1,"f":[["W",6,1,"India","2026-10-06"],["W",4,1,"Corea del Sur","2026-09-28"],["L",0,1,"España","2026-06-26"],["D",2,2,"Cabo Verde","2026-06-21"],["D",1,1,"Arabia Saudita","2026-06-15"]]},{"c":"FRA","n":"Francia","g":"I","p":0.8789,"a":1.5169,"d":0.6828,"r":0.647,"xf":1.134,"xa":0.721,"xn":17,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":4,"e":2104,"v":1510.0,"ag":25.7,"f":[["W",4,1,"Bélgica","2026-10-05"],["D",1,1,"Italia","2026-10-02"],["W",1,0,"Bélgica","2026-09-28"],["W",1,0,"Turquía","2026-09-25"],["L",4,6,"Inglaterra","2026-07-18"]]},{"c":"SEN","n":"Senegal","g":"I","p":0.6723,"a":1.0244,"d":0.8345,"r":0.429,"xf":0.996,"xa":0.831,"xn":8,"xt":["Mundial 2022","AFCON 2023"],"er":23,"e":1805,"v":567.6,"ag":25.5,"f":[["W",1,0,"Comoras","2026-10-04"],["W",1,0,"Etiopía","2026-09-29"],["D",1,1,"Mozambique","2026-09-25"],["L",2,3,"Bélgica","2026-07-01"],["W",5,0,"Irak","2026-06-26"]]},{"c":"IRQ","n":"Irak","g":"I","p":0.3612,"a":0.7257,"d":1.3093,"r":0.46,"er":73,"e":1546,"v":16.6,"ag":26.1,"f":[["L",0,2,"Arabia Saudita","2026-09-29"],["W",3,2,"Kuwait","2026-09-26"],["D",1,1,"Omán","2026-09-23"],["L",0,5,"Senegal","2026-06-26"],["L",0,3,"Francia","2026-06-22"]]},{"c":"NOR","n":"Noruega","g":"I","p":0.764,"a":1.3318,"d":1.0164,"r":0.456,"er":12,"e":1900,"v":647.1,"ag":26.8,"f":[["L",1,2,"Portugal","2026-10-04"],["L",1,2,"Gales","2026-10-01"],["L",1,2,"Portugal","2026-09-27"],["W",3,2,"Dinamarca","2026-09-24"],["L",1,2,"Inglaterra","2026-07-11"]]},{"c":"ARG","n":"Argentina","g":"J","p":0.894,"a":1.6415,"d":0.6182,"r":0.617,"xf":1.313,"xa":0.649,"xn":13,"xt":["Mundial 2022","Copa América 2024"],"er":2,"e":2175,"v":1030.0,"ag":26.3,"f":[["W",3,0,"Benín","2026-10-06"],["W",7,0,"Burkina Faso","2026-10-03"],["W",4,0,"Bolivia","2026-10-01"],["L",0,1,"España","2026-07-19"],["W",2,1,"Inglaterra","2026-07-15"]]},{"c":"ALG","n":"Argelia","g":"J","p":0.5934,"a":1.0606,"d":0.9169,"r":0.567,"xf":1.011,"xa":0.88,"xn":3,"xt":["AFCON 2023"],"er":30,"e":1744,"v":252.9,"ag":25.6,"f":[["W",2,1,"Níger","2026-10-06"],["D",2,2,"Burundi","2026-09-29"],["W",3,1,"Zambia","2026-09-25"],["L",0,2,"Suiza","2026-07-02"],["D",3,3,"Austria","2026-06-27"]]},{"c":"AUT","n":"Austria","g":"J","p":0.6551,"a":1.0557,"d":1.0964,"r":0.485,"xf":1.07,"xa":1.067,"xn":8,"xt":["Euro 2020","Euro 2024"],"er":21,"e":1841,"v":266.8,"ag":26.5,"f":[["D",1,1,"Kosovo","2026-10-04"],["D",2,2,"Irlanda","2026-10-01"],["W",3,1,"Kosovo","2026-09-27"],["W",3,1,"Israel","2026-09-24"],["L",0,3,"España","2026-07-02"]]},{"c":"JOR","n":"Jordania","g":"J","p":0.3718,"a":0.7644,"d":1.1342,"r":0.361,"er":59,"e":1622,"v":21.5,"ag":27.8,"f":[["D",0,0,"Venezuela","2026-10-06"],["D",1,1,"Siria","2026-09-27"],["L",1,3,"Argentina","2026-06-27"],["L",1,2,"Argelia","2026-06-22"],["L",1,3,"Austria","2026-06-16"]]},{"c":"POR","n":"Portugal","g":"K","p":0.7368,"a":1.2114,"d":0.7592,"r":0.652,"xf":1.136,"xa":0.805,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":5,"e":2055,"v":413.7,"ag":23.7,"f":[["W",2,1,"Noruega","2026-10-04"],["W",4,2,"Dinamarca","2026-10-01"],["W",2,1,"Noruega","2026-09-27"],["W",1,0,"Gales","2026-09-24"],["L",0,1,"España","2026-07-06"]]},{"c":"COD","n":"RD Congo","g":"K","p":0.544,"a":0.8837,"d":0.8466,"r":0.558,"xf":1.112,"xa":0.717,"xn":7,"xt":["AFCON 2023"],"er":45,"e":1687,"v":164.6,"ag":27.8,"f":[["D",1,1,"Uganda","2026-10-05"],["L",0,2,"Uganda","2026-10-02"],["W",2,1,"Zimbabue","2026-09-28"],["W",2,0,"Guinea Ecuatorial","2026-09-24"],["L",1,2,"Inglaterra","2026-07-01"]]},{"c":"UZB","n":"Uzbekistán","g":"K","p":0.4569,"a":0.8407,"d":1.1711,"r":0.456,"er":55,"e":1645,"v":83.2,"ag":24.7,"f":[["L",0,2,"Corea del Sur","2026-10-06"],["W",4,1,"Siria","2026-10-01"],["W",3,1,"Irán","2026-09-24"],["L",1,3,"RD Congo","2026-06-27"],["L",0,5,"Portugal","2026-06-23"]]},{"c":"COL","n":"Colombia","g":"K","p":0.7035,"a":0.9231,"d":0.6681,"r":0.574,"xf":1.039,"xa":0.731,"xn":6,"xt":["Copa América 2024"],"er":7,"e":1990,"v":257.6,"ag":25.8,"f":[["W",2,0,"Perú","2026-10-06"],["L",0,1,"Paraguay","2026-10-02"],["D",1,1,"México","2026-09-26"],["D",0,0,"Suiza","2026-07-07"],["W",1,0,"Ghana","2026-07-03"]]},{"c":"ENG","n":"Inglaterra","g":"L","p":0.8802,"a":1.517,"d":0.6811,"r":0.577,"xf":0.91,"xa":0.773,"xn":19,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":3,"e":2146,"v":1560.0,"ag":25.8,"f":[["W",3,0,"Chequia","2026-10-06"],["W",7,0,"Croacia","2026-10-03"],["W",2,0,"Chequia","2026-09-29"],["L",2,3,"España","2026-09-26"],["W",6,4,"Francia","2026-07-18"]]},{"c":"CRO","n":"Croacia","g":"L","p":0.6948,"a":1.095,"d":1.1264,"r":0.488,"xf":1.069,"xa":0.985,"xn":14,"xt":["Euro 2020","Mundial 2022","Euro 2024"],"er":18,"e":1856,"v":460.0,"ag":28.4,"f":[["L",1,2,"España","2026-10-06"],["L",0,7,"Inglaterra","2026-10-03"],["L",1,4,"España","2026-09-29"],["W",2,1,"Chequia","2026-09-26"],["L",1,2,"Portugal","2026-07-02"]]},{"c":"GHA","n":"Ghana","g":"L","p":0.446,"a":0.7328,"d":1.2431,"r":0.52,"xf":0.877,"xa":1.097,"xn":6,"xt":["Mundial 2022","AFCON 2023"],"er":82,"e":1512,"v":146.3,"ag":25.6,"f":[["L",2,4,"Gambia","2026-09-29"],["L",0,2,"Costa de Marfil","2026-09-24"],["L",0,1,"Colombia","2026-07-03"],["L",1,2,"Croacia","2026-06-27"],["D",0,0,"Inglaterra","2026-06-23"]]},{"c":"PAN","n":"Panamá","g":"L","p":0.4252,"a":0.801,"d":1.2075,"r":0.402,"xf":0.89,"xa":0.913,"xn":4,"xt":["Copa América 2024"],"er":54,"e":1654,"v":33.8,"ag":26.0,"f":[["D",1,1,"Ecuador","2026-10-05"],["D",1,1,"Nueva Zelanda","2026-10-01"],["D",1,1,"India","2026-09-25"],["L",0,2,"Inglaterra","2026-06-27"],["L",0,1,"Croacia","2026-06-23"]]}];
 const FLAG={MEX:"🇲🇽",RSA:"🇿🇦",KOR:"🇰🇷",CZE:"🇨🇿",CAN:"🇨🇦",BIH:"🇧🇦",QAT:"🇶🇦",SUI:"🇨🇭",BRA:"🇧🇷",MAR:"🇲🇦",HAI:"🇭🇹",SCO:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",USA:"🇺🇸",PAR:"🇵🇾",AUS:"🇦🇺",TUR:"🇹🇷",GER:"🇩🇪",CUW:"🇨🇼",CIV:"🇨🇮",ECU:"🇪🇨",NED:"🇳🇱",JPN:"🇯🇵",SWE:"🇸🇪",TUN:"🇹🇳",BEL:"🇧🇪",EGY:"🇪🇬",IRN:"🇮🇷",NZL:"🇳🇿",ESP:"🇪🇸",CPV:"🇨🇻",KSA:"🇸🇦",URU:"🇺🇾",FRA:"🇫🇷",SEN:"🇸🇳",IRQ:"🇮🇶",NOR:"🇳🇴",ARG:"🇦🇷",ALG:"🇩🇿",AUT:"🇦🇹",JOR:"🇯🇴",POR:"🇵🇹",COD:"🇨🇩",UZB:"🇺🇿",COL:"🇨🇴",ENG:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",CRO:"🇭🇷",GHA:"🇬🇭",PAN:"🇵🇦"};
 const byCode=Object.fromEntries(TEAMS.map(t=>[t.c,t]));
 /* Snapshot del modelo al 15-jun-2026 (antes del Mundial): lo usa el archivo
@@ -867,16 +881,12 @@ function renderScorers(A,B,lamA,lamB){
 }
 
 /* ── Tarjeta de predicción clara: marcador previsto + resultado + stats ── */
-function renderPrediction(A,B,o,lamA,lamB,pa,pb,pd,ko){
-  // resultado más probable (en KO usa avanzar; en grupos 1X2)
-  let outcome, conf;
-  if(ko){ outcome = pa>=pb?`Avanza ${A.n}`:`Avanza ${B.n}`; conf=Math.max(pa,pb); }
-  else {
-    const m=Math.max(pa,pd,pb);
-    outcome = m===pa?`Gana ${A.n}`:(m===pb?`Gana ${B.n}`:"Empate"); conf=m;
-  }
+function renderPrediction(A,B,o,lamA,lamB,pa,pb,pd){
+  // resultado más probable (1X2)
+  const m=Math.max(pa,pd,pb);
+  const outcome = m===pa?`Gana ${A.n}`:(m===pb?`Gana ${B.n}`:"Empate"), conf=m;
   // marcador previsto: el más probable COHERENTE con el resultado favorito
-  const wantSign = ko? (pa>=pb?1:-1) : (outcome.startsWith("Gana "+A.n)?1:(outcome==="Empate"?0:-1));
+  const wantSign = m===pa?1:(m===pb?-1:0);
   let pred=o.top[0];
   for(const s of o.top){const sg=Math.sign(s[0]-s[1]); if(sg===wantSign){pred=s;break;}}
   const csA=Math.exp(-lamB), csB=Math.exp(-lamA); // valla invicta aprox
@@ -1055,12 +1065,6 @@ document.querySelectorAll("[data-v]").forEach(b=>b.addEventListener("click",()=>
 })();
 
 /* ════════════════ PARTIDO ════════════════ */
-let mode="ko";
-document.querySelectorAll("#modeSeg button").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll("#modeSeg button").forEach(x=>x.classList.remove("on"));
-  b.classList.add("on");mode=b.dataset.m;
-  document.getElementById("h2hOut").hidden=true;
-});
 
 /* picked[side] = array de {label,d} (catálogo o noticia propia) */
 const picked={A:[],B:[]};
@@ -1140,28 +1144,21 @@ document.getElementById("runH2H").onclick=()=>{
   const A=byCode[document.getElementById("selA").value];
   const B=byCode[document.getElementById("selB").value];
   if(A.c===B.c){alert("Elige dos selecciones distintas.");return;}
-  const cA=ctxOf("A"),cB=ctxOf("B"),ko=mode==="ko";
+  const cA=ctxOf("A"),cB=ctxOf("B");
   const [lamA,lamB]=lambdaPair(A,B,cA,cB);
 
   // ── Probabilidades EXACTAS (analíticas) para los 90' ──
   const o=matchOdds(lamA,lamB);
-  let pa=o.pH,pb=o.pA,pd=o.pD;
-  // En eliminación directa repartimos el empate a 90' según prórroga+penales:
-  // la clase decide; aproximación consistente con el motor de penales.
-  const sa=strength(A,cA),sb=strength(B,cB);
-  const pAknock=Math.min(.80,Math.max(.20,.5+.55*(sa-sb)));
-  o.advA=o.pH+o.pD*pAknock; o.advB=o.pA+o.pD*(1-pAknock); // para mercados KO
-  if(ko){ pa=o.advA; pb=o.advB; pd=0; }
+  const pa=o.pH,pb=o.pA,pd=o.pD;
   document.getElementById("h2hOut").hidden=false;
-  renderPrediction(A,B,o,lamA,lamB,pa,pb,pd,ko);
+  renderPrediction(A,B,o,lamA,lamB,pa,pb,pd);
   const barA=document.getElementById("barA"),barB=document.getElementById("barB"),
         barD=document.getElementById("barD"),tagD=document.getElementById("tagD");
   barA.style.width=(pa*100)+"%";barB.style.width=(pb*100)+"%";
-  if(!ko){barD.style.display="block";tagD.style.display="block";
-    barD.style.left=(pa*100)+"%";barD.style.width=(pd*100)+"%";
-    tagD.style.setProperty("--dpos",(pa*100+pd*50)+"%");
-    tagD.textContent="E "+(pd*100).toFixed(1)+"%";
-  }else{barD.style.display="none";tagD.style.display="none";}
+  barD.style.display="block";tagD.style.display="block";
+  barD.style.left=(pa*100)+"%";barD.style.width=(pd*100)+"%";
+  tagD.style.setProperty("--dpos",(pa*100+pd*50)+"%");
+  tagD.textContent="E "+(pd*100).toFixed(1)+"%";
   document.getElementById("tagA").textContent=(pa*100).toFixed(1)+"%";
   document.getElementById("tagB").textContent=(pb*100).toFixed(1)+"%";
   document.getElementById("legA").innerHTML=`${FLAG[A.c]} <b>${A.n}</b> · λ ${lamA.toFixed(2)} · cuota justa ${(1/pa).toFixed(2)}`;
@@ -1192,13 +1189,13 @@ document.getElementById("runH2H").onclick=()=>{
   renderScorers(A,B,lamA,lamB);
 
   // ── Cuotas por mercado + detector de valor (mismo contexto del partido) ──
-  renderOddsBlock(A,B,o,ko);
+  renderOddsBlock(A,B,o);
 
   // ── Convergencia: muestreo en checkpoints vs valor exacto ──
   const checkpoints=[100,250,500,1000,2000,5000,10000,20000,50000];
   const N=50000;let wa=0,wbb=0,dr=0;const dist={};const ptsA=[],ptsB=[];let ci=0;
   for(let i=1;i<=N;i++){
-    const m=playMatch(A,B,ko,cA,cB);
+    const m=playMatch(A,B,false,cA,cB);
     if(m.winner===A.c)wa++;else if(m.winner===B.c)wbb++;else dr++;
     const k=Math.min(m.ga,7)+"-"+Math.min(m.gb,7);dist[k]=(dist[k]||0)+1;
     if(i===checkpoints[ci]){ptsA.push({x:i,y:wa/i});ptsB.push({x:i,y:wbb/i});ci++;}
@@ -1219,7 +1216,7 @@ document.getElementById("runH2H").onclick=()=>{
       <td class="num">${(s[2]*100).toFixed(1)}%</td>
       <td><div class="minibar"><i style="width:${100*s[2]/o.top[0][2]}%"></i></div></td></tr>`).join("")}
     <tr><td colspan="3" style="color:var(--ink2);font-size:12.5px">
-      Goles esperados: ${A.c} λ=${lamA.toFixed(2)} · ${B.c} λ=${lamB.toFixed(2)} · Dixon-Coles ρ=−0.13${ko?" · empate→prórroga/penales repartido por clase":""}</td></tr></tbody>`;
+      Goles esperados: ${A.c} λ=${lamA.toFixed(2)} · ${B.c} λ=${lamB.toFixed(2)} · Dixon-Coles ρ=−0.13</td></tr></tbody>`;
 };
 
 /* P(a gana el cruce de eliminación) — analítica: 90' + reparto del empate
@@ -1284,58 +1281,100 @@ const BR_ROUNDS=[
   {key:"Semifinal",short:"Semis",defs:SF},
   {key:"Final",short:"Final",defs:[["M104","M101","M102"]]},
 ];
-let brPicks={}, brSeed=null;
-function brSide(mid,src,ri){
+/* Un cuadro = mapa {matchId: ganador}. Se arma ronda por ronda con pickFn(a,b). */
+let brSeed=null;
+function brSide(picks,src,mid,ri){
   return ri===0 ? {code:brSeed.resolveSlot(mid,src),label:slotLabel(src)}
-                : {code:brPicks[src]||null,label:"Ganador "+src};
+                : {code:picks[src]||null,label:"Ganador "+src};
 }
-function brMatch(ri,def){ return {mid:def[0],A:brSide(def[0],def[1],ri),B:brSide(def[0],def[2],ri)}; }
-function brReal(a,b){ return (a&&b)?koFixed(a,b):null; }
-function brValidate(){     // borra picks inválidos tras un cambio aguas arriba
+function brBuild(pickFn){
+  const picks={};
   for(let ri=0;ri<BR_ROUNDS.length;ri++)for(const def of BR_ROUNDS[ri].defs){
-    const m=brMatch(ri,def),cur=brPicks[m.mid];
-    if(cur&&cur!==m.A.code&&cur!==m.B.code)delete brPicks[m.mid];
+    const a=brSide(picks,def[1],def[0],ri).code, b=brSide(picks,def[2],def[0],ri).code;
+    if(a&&b){const w=pickFn(a,b); if(w)picks[def[0]]=w;}
   }
+  return picks;
 }
-function brSeedReal(){     // bloquea los KO ya jugados (REAL_KO)
-  for(let ri=0;ri<BR_ROUNDS.length;ri++)for(const def of BR_ROUNDS[ri].defs){
-    const m=brMatch(ri,def);if(!m.A.code||!m.B.code)continue;
-    const fx=brReal(m.A.code,m.B.code);if(fx&&!brPicks[m.mid])brPicks[m.mid]=fx.winner;
-  }
-}
+const pPre=(a,b)=>koWinProb(preCode[a],preCode[b],undefined,undefined,preCode);
+let BR_REAL=null, BR_MODEL=null, brView="real";
 function renderBracket(){
-  if(!brSeed)brSeed=realBracketSeed();
-  brValidate();brSeedReal();brValidate();
-  let html="";
+  if(!brSeed){
+    brSeed=realBracketSeed();
+    BR_REAL=brBuild((a,b)=>{const fx=koFixed(a,b);return fx?fx.winner:null;});
+    BR_MODEL=brBuild((a,b)=>pPre(a,b)>=0.5?a:b);
+  }
+  const model=brView==="model", picks=model?BR_MODEL:BR_REAL;
+  let html="", hits=0, tot=0;
   for(let ri=0;ri<BR_ROUNDS.length;ri++){
     let col=`<div class="br-colhead">${BR_ROUNDS[ri].short}</div>`;
     for(const def of BR_ROUNDS[ri].defs){
-      const m=brMatch(ri,def),a=m.A.code,b=m.B.code;
-      const fx=(a&&b)?brReal(a,b):null;
-      const pA=(a&&b)?koWinProb(preCode[a],preCode[b],undefined,undefined,preCode):null;
-      const pick=brPicks[m.mid];
+      const mid=def[0], A=brSide(picks,def[1],mid,ri), B=brSide(picks,def[2],mid,ri), a=A.code, b=B.code;
+      const fx=(a&&b)?koFixed(a,b):null;            // ¿este cruce exacto se jugó?
+      const pA=(a&&b)?pPre(a,b):null;
+      const pick=picks[mid];
+      if(model&&pick){tot++; if(pick===BR_REAL[mid])hits++;}
       const row=(t,p)=>{
         if(!t.code)return `<div class="br-team tbd"><span class="bf">🏳️</span><span class="bn">${t.label}</span></div>`;
         const picked=pick===t.code, dim=pick&&!picked;
-        const cls=["br-team",picked?"pick":"",dim?"dim":"",fx?"locked":""].filter(Boolean).join(" ");
+        const cls=["br-team","locked",picked?"pick":"",dim?"dim":""].filter(Boolean).join(" ");
         const gl=fx?(t.code===a?fx.ga:fx.gb):null;
-        const real=fx?`<span class="realtag">${gl}${picked&&fx.pens?" (p)":""}</span>`:"";
+        const real=fx?`<span class="realtag">${gl}${picked&&fx.pens&&!model?" (p)":""}</span>`:"";
+        const mark=model&&picked?(BR_REAL[mid]===t.code?`<span class="ok" title="Acertó: este equipo ganó ese partido">✓</span>`:`<span class="ko" title="Falló: en ese partido ganó ${byCode[BR_REAL[mid]]?.n||"otro"}">✗</span>`):"";
         const pct=p!=null?`<span class="bp">${(p*100).toFixed(0)}%</span>`:"";
-        return `<div class="${cls}" data-mid="${m.mid}" data-team="${t.code}"${fx?' data-locked="1"':''}>
-          <span class="bf">${FLAG[t.code]}</span>
+        return `<div class="${cls}"><span class="bf">${FLAG[t.code]}</span>
           <span class="bcol"><span class="bn">${byCode[t.code].n}</span>${ri===0?`<span class="bl">${t.label}</span>`:""}</span>
-          ${real}${pct}</div>`;
+          ${model?mark:real}${pct}</div>`;
       };
-      col+=`<div class="br-match"><div class="br-id">${m.mid}</div>${row(m.A,pA)}${row(m.B,pA!=null?1-pA:null)}</div>`;
+      col+=`<div class="br-match"><div class="br-id">${mid}</div>${row(A,pA)}${row(B,pA!=null?1-pA:null)}</div>`;
     }
     html+=`<div class="br-col">${col}</div>`;
   }
   document.getElementById("bracketOut").innerHTML=html;
-  const champ=brPicks["M104"];
+  document.getElementById("brHint").innerHTML=model
+    ?`El modelo avanza siempre al favorito de cada cruce. ✓ = ese equipo ganó de verdad ese partido del cuadro; ✗ = no. Acertó <b>${hits} de ${tot}</b> partidos del cuadro (una falla temprana arrastra las siguientes).`
+    :`Resultados reales; el número junto a cada selección son sus goles (<b>(p)</b> = pasó por penales). El % es la probabilidad que le daba el modelo a ese cruce antes de jugarse.`;
+  const champ=picks["M104"];
   document.getElementById("brChamp").innerHTML=champ
-    ?`<div class="br-champ"><div class="lbl">Campeón del mundo 2026</div><div class="nm">${FLAG[champ]} ${byCode[champ].n}</div></div>`:"";
+    ?`<div class="br-champ${model?" model":""}"><div class="lbl">${model?"Campeón según el modelo":"Campeón del mundo 2026"}</div><div class="nm">${FLAG[champ]} ${byCode[champ].n}</div></div>`:"";
 }
+document.getElementById("brTabs").addEventListener("click",e=>{
+  const v=e.target.closest("button")?.dataset.br; if(!v)return; brView=v;
+  document.querySelectorAll("#brTabs button").forEach(b=>b.classList.toggle("on",b.dataset.br===v));
+  renderBracket();
+});
 renderBracket();
+
+/* P(llegar a cada ronda): distribución exacta de ganadores por partido. */
+function renderBrOdds(){
+  const dist={};                                   // mid -> {code: prob de ganar ese partido}
+  const sideDist=(src,mid,ri)=>ri===0?{[brSeed.resolveSlot(mid,src)]:1}:dist[src];
+  const reach=TEAMS.reduce((o,t)=>(o[t.c]=[0,0,0,0,0,0],o),{});   // 16avos, 8vos, 4tos, semis, final, campeón
+  for(let ri=0;ri<BR_ROUNDS.length;ri++)for(const def of BR_ROUNDS[ri].defs){
+    const dA=sideDist(def[1],def[0],ri), dB=sideDist(def[2],def[0],ri), out={};
+    for(const [a,pa] of Object.entries(dA))for(const [b,pb] of Object.entries(dB)){
+      const w=pPre(a,b);
+      out[a]=(out[a]||0)+pa*pb*w; out[b]=(out[b]||0)+pa*pb*(1-w);
+    }
+    for(const [c,p] of Object.entries(dA))if(ri===0)reach[c][0]=1;
+    for(const [c,p] of Object.entries(dB))if(ri===0)reach[c][0]=1;
+    for(const [c,p] of Object.entries(out))reach[c][ri+1]+=p;
+    dist[def[0]]=out;
+  }
+  // hasta dónde llegó de verdad
+  const realStage={};
+  for(let ri=0;ri<BR_ROUNDS.length;ri++)for(const def of BR_ROUNDS[ri].defs){
+    for(const s of [def[1],def[2]]){const c=ri===0?brSeed.resolveSlot(def[0],s):BR_REAL[s]; if(c)realStage[c]=ri;}
+  }
+  realStage[BR_REAL["M104"]]=5;
+  const STG=["16avos","Octavos","Cuartos","Semis","Final","Campeón"];
+  const rows=TEAMS.filter(t=>reach[t.c][0]).sort((a,b)=>reach[b.c][5]-reach[a.c][5]||reach[b.c][4]-reach[a.c][4]);
+  const cell=p=>`<td class="num">${p>=0.995?"✔":(p*100).toFixed(p<0.1?1:0)+"%"}</td>`;
+  document.getElementById("brOdds").innerHTML=`<thead><tr><th>#</th><th>Selección</th>${STG.slice(1).map(s=>`<th class="num">${s}</th>`).join("")}<th>Llegó a</th></tr></thead><tbody>${
+    rows.map((t,i)=>{const st=realStage[t.c];
+      return `<tr><td class="muted">${i+1}</td><td>${FLAG[t.c]} ${t.n}</td>${reach[t.c].slice(1).map(cell).join("")}
+        <td class="${st===5?"pos":""}">${st===5?"🏆 Campeón":STG[st]}</td></tr>`;}).join("")}</tbody>`;
+}
+renderBrOdds();
 
 
 /* ════════════════ RANKING xG ════════════════ */
@@ -1383,37 +1422,68 @@ function renderXgPlot(){
   const hide=()=>{tip.hidden=true;svg.querySelectorAll(".dot.on").forEach(d=>d.classList.remove("on"));};
   svg.onmouseover=show; svg.onmouseleave=hide; svg.onclick=show;
 }
-const RANK_COLS=[
-  {k:"p",   h:"Fuerza",        v:t=>t.p},
-  {k:"a",   h:"Ataque",        v:t=>t.a},
-  {k:"d",   h:"Defensa",       v:t=>t.d, asc:true},
-  {k:"xf",  h:"npxG a favor",  v:t=>t.xf},
-  {k:"xa",  h:"npxG en contra",v:t=>t.xa, asc:true},
-  {k:"xd",  h:"Dif.",          v:t=>t.xf!=null?t.xf-t.xa:null},
-  {k:"xn",  h:"Partidos SB",   v:t=>t.xn},
-];
-let rankSort={k:"p",asc:false};
+const dWin=t=>winCode[t.c]?t.p-winCode[t.c].p:null;
+const formPts=t=>t.f&&t.f.length?t.f.reduce((s,m)=>s+(m[0]==="W"?3:m[0]==="D"?1:0),0):null;
+const formCell=t=>t.f&&t.f.length?`<span class="form5">${t.f.slice().reverse().map(m=>
+  `<i class="${m[0]}" title="${m[4]} · ${m[1]}-${m[2]} vs ${m[3]}">${m[0]==="W"?"G":m[0]==="D"?"E":"P"}</i>`).join("")}</span>`:"—";
+const sgn=(v,d=3)=>v==null?"—":(v>=0?"+":"")+v.toFixed(d);
+const money=v=>v==null?"—":v>=1000?(v/1000).toFixed(2)+" mil M€":Math.round(v)+" M€";
+/* Columnas por pestaña. v = valor para ordenar; html = celda (por defecto fmt). */
+const RANK_TABS={
+  "Resumen":[
+    {k:"p",h:"Fuerza",v:t=>t.p,html:(t,maxP)=>`<span class="fbar" style="width:${Math.round(56*t.p/maxP)}px"></span>${fmt(t.p,3)}`},
+    {k:"dw",h:"Δ ventana",v:dWin,cls:t=>{const d=dWin(t);return d==null?"muted":d>=0?"pos":"neg";},html:t=>sgn(dWin(t))},
+    {k:"e",h:"ELO",v:t=>t.e,html:t=>t.e??"—"},
+    {k:"er",h:"Puesto ELO",v:t=>t.er,asc:true,html:t=>t.er?"#"+t.er:"—"},
+    {k:"fp",h:"Forma (últ. 5)",v:formPts,html:formCell,left:true},
+    {k:"v",h:"Valor plantilla",v:t=>t.v,html:t=>money(t.v)},
+  ],
+  "xG":[
+    {k:"p",h:"Fuerza",v:t=>t.p,html:t=>fmt(t.p,3)},
+    {k:"xf",h:"npxG a favor",v:t=>t.xf},
+    {k:"xa",h:"npxG en contra",v:t=>t.xa,asc:true},
+    {k:"xd",h:"Dif.",v:t=>t.xf!=null?t.xf-t.xa:null,cls:t=>t.xf==null?"muted":t.xf-t.xa>=0?"pos":"neg",html:t=>t.xf==null?"—":sgn(t.xf-t.xa,2)},
+    {k:"xn",h:"Partidos SB",v:t=>t.xn,html:t=>t.xn??"—"},
+  ],
+  "Ataque y defensa":[
+    {k:"p",h:"Fuerza",v:t=>t.p,html:t=>fmt(t.p,3)},
+    {k:"a",h:"Ataque",v:t=>t.a},
+    {k:"d",h:"Defensa (menos = mejor)",v:t=>t.d,asc:true},
+    {k:"r",h:"Resiliencia",v:t=>t.r},
+    {k:"ag",h:"Edad prom.",v:t=>t.ag,asc:true,html:t=>t.ag!=null?t.ag.toFixed(1):"—"},
+    {k:"vp",h:"M€ por punto de fuerza",v:t=>t.v!=null?t.v/t.p:null,asc:true,html:t=>t.v!=null?money(t.v/t.p):"—"},
+  ],
+};
+const RANK_HINT={
+  "Resumen":"Forma: G/E/P de los últimos 5 partidos, el más reciente a la derecha (pasá el cursor para ver rival y marcador). Hacé clic en una columna para ordenar.",
+  "xG":"\"—\" = sin partidos en el open data de StatsBomb (el modelo usa el xG del CSV para esas selecciones). Hacé clic en una columna para ordenar.",
+  "Ataque y defensa":"Ataque y defensa son multiplicadores de gol frente a un rival medio (1 = promedio). Resiliencia: cuánto aguanta ante un rival superior. M€ por punto de fuerza: cuánta plantilla \"cuesta\" cada unidad de clase; bajo = rinde por encima de su valor.",
+};
+let rankTab="Resumen", rankSort={k:"p",asc:false};
 function renderRank(){
-  const col=RANK_COLS.find(c=>c.k===rankSort.k);
+  const cols=RANK_TABS[rankTab];
+  const col=cols.find(c=>c.k===rankSort.k)||cols[0];
   const rows=[...TEAMS].sort((a,b)=>{
     const va=col.v(a), vb=col.v(b);
     if(va==null&&vb==null)return b.p-a.p; if(va==null)return 1; if(vb==null)return -1;
     return rankSort.asc?va-vb:vb-va;
   });
   const maxP=Math.max(...TEAMS.map(t=>t.p));
-  const th=RANK_COLS.map(c=>`<th class="num${c.k===rankSort.k?" sorted"+(rankSort.asc?" asc":""):""}" data-k="${c.k}">${c.h}</th>`).join("");
+  document.getElementById("rankTabs").innerHTML=Object.keys(RANK_TABS).map(k=>`<button class="${k===rankTab?"on":""}" data-tab="${k}">${k}</button>`).join("");
+  document.getElementById("rankHint").textContent=RANK_HINT[rankTab];
+  const th=cols.map(c=>`<th class="${c.left?"":"num"}${c.k===col.k?" sorted"+(rankSort.asc?" asc":""):""}" data-k="${c.k}">${c.h}</th>`).join("");
   document.getElementById("rankTable").innerHTML=`<thead><tr><th>#</th><th>Selección</th>${th}</tr></thead><tbody>${
-    rows.map((t,i)=>{const xd=t.xf!=null?t.xf-t.xa:null;
-      return `<tr><td class="muted">${i+1}</td><td>${FLAG[t.c]} ${t.n}</td>
-      <td class="num"><span class="fbar" style="width:${Math.round(56*t.p/maxP)}px"></span>${fmt(t.p,3)}</td>
-      <td class="num">${fmt(t.a)}</td><td class="num">${fmt(t.d)}</td>
-      <td class="num${t.xf==null?" muted":""}">${fmt(t.xf)}</td><td class="num${t.xa==null?" muted":""}">${fmt(t.xa)}</td>
-      <td class="num ${xd==null?"muted":xd>=0?"pos":"neg"}">${xd==null?"—":(xd>=0?"+":"")+fmt(xd)}</td>
-      <td class="num${t.xn==null?" muted":""}">${t.xn??"—"}</td></tr>`;}).join("")}</tbody>`;
+    rows.map((t,i)=>`<tr><td class="muted">${i+1}</td><td>${FLAG[t.c]} ${t.n}</td>${cols.map(c=>{
+      const v=c.v(t), cls=c.cls?c.cls(t):(v==null?"muted":"");
+      return `<td class="${c.left?"":"num"} ${cls}">${c.html?c.html(t,maxP):fmt(v)}</td>`;}).join("")}</tr>`).join("")}</tbody>`;
 }
+document.getElementById("rankTabs").addEventListener("click",e=>{
+  const k=e.target.closest("button")?.dataset.tab; if(!k)return;
+  rankTab=k; rankSort={k:"p",asc:false}; renderRank();
+});
 document.getElementById("rankTable").addEventListener("click",e=>{
   const k=e.target.closest("th")?.dataset.k; if(!k)return;
-  const col=RANK_COLS.find(c=>c.k===k);
+  const col=RANK_TABS[rankTab].find(c=>c.k===k);
   rankSort=rankSort.k===k?{k,asc:!rankSort.asc}:{k,asc:!!col.asc};
   renderRank();
 });
@@ -1473,7 +1543,7 @@ renderWindow();
 const pct=p=>(100*p).toFixed(1)+"%";
 const odd=p=>p<=0?"—":(1/p).toFixed(2);
 /* Mercados del detector de valor (label, prob) según modo grupos/KO. */
-function valueMarkets(o,ko,A,B){
+function valueMarkets(o,A,B){
   const base=[
     ["Gana "+A.c+" (1) — 90'",o.pH],["Empate (X) — 90'",o.pD],["Gana "+B.c+" (2) — 90'",o.pA],
     ["Over 2.5",o.over[2.5]],["Under 2.5",o.under[2.5]],
@@ -1482,20 +1552,15 @@ function valueMarkets(o,ko,A,B){
     [`${B.c} hándicap -1.5`,o.hcp.Bm15],[`${B.c} hándicap +1.5`,o.hcp.Bp15],
     [`${A.c} marca 2+`,o.aScores2],[`${B.c} marca 2+`,o.bScores2],
   ];
-  if(ko) return [[`Avanza ${A.c}`,o.advA],[`Avanza ${B.c}`,o.advB],...base];
   return [base[0],base[1],base[2],["Doble 1X",o.pH+o.pD],["Doble 12",o.pH+o.pA],["Doble X2",o.pD+o.pA],...base.slice(3)];
 }
 /* Renderiza la grilla de mercados + el detector de valor para un partido ya
-   calculado (A,B,lamA,lamB,o,ko). o.advA/o.advB se calculan en runH2H. */
-function renderOddsBlock(A,B,o,ko){
+   calculado (A,B,o). */
+function renderOddsBlock(A,B,o){
   const card=(title,rows)=>`<div class="ocard"><h4>${title}</h4>${rows}</div>`;
   const row=(lbl,p)=>`<div class="orow"><span>${lbl}</span><span class="op">${pct(p)}</span><span class="oq">${odd(p)}</span></div>`;
-  const resultCard = ko
-    ? card("Avanza de ronda (incl. prórroga/penales)",
-        row(`${FLAG[A.c]} ${A.c}`,o.advA)+row(`${FLAG[B.c]} ${B.c}`,o.advB))+
-      card("Resultado a 90'",
-        row(`${FLAG[A.c]} ${A.c}`,o.pH)+row("Empate",o.pD)+row(`${FLAG[B.c]} ${B.c}`,o.pA))
-    : card("Resultado (1X2)",
+  const resultCard =
+      card("Resultado (1X2)",
         row(`${FLAG[A.c]} ${A.c}`,o.pH)+row("Empate",o.pD)+row(`${FLAG[B.c]} ${B.c}`,o.pA))+
       card("Doble oportunidad",
         row("1X",o.pH+o.pD)+row("12",o.pH+o.pA)+row("X2",o.pD+o.pA));
@@ -1511,7 +1576,7 @@ function renderOddsBlock(A,B,o,ko){
     card("Marcadores más probables (90')",
       o.top.map(s=>row(`${s[0]}–${s[1]}`,s[2])).join(""));
 
-  const mk=valueMarkets(o,ko,A,B);
+  const mk=valueMarkets(o,A,B);
   const t=document.getElementById("valueTable");
   t.innerHTML=`<thead><tr><th>Mercado</th><th class="num">Prob.</th><th class="num">Cuota justa</th>
     <th class="num">Cuota casa</th><th class="num">Valor</th><th class="num">¼-Kelly</th></tr></thead>

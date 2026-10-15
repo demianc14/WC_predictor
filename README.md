@@ -9,8 +9,8 @@
 - **Motor Maher + Dixon-Coles**: ataque/defensa separados y corrección ρ=−0.13 de marcadores bajos; prórroga y penales
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
 - **Interfaz web** autocontenida (`app/index.html`), dividida en dos secciones:
-  - **Selecciones 2026-27**: última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas entre cualquier par, ranking xG
-  - **Archivo · Mundial 2026**: cuadro real + lo que esperaba el modelo + backtest
+  - **Selecciones 2026-27**: última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
+  - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
 ## xG de StatsBomb
 

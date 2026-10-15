@@ -24,6 +24,8 @@ import re
 from datetime import date
 from pathlib import Path
 
+from src.etl.scrapers import elo as elo_scraper
+from src.etl.scrapers import transfermarkt as tm
 from src.etl.scrapers.history import FIFA_TO_HISTORY
 
 STRENGTHS = Path("data/processed/strengths_2026.json")
@@ -110,6 +112,64 @@ def build_window(path: Path = RESULTS, since: str = WINDOW_FROM) -> list[dict]:
     return out
 
 
+def build_extras(results: Path = RESULTS, n_form: int = 5) -> dict[str, dict]:
+    """Datos de contexto para el ranking, solo desde las cachés locales (sin red).
+
+    e/er: ELO actual y puesto mundial (eloratings.net); v/ag: valor de plantilla
+    en M€ y edad promedio (Transfermarkt); f: últimos `n_form` partidos como
+    [resultado W/D/L, goles a favor, en contra, rival, fecha], del más reciente.
+    """
+    out: dict[str, dict] = {c: {} for c in NAME_ES}
+    if elo_scraper.CACHE_PATH.exists():
+        by_code = {}
+        for line in elo_scraper.CACHE_PATH.read_text(encoding="utf-8").splitlines():
+            cols = line.split("\t")
+            if len(cols) >= 4 and cols[0].isdigit() and cols[3].isdigit():
+                by_code[cols[2]] = (int(cols[0]), int(cols[3]))
+        for c in out:
+            hit = by_code.get(elo_scraper.FIFA_TO_ELO.get(c, ""))
+            if hit:
+                out[c].update(er=hit[0], e=hit[1])
+    for c in out:
+        page = tm.CACHE_DIR / f"{c}.html"
+        if page.exists():
+            value, age = tm._parse_team_page(page.read_text(encoding="utf-8"))
+            if value is not None:
+                out[c]["v"] = round(value, 1)
+            if age is not None:
+                out[c]["ag"] = age
+    to_code = {v: k for k, v in FIFA_TO_HISTORY.items()}
+    form: dict[str, list] = {c: [] for c in out}
+    with results.open(encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r["home_score"] in ("", "NA"):
+                continue
+            hs, as_ = int(r["home_score"]), int(r["away_score"])
+            for team, opp, gf, ga in ((r["home_team"], r["away_team"], hs, as_),
+                                      (r["away_team"], r["home_team"], as_, hs)):
+                c = to_code.get(team)
+                if c:
+                    res = "W" if gf > ga else "D" if gf == ga else "L"
+                    opp_n = NAME_ES.get(to_code.get(opp), OPP_ES.get(opp, opp))
+                    form[c].append([res, gf, ga, opp_n, r["date"]])
+    for c, rows in form.items():
+        rows.sort(key=lambda x: x[4], reverse=True)
+        out[c]["f"] = _dedupe_form(rows)[:n_form]
+    return out
+
+
+def _dedupe_form(rows: list[list]) -> list[list]:
+    """Quita repeticiones del CSV (mismo rival y marcador en ≤2 días)."""
+    kept: list[list] = []
+    for r in rows:
+        if any(k[3] == r[3] and k[1:3] == r[1:3]
+               and abs((date.fromisoformat(k[4]) - date.fromisoformat(r[4])).days) <= 2
+               for k in kept[-3:]):
+            continue
+        kept.append(r)
+    return kept
+
+
 def build_bundle(path: Path = STRENGTHS, with_xg: bool = True) -> list[dict]:
     raw = json.loads(path.read_text(encoding="utf-8"))
     xg = {}
@@ -149,6 +209,9 @@ def inject(html: str, name: str, data: list[dict]) -> str:
 
 def main() -> None:
     bundle = build_bundle()
+    extras = build_extras()
+    for row in bundle:
+        row.update(extras.get(row["c"], {}))
     pre = build_bundle(SNAPSHOT, with_xg=False)
     OUT_JSON.write_text(json.dumps(bundle, ensure_ascii=False), encoding="utf-8")
     html = INDEX.read_text(encoding="utf-8")
