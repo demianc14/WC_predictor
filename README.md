@@ -9,7 +9,7 @@
 - **Motor Maher + Dixon-Coles**: ataque/defensa separados y corrección ρ=−0.13 de marcadores bajos; prórroga y penales
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
 - **Interfaz web** autocontenida (`app/index.html`), dividida en dos secciones:
-  - **Selecciones 2026-27**: última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
+  - **Selecciones 2026-27**: próxima ventana (predicciones del 11 al 17-nov: Nations League, Concacaf, clasif. Copa África, amistosos), última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
 ## xG de StatsBomb
@@ -43,6 +43,8 @@ pytest                                 # 53 tests
 ```
 
 **Interfaz para amigos:** abre `app/index.html` en el navegador. Sin servidor, sin instalación. Tras cada `etl`, correr `python -m tools.export_frontend` para actualizarla. La vista "Última ventana" compara contra `data/snapshots/strengths_2026-09-22.json` (fuerzas congeladas antes de la ventana); en la próxima fecha FIFA, guardar un snapshot nuevo y actualizar `WINDOW_SNAPSHOT`/`WINDOW_FROM` en `tools/export_frontend.py`.
+
+**Próxima ventana:** el calendario vive en `data/raw/fixtures_2026-11.csv` (curado a mano desde UEFA, Concacaf, NBC Sports y ESPN; nombres como en martj42). Los rivales fuera de las 48 se estiman desde su ELO con una recta ajustada sobre las 48 (R² ≈ 0.87 en la fuerza) y la web los marca con ≈. Las fuerzas con que se predijo quedaron en `data/snapshots/strengths_2026-10-15.json`. Cuando termine la ventana, ese snapshot pasa a ser el `WINDOW_SNAPSHOT` de "Última ventana".
 
 ## ¿Qué tan bien predijo?
 

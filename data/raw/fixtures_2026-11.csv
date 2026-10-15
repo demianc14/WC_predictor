@@ -1,0 +1,53 @@
+date,home_team,away_team,tournament,neutral,source
+2026-11-11,Algeria,Togo,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Cape Verde,Liberia,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,DR Congo,Sierra Leone,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Egypt,Malawi,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Ghana,Somalia,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Ivory Coast,Gambia,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Morocco,Niger,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Senegal,Sudan,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,South Africa,Kenya,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-11,Tunisia,Libya,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-12,Turkey,Belgium,UEFA Nations League,FALSE,uefa
+2026-11-12,Italy,France,UEFA Nations League,FALSE,uefa
+2026-11-12,Czech Republic,Spain,UEFA Nations League,FALSE,uefa
+2026-11-12,England,Croatia,UEFA Nations League,FALSE,uefa
+2026-11-12,Curaçao,Panama,CONCACAF Nations League,FALSE,concacaf
+2026-11-13,Netherlands,Greece,UEFA Nations League,FALSE,uefa
+2026-11-13,Serbia,Germany,UEFA Nations League,FALSE,uefa
+2026-11-13,Scotland,North Macedonia,UEFA Nations League,FALSE,uefa
+2026-11-13,Slovenia,Switzerland,UEFA Nations League,FALSE,uefa
+2026-11-13,Guatemala,Canada,CONCACAF Nations League,FALSE,concacaf
+2026-11-14,Norway,Wales,UEFA Nations League,FALSE,uefa
+2026-11-14,Portugal,Denmark,UEFA Nations League,FALSE,uefa
+2026-11-14,Austria,Republic of Ireland,UEFA Nations League,FALSE,uefa
+2026-11-14,Sweden,Bosnia and Herzegovina,UEFA Nations League,FALSE,uefa
+2026-11-14,Haiti,United States,CONCACAF Nations League,TRUE,concacaf
+2026-11-14,Jamaica,Mexico,CONCACAF Nations League,FALSE,concacaf
+2026-11-14,Japan,Brazil,Friendly,TRUE,espn
+2026-11-15,Belgium,Italy,UEFA Nations League,FALSE,uefa
+2026-11-15,France,Turkey,UEFA Nations League,FALSE,uefa
+2026-11-15,Croatia,Czech Republic,UEFA Nations League,FALSE,uefa
+2026-11-15,Spain,England,UEFA Nations League,FALSE,uefa
+2026-11-15,Panama,Curaçao,CONCACAF Nations League,FALSE,concacaf
+2026-11-15,Gambia,Ivory Coast,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Kenya,South Africa,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Liberia,Cape Verde,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Libya,Tunisia,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Malawi,Egypt,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Niger,Morocco,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Sierra Leone,DR Congo,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Somalia,Ghana,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Sudan,Senegal,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-15,Togo,Algeria,African Cup of Nations qualification,FALSE,nbcsports
+2026-11-16,Germany,Netherlands,UEFA Nations League,FALSE,uefa
+2026-11-16,Switzerland,Scotland,UEFA Nations League,FALSE,uefa
+2026-11-16,Canada,Guatemala,CONCACAF Nations League,FALSE,concacaf
+2026-11-17,Denmark,Norway,UEFA Nations League,FALSE,uefa
+2026-11-17,Wales,Portugal,UEFA Nations League,FALSE,uefa
+2026-11-17,Israel,Austria,UEFA Nations League,FALSE,uefa
+2026-11-17,Poland,Sweden,UEFA Nations League,FALSE,uefa
+2026-11-17,United States,Haiti,CONCACAF Nations League,FALSE,concacaf
+2026-11-17,Mexico,Jamaica,CONCACAF Nations League,FALSE,concacaf
+2026-11-17,Singapore,Brazil,Friendly,FALSE,espn

@@ -34,6 +34,10 @@ SNAPSHOT = Path("data/snapshots/strengths_2026-06-15.json")
 WINDOW_SNAPSHOT = Path("data/snapshots/strengths_2026-09-22.json")
 WINDOW_FROM = "2026-09-22"
 RESULTS = Path("data/cache/history/results.csv")
+# Próxima ventana: calendario curado a mano (fuentes en la columna `source`).
+FIXTURES = Path("data/raw/fixtures_2026-11.csv")
+ELO_NAMES = Path("data/cache/elo/teams.tsv")       # eloratings.net en.teams.tsv
+ELO_ALIAS = {"Republic of Ireland": "Ireland"}
 XG = Path("data/processed/xg_statsbomb.json")
 OUT_JSON = Path("data/processed/frontend_teams.json")
 INDEX = Path("app/index.html")
@@ -72,6 +76,9 @@ OPP_ES = {
     "Uganda": "Uganda", "Botswana": "Botsuana", "Guinea": "Guinea", "India": "India",
     "Palestine": "Palestina", "Bolivia": "Bolivia", "Chile": "Chile", "Venezuela": "Venezuela",
     "Costa Rica": "Costa Rica", "Nicaragua": "Nicaragua", "Burkina Faso": "Burkina Faso",
+    "Guatemala": "Guatemala", "Jamaica": "Jamaica", "Singapore": "Singapur",
+    "Malawi": "Malaui", "Togo": "Togo", "Liberia": "Liberia", "Sierra Leone": "Sierra Leona",
+    "Kenya": "Kenia", "Libya": "Libia", "Sudan": "Sudán",
 }
 TOURNAMENT_ES = {
     "Friendly": "Amistoso", "African Cup of Nations qualification": "Clasif. Copa África",
@@ -170,6 +177,73 @@ def _dedupe_form(rows: list[list]) -> list[list]:
     return kept
 
 
+def _elo_by_name() -> dict[str, int]:
+    """ELO actual por nombre de selección (eloratings.net), desde las cachés."""
+    codes = {}
+    for line in ELO_NAMES.read_text(encoding="utf-8").splitlines():
+        cols = line.split("\t")
+        if len(cols) >= 2:
+            codes[cols[0]] = cols[1].strip()
+    out = {}
+    for line in elo_scraper.CACHE_PATH.read_text(encoding="utf-8").splitlines():
+        cols = line.split("\t")
+        if len(cols) >= 4 and cols[3].isdigit() and cols[2] in codes:
+            out[codes[cols[2]]] = int(cols[3])
+    return out
+
+
+def build_fixtures(bundle: list[dict], path: Path = FIXTURES) -> tuple[list[dict], list[dict]]:
+    """Calendario de la próxima ventana + equipos "proxy" para rivales fuera de las 48.
+
+    Un rival que no está en el modelo se estima desde su ELO con una recta
+    ajustada sobre las 48 (fuerza, ataque y defensa vs ELO; R² ≈ 0.87 en la
+    fuerza). Es una aproximación: se marca con px=1 para que la web lo diga.
+    """
+    to_code = {v: k for k, v in FIFA_TO_HISTORY.items()}
+    elo = _elo_by_name()
+    xs = [(r["e"], r) for r in bundle if r.get("e")]
+
+    def fit(key: str) -> tuple[float, float]:
+        n = len(xs)
+        mx = sum(e for e, _ in xs) / n
+        my = sum(r[key] for _, r in xs) / n
+        b = sum((e - mx) * (r[key] - my) for e, r in xs) / sum((e - mx) ** 2 for e, _ in xs)
+        return b, my - b * mx
+
+    lines = {k: fit(k) for k in ("p", "a", "d")}
+    clamp = {"p": (0.03, 0.99), "a": (0.35, 2.0), "d": (0.5, 2.6)}
+    proxies: dict[str, dict] = {}
+
+    def code_for(name: str) -> str | None:
+        if name in to_code:
+            return to_code[name]
+        e = elo.get(ELO_ALIAS.get(name, name))
+        if e is None:
+            return None
+        c = "~" + name
+        if c not in proxies:
+            row = {"c": c, "n": OPP_ES.get(name, name), "e": e, "r": 0.5, "px": 1}
+            for k, (b, a0) in lines.items():
+                lo, hi = clamp[k]
+                row[k] = round(min(hi, max(lo, a0 + b * e)), 4)
+            proxies[c] = row
+        return c
+
+    out = []
+    with path.open(encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            h, a = r["home_team"], r["away_team"]
+            out.append({
+                "dt": r["date"], "h": code_for(h), "a": code_for(a),
+                "hn": NAME_ES.get(to_code.get(h), OPP_ES.get(h, h)),
+                "an": NAME_ES.get(to_code.get(a), OPP_ES.get(a, a)),
+                "t": TOURNAMENT_ES.get(r["tournament"], r["tournament"]),
+                "nt": r["neutral"].upper() == "TRUE",
+            })
+    out.sort(key=lambda m: m["dt"])
+    return out, list(proxies.values())
+
+
 def build_bundle(path: Path = STRENGTHS, with_xg: bool = True) -> list[dict]:
     raw = json.loads(path.read_text(encoding="utf-8"))
     xg = {}
@@ -219,10 +293,13 @@ def main() -> None:
     window = build_window()
     html = inject(inject(html, "TEAMS_WIN", build_bundle(WINDOW_SNAPSHOT, with_xg=False)),
                   "WINDOW", window)
+    fixtures, proxies = build_fixtures(bundle)
+    html = inject(inject(html, "NEXT", fixtures), "TEAMS_PROXY", proxies)
     INDEX.write_text(html, encoding="utf-8")
     n_xg = sum(1 for b in bundle if "xf" in b)
     print(f"✅ {len(bundle)} equipos ({n_xg} con xG StatsBomb), {len(window)} partidos "
-          f"de la ventana -> {OUT_JSON} y {INDEX}")
+          f"de la ventana, {len(fixtures)} próximos ({len(proxies)} rivales estimados por ELO) "
+          f"-> {OUT_JSON} y {INDEX}")
 
 
 if __name__ == "__main__":
