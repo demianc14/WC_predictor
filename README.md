@@ -10,6 +10,7 @@
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
 - **Interfaz web** autocontenida (`app/index.html`), dividida en dos secciones:
   - **Selecciones 2026-27**: próxima ventana (predicciones del 11 al 17-nov: Nations League, Concacaf, clasif. Copa África, amistosos), última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
+  - **Clubes · Premier League (piloto)**: tabla proyectada (10.000 temporadas simuladas), próxima jornada contra las cuotas y backtest contra el mercado
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
 ## xG de StatsBomb
@@ -17,6 +18,27 @@
 `src/etl/scrapers/statsbomb.py` baja los eventos de cada partido una sola vez y guarda solo un resumen de tiros (`data/cache/statsbomb/shots/`, ~1.8 MB para los 250 partidos). `src/etl/xg_ratings.py` ajusta `npxG(i vs j) ≈ MU × ataque_i × defensa_j` por mínimos cuadrados ponderados, con peso `exp(-edad/730 días)` y 2 partidos ficticios de shrinkage. El ETL mezcla ese xG con el del CSV según la muestra efectiva de cada equipo (`n_eff / (n_eff + 2)`) y escribe el detalle en `data/processed/xg_statsbomb.json`.
 
 Cobertura: 40 de las 48 selecciones del modelo. Sin datos: Bosnia, Haití, Curazao, Nueva Zelanda, Irak, Noruega, Jordania y Uzbekistán (usan el xG del CSV). El Mundial 2026 todavía no está en el open data.
+
+## Clubes: piloto con la Premier League
+
+`src/clubs/` reutiliza la matriz Dixon-Coles del proyecto, pero ajusta los parámetros a la liga en vez de heredarlos de las selecciones:
+
+- **Datos** (`data.py`): CSVs de [football-data.co.uk](https://www.football-data.co.uk/) con resultados, xG (desde 2026-27) y cuotas de cierre, más `fixtures.csv` con la próxima jornada. Caché en `data/cache/clubs/`; la temporada actual se refresca cada 12 h.
+- **Modelo** (`model.py`): ataque y defensa por club, localía, μ y ρ por máxima verosimilitud Poisson (algoritmo iterativo de Maher, sin scipy), con peso `exp(−0.0019·días)` y 3 goles ficticios de shrinkage. Se ajusta junto con la Championship para que los ascendidos lleguen con historia. Cuando hay xG, el objetivo es 50% goles + 50% xG.
+- **Temporada** (`season.py`): Monte Carlo de los partidos que faltan → puntos esperados y probabilidad de cada puesto.
+- **Contra el mercado** (`backtest.py`): walk-forward semanal contra las cuotas de cierre sin margen.
+
+```bash
+python -m src.clubs.premier            # ajusta, simula y escribe data/processed/clubs_premier.json
+python -m tools.export_frontend        # lo inyecta en la web
+```
+
+| Temporada | Partidos | Brier modelo | Brier mercado |
+|---|---|---|---|
+| 2025-26 | 380 | 0.623 | **0.608** |
+| 2026-27 (hasta el 12-oct) | 60 | **0.621** | 0.634 |
+
+En una temporada completa el mercado es más preciso. Los 60 partidos de este año no alcanzan para decir lo contrario. Apostar cada discrepancia de más de 5% habría perdido 20% en 2025-26, así que la web muestra dónde discrepa el modelo, no "valor".
 
 ## Arquitectura
 
