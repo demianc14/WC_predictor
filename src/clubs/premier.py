@@ -40,7 +40,8 @@ def build(today: date | None = None, sims: int = 10000) -> dict:
     for f in fixtures:
         ph, pd, pa, g = r.probs(f.home, f.away)
         lh, la = r.lambdas(f.home, f.away)
-        top = max(((x, y, g[x][y]) for x in range(len(g)) for y in range(len(g))), key=lambda c: c[2])
+        cells = ((x, y, g[x][y]) for x in range(len(g)) for y in range(len(g)))
+        top = max(cells, key=lambda c: c[2])
         nxt.append({"day": f.day.isoformat(), "home": f.home, "away": f.away,
                     "model": [round(ph, 4), round(pd, 4), round(pa, 4)],
                     "market": [round(p, 4) for p in no_vig(f.odds)] if f.odds else None,
@@ -77,10 +78,12 @@ def main() -> None:
     out = build(sims=args.n)
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     top = sorted(out["teams"], key=lambda t: -t["pos"][0])[:4]
-    print(f"✅ Premier: {out['played']} jugados, {out['remaining']} por jugar, {len(out['next'])} en la próxima jornada")
+    print(f"✅ Premier: {out['played']} jugados, {out['remaining']} por jugar, "
+          f"{len(out['next'])} en la próxima jornada")
     print("   Campeón:", ", ".join(f"{t['n']} {t['pos'][0]:.0%}" for t in top))
     for s, b in out["backtest"].items():
-        print(f"   {s}: Brier modelo {b['model']['brier']} vs mercado {b['market']['brier']} (n={b['model']['n']})")
+        print(f"   {s}: Brier modelo {b['model']['brier']} vs mercado "
+              f"{b['market']['brier']} (n={b['model']['n']})")
 
 
 if __name__ == "__main__":

@@ -39,7 +39,8 @@ def walk_forward(matches: list[Match], div: str, seasons: list[str], xi: float =
                 if m.home not in r.att or m.away not in r.att:
                     continue
                 ph, pd, pa, _ = r.probs(m.home, m.away)
-                out.append({"season": m.season, "day": m.day.isoformat(), "home": m.home, "away": m.away,
+                out.append({"season": m.season, "day": m.day.isoformat(),
+                            "home": m.home, "away": m.away,
                             "o": _outcome(m), "model": [ph, pd, pa], "market": list(no_vig(m.odds)),
                             "odds": list(m.odds)})
         week = nxt

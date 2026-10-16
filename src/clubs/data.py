@@ -33,7 +33,8 @@ class Match:
     ag: int | None = None
     hxg: float | None = None
     axg: float | None = None
-    odds: tuple[float, float, float] | None = None   # 1X2: cierre medio, o promedio si no hay cierre
+    # 1X2: cuota de cierre promedio, o la promedio si todavía no hay cierre
+    odds: tuple[float, float, float] | None = None
 
     @property
     def played(self) -> bool:
@@ -76,7 +77,8 @@ def _num(v: str | None) -> float | None:
 
 
 def _odds(r: dict) -> tuple[float, float, float] | None:
-    for keys in (("AvgCH", "AvgCD", "AvgCA"), ("AvgH", "AvgD", "AvgA"), ("B365H", "B365D", "B365A")):
+    for keys in (("AvgCH", "AvgCD", "AvgCA"), ("AvgH", "AvgD", "AvgA"),
+                 ("B365H", "B365D", "B365A")):
         vals = [_num(r.get(k)) for k in keys]
         if all(v and v > 1 for v in vals):
             return tuple(vals)  # type: ignore[return-value]
@@ -103,7 +105,8 @@ def load_matches(divs: list[str], seasons: list[str]) -> list[Match]:
     out: list[Match] = []
     for s in seasons:
         for d in divs:
-            out += parse_csv(ensure_season(d, s).read_text(encoding="utf-8-sig", errors="replace"), s)
+            text = ensure_season(d, s).read_text(encoding="utf-8-sig", errors="replace")
+            out += parse_csv(text, s)
     return sorted(out, key=lambda m: m.day)
 
 

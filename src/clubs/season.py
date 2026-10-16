@@ -55,7 +55,8 @@ def simulate(r: Ratings, played: list[Match], teams: list[str], n: int = 10000,
     out = {}
     for t, i in ix.items():
         dist = np.bincount(pos[:, i], minlength=T) / n
-        out[t] = {"xpts": round(float(pts[:, i].mean()), 1), "pos": [round(float(p), 4) for p in dist]}
+        out[t] = {"xpts": round(float(pts[:, i].mean()), 1),
+                  "pos": [round(float(p), 4) for p in dist]}
     return out
 
 
