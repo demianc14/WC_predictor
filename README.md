@@ -56,6 +56,34 @@ Brier y RPS 1X2, menor es mejor; en negrita, el mejor entre modelo y mercado:
 
 El modelo le gana con claridad a la base en todas las ligas, pero **pierde contra el mercado en las cinco en la temporada completa 2025-26**. En 2026-27 lo supera en la Premier y la Bundesliga, con 54 a 70 partidos: muy pocos para decir que sea mejor. Apostar cada discrepancia de más de 5% habría perdido entre 9% y 29% en 2025-26 según la liga, así que la web muestra dónde discrepa el modelo, no "valor".
 
+## Modelo supervisado (1X2, clubes)
+
+`src/ml/` plantea cada partido de las cinco ligas como una clasificación 1/X/2 y lo compara de forma honesta con el Dixon-Coles y con el mercado. El reporte completo, con tablas por liga, intervalos, calibración y ablación, lo genera el código: [`docs/RESULTADOS_ML.md`](docs/RESULTADOS_ML.md).
+
+```bash
+python -m src.ml.train --leagues all     # features, validación, test, artefactos y reporte
+python -m src.ml.report data/ml/runs/<fecha>_<huella>   # regenera el reporte sin reentrenar
+```
+
+- **Features**, todas calculadas antes del partido: ELO de clubes, forma de los últimos 5, días de descanso, liga y, en una variante, las probabilidades y λ del Dixon-Coles reajustado cada lunes. Las cuotas no son feature: solo sirven de benchmark. El xG queda afuera porque solo existe desde 2026-27. Un test cambia resultados futuros y comprueba que ninguna feature pasada se mueve.
+- **Modelos**: base de frecuencias, regresión logística multinomial (sin y con Dixon-Coles) y `HistGradientBoostingClassifier`.
+- **Validación walk-forward mensual**: los hiperparámetros se eligen en 2023-24 y 2024-25; el test es 2025-26 y lo que va de 2026-27. Entrena desde 2020-21, con 2019-20 solo como historia previa.
+
+Test con las cinco ligas juntas (2.097 partidos, la misma muestra para todos; menor es mejor):
+
+| Modelo | RPS [IC 95%] | Log-loss |
+|---|---|---|
+| Base (frecuencias) | 0.2294 [0.2265, 0.2324] | 1.0716 |
+| Logística sin Dixon-Coles | 0.2019 [0.1960, 0.2075] | 0.9914 |
+| Logística + Dixon-Coles | 0.2019 [0.1961, 0.2073] | 0.9908 |
+| Gradient boosting | 0.2031 [0.1973, 0.2086] | 0.9954 |
+| Dixon-Coles | 0.2027 [0.1977, 0.2076] | 0.9936 |
+| **Mercado (cierre)** | **0.1970 [0.1916, 0.2022]** | **0.9740** |
+
+**Conclusión: el supervisado no mejora al Dixon-Coles y no alcanza al mercado.** La logística con Dixon-Coles queda a −0.0008 de RPS del Dixon-Coles (IC 95% −0.0019 a +0.0003, no se distingue) y a +0.0048 del mercado (IC +0.0027 a +0.0069, peor). Los cuatro modelos están bien calibrados, también en empates (predicen 25.3-25.5% y hubo 25.2%). El gradient boosting no supera a la logística: con unos 11.000 partidos y señales casi lineales no hay interacciones que aprovechar.
+
+El Dixon-Coles de este test se reajusta con los 3 años previos; el de la tabla por liga de más arriba usa toda la historia en caché, por eso sus Brier difieren hasta en 0.001.
+
 ## Arquitectura
 
 El corazón del proyecto es un **pipeline ETL** (`src/etl/`) que toma datos crudos de las 48 selecciones (`data/raw/teams_2026.csv`), los valida con contratos Pydantic (fail fast: una fila corrupta detiene el pipeline con un mensaje exacto de qué falló) y calcula una **fuerza por equipo** combinando 20% historia mundialista + 50% forma/xG reciente. Ese CSV es solo el punto de partida: el ETL lo enriquece con scrapers en vivo (ELO actual de eloratings.net, historial de partidos desde 1872 para resiliencia y forma dinámica, valor de plantilla de Transfermarkt), cada uno con la misma **degradación elegante** del narrador — si una fuente falla, el pipeline cae al valor del CSV en vez de romperse. Esa fuerza (70% base estadística) se combina en tiempo de partido con un 30% de contexto (lesiones, clima, altura, hinchada) inyectado por el Breaking News Engine. El resultado se serializa a `data/processed/strengths_2026.json`, única fuente de verdad tanto para la CLI como para la app web.
@@ -77,7 +105,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 84 tests, sin red
+pytest                                 # 95 tests, sin red
 ruff check .                           # lo mismo que corre CI
 ```
 
