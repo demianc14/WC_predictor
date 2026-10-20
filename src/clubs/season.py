@@ -27,7 +27,8 @@ def remaining_fixtures(played: list[Match], teams: list[str]) -> list[tuple[str,
 
 
 def simulate(r: Ratings, played: list[Match], teams: list[str], n: int = 10000,
-             seed: int = 2627) -> dict:
+             seed: int = 2627, fixtures: list[tuple[str, str]] | None = None) -> dict:
+    """`fixtures`: lo que falta según el calendario; sin él, todo cruce no jugado."""
     rng = np.random.default_rng(seed)
     ix = {t: i for i, t in enumerate(teams)}
     T = len(teams)
@@ -35,7 +36,9 @@ def simulate(r: Ratings, played: list[Match], teams: list[str], n: int = 10000,
     pts = np.tile([base[t]["pts"] for t in teams], (n, 1)).astype(float)
     gd = np.tile([base[t]["gf"] - base[t]["gc"] for t in teams], (n, 1)).astype(float)
     gf = np.tile([base[t]["gf"] for t in teams], (n, 1)).astype(float)
-    for h, a in remaining_fixtures(played, teams):
+    if fixtures is None:
+        fixtures = remaining_fixtures(played, teams)
+    for h, a in fixtures:
         _, _, _, g = r.probs(h, a)
         flat = np.array(g).ravel()
         k = len(g)

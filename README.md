@@ -12,7 +12,7 @@
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
 - **Interfaz web** autocontenida (`app/index.html`), dividida en dos secciones:
   - **Selecciones 2026-27**: próxima ventana (predicciones del 11 al 17-nov: Nations League, Concacaf, clasif. Copa África, amistosos), última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
-  - **Clubes · Premier League (piloto)**: tabla proyectada (10.000 temporadas simuladas), próxima jornada contra las cuotas y backtest contra el mercado
+  - **Clubes · cinco grandes ligas**: por liga, tabla proyectada (10.000 temporadas simuladas), próximos 7 días contra las cuotas y backtest contra el mercado
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
 ## xG de StatsBomb
@@ -21,26 +21,38 @@
 
 Cobertura: 40 de las 48 selecciones del modelo. Sin datos: Bosnia, Haití, Curazao, Nueva Zelanda, Irak, Noruega, Jordania y Uzbekistán (usan el xG del CSV). El Mundial 2026 todavía no está en el open data.
 
-## Clubes: piloto con la Premier League
+## Clubes: las cinco grandes ligas
 
-`src/clubs/` reutiliza la matriz Dixon-Coles del proyecto, pero ajusta los parámetros a la liga en vez de heredarlos de las selecciones:
+`src/clubs/` reutiliza la matriz Dixon-Coles del proyecto, pero ajusta los parámetros a cada liga en vez de heredarlos de las selecciones. Ligas: Premier League (E0), LaLiga (SP1), Bundesliga (D1), Serie A (I1) y Ligue 1 (F1), configuradas en `leagues.py`.
 
-- **Datos** (`data.py`): CSVs de [football-data.co.uk](https://www.football-data.co.uk/) con resultados, xG (desde 2026-27) y cuotas de cierre, más `fixtures.csv` con la próxima jornada. Caché en `data/cache/clubs/`; la temporada actual se refresca cada 12 h.
-- **Modelo** (`model.py`): ataque y defensa por club, localía, μ y ρ por máxima verosimilitud Poisson (algoritmo iterativo de Maher, sin scipy), con peso `exp(−0.0019·días)` y 3 goles ficticios de shrinkage. Se ajusta junto con la Championship para que los ascendidos lleguen con historia. Cuando hay xG, el objetivo es 50% goles + 50% xG.
+- **Datos** (`data.py`): CSVs de [football-data.co.uk](https://www.football-data.co.uk/) con resultados, cuotas de cierre y xG (este último solo desde 2026-27, en las diez divisiones), más `fixtures.csv` con los partidos de los próximos días y sus cuotas. Caché en `data/cache/clubs/`; la temporada actual se refresca cada 12 h.
+- **Calendario** (`calendar.py`): la temporada completa sale de [fixturedownload.com](https://fixturedownload.com/). Los nombres no coinciden con los de football-data, así que el cruce se deduce de los partidos ya jugados (mismo día ±1 y mismo marcador) y falla con el nombre exacto si un equipo queda sin pareja. También exige una liga a dos ruedas: el feed de Ligue 1 trae Rennes-PSG dos veces y ningún PSG-Rennes, se corrige a la vista (consola y `calendar_fixes` en el JSON). Si el feed no está disponible, la simulación usa todo cruce no jugado.
+- **Modelo** (`model.py`): ataque y defensa por club, localía, μ y ρ por máxima verosimilitud Poisson (algoritmo iterativo de Maher, sin scipy), con peso `exp(−0.0019·días)` y 3 goles ficticios de shrinkage. Se ajusta junto con la segunda división para que los ascendidos lleguen con historia. Cuando hay xG, el objetivo es 50% goles + 50% xG.
 - **Temporada** (`season.py`): Monte Carlo de los partidos que faltan → puntos esperados y probabilidad de cada puesto.
-- **Contra el mercado** (`backtest.py`): walk-forward semanal contra las cuotas de cierre sin margen.
+- **Contra el mercado** (`backtest.py`): walk-forward semanal. Sobre los mismos partidos se comparan el modelo, las cuotas de cierre promedio sin margen y una base que solo conoce la frecuencia de 1/X/2 de la liga hasta esa semana.
 
 ```bash
-python -m src.clubs.premier            # ajusta, simula y escribe data/processed/clubs_premier.json
-python -m tools.export_frontend        # lo inyecta en la web
+python -m src.clubs.run                 # las cinco: escribe data/processed/clubs_<div>.json
+python -m src.clubs.run --league SP1    # una sola
+python -m tools.export_frontend         # lo inyecta en la web
 ```
 
-| Temporada | Partidos | Brier modelo | Brier mercado |
-|---|---|---|---|
-| 2025-26 | 380 | 0.623 | **0.608** |
-| 2026-27 (hasta el 19-oct) | 70 | **0.597** | 0.601 |
+Brier y RPS 1X2, menor es mejor; en negrita, el mejor entre modelo y mercado:
 
-En una temporada completa el mercado es más preciso. Los 70 partidos de este año no alcanzan para decir lo contrario. Apostar cada discrepancia de más de 5% habría perdido 20% en 2025-26, así que la web muestra dónde discrepa el modelo, no "valor".
+| Liga | Temporada | Partidos | Brier modelo | Brier mercado | Brier base | RPS modelo | RPS mercado | RPS base |
+|---|---|---|---|---|---|---|---|---|
+| Premier League | 2025-26 | 380 | 0.623 | **0.608** | 0.656 | 0.212 | **0.204** | 0.228 |
+| Premier League | 2026-27 (al 19-oct) | 70 | **0.597** | 0.601 | 0.663 | **0.197** | 0.198 | 0.229 |
+| LaLiga | 2025-26 | 380 | 0.579 | **0.572** | 0.633 | 0.200 | **0.196** | 0.224 |
+| LaLiga | 2026-27 (al 19-oct) | 88 | 0.562 | **0.538** | 0.654 | 0.183 | **0.174** | 0.225 |
+| Bundesliga | 2025-26 | 306 | 0.575 | **0.562** | 0.649 | 0.196 | **0.190** | 0.232 |
+| Bundesliga | 2026-27 (al 19-oct) | 54 | **0.572** | 0.591 | 0.627 | **0.203** | 0.211 | 0.231 |
+| Serie A | 2025-26 | 380 | 0.598 | **0.583** | 0.661 | 0.203 | **0.196** | 0.234 |
+| Serie A | 2026-27 (al 19-oct) | 70 | 0.564 | **0.542** | 0.638 | 0.208 | **0.199** | 0.242 |
+| Ligue 1 | 2025-26 | 306 | 0.599 | **0.582** | 0.644 | 0.207 | **0.200** | 0.229 |
+| Ligue 1 | 2026-27 (al 19-oct) | 63 | 0.591 | **0.579** | 0.647 | 0.206 | **0.200** | 0.232 |
+
+El modelo le gana con claridad a la base en todas las ligas, pero **pierde contra el mercado en las cinco en la temporada completa 2025-26**. En 2026-27 lo supera en la Premier y la Bundesliga, con 54 a 70 partidos: muy pocos para decir que sea mejor. Apostar cada discrepancia de más de 5% habría perdido entre 9% y 29% en 2025-26 según la liga, así que la web muestra dónde discrepa el modelo, no "valor".
 
 ## Arquitectura
 
@@ -63,7 +75,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 57 tests, sin red
+pytest                                 # 78 tests, sin red
 ruff check .                           # lo mismo que corre CI
 ```
 
