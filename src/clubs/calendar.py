@@ -91,14 +91,44 @@ def match_names(cal: list[Fixture], played: list[data.Match]) -> dict[str, str]:
     return out
 
 
-def load(lg: League, played: list[data.Match]) -> tuple[list[Fixture], dict[str, str]]:
-    """Calendario con nombres de football-data y el mapa nombre -> nombre oficial."""
+def load(lg: League, played: list[data.Match]
+         ) -> tuple[list[Fixture], dict[str, str], list[str]]:
+    """Calendario con nombres de football-data, el mapa nombre -> nombre oficial
+    y la lista de correcciones aplicadas al feed."""
     cal = parse_calendar(ensure_calendar(lg))
     names = match_names(cal, played)
-    fixed = [Fixture(f.round, f.day, names[f.home], names[f.away], f.hg, f.ag, f.tbc)
-             for f in cal]
+    renamed = [Fixture(f.round, f.day, names[f.home], names[f.away], f.hg, f.ag, f.tbc)
+               for f in cal]
+    fixed, fixes = repair_round_robin(renamed, lg.teams)
     check_against(fixed, played)
-    return fixed, {v: k for k, v in names.items()}
+    return fixed, {v: k for k, v in names.items()}, fixes
+
+
+def repair_round_robin(cal: list[Fixture], teams: int) -> tuple[list[Fixture], list[str]]:
+    """Exige el formato de liga a dos ruedas: cada cruce local-visita una vez.
+
+    Única corrección permitida: un cruce repetido cuyo inverso falta (el feed
+    de Ligue 1 2026-27 trae Rennes-PSG dos veces y ningún PSG-Rennes). Se da
+    vuelta la copia no jugada más tardía y se informa; cualquier otra cosa es un error.
+    """
+    seen: dict[tuple[str, str], list[int]] = {}
+    for i, f in enumerate(cal):
+        seen.setdefault((f.home, f.away), []).append(i)
+    out, fixes = list(cal), []
+    for (h, a), idx in seen.items():
+        if len(idx) == 2 and (a, h) not in seen:
+            # la copia no jugada más tardía: la de la segunda rueda
+            j = max((i for i in idx if not cal[i].played), default=None)
+            if j is not None:
+                f = cal[j]
+                out[j] = Fixture(f.round, f.day, a, h, None, None, f.tbc)
+                fixes.append(f"jornada {f.round}: {h}-{a} repetido, se invierte a {a}-{h}")
+    pairs = Counter((f.home, f.away) for f in out)
+    if len(out) != teams * (teams - 1) or any(c != 1 for c in pairs.values()):
+        bad = [p for p, c in pairs.items() if c != 1]
+        raise ValueError(f"El calendario no es una liga a dos ruedas: {len(out)} partidos, "
+                         f"cruces repetidos {bad}")
+    return out, fixes
 
 
 def check_against(cal: list[Fixture], played: list[data.Match]) -> None:
