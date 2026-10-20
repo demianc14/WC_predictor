@@ -7,10 +7,6 @@ on:
   schedule:
     - cron: "30 5 * * *"          # 05:30 UTC, antes de cualquier partido europeo
   workflow_dispatch:
-  # TEMPORAL: para probarlo en la rama del PR; se quita antes del merge
-  push:
-    branches: [fase-4-automatizacion]
-    paths: [.github/workflows/daily.yml]
 
 concurrency:
   group: daily
