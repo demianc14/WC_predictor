@@ -84,6 +84,24 @@ Test con las cinco ligas juntas (2.097 partidos, la misma muestra para todos; me
 
 El Dixon-Coles de este test se reajusta con los 3 años previos; el de la tabla por liga de más arriba usa toda la historia en caché, por eso sus Brier difieren hasta en 0.001.
 
+## Ciclo diario y métricas en vivo
+
+Cada día a las 05:30 UTC, GitHub Actions (`.github/workflows/daily.yml`) corre `python -m src.pipeline.daily` y, si algo cambió, el bot lo commitea:
+
+1. **Descarga** una vez cada fuente viva: la temporada actual de las 10 divisiones, `fixtures.csv` y los 5 calendarios. Todo pasa por una carpeta temporal y se valida. Si una sola falla o llega vacía, el ciclo termina con código 2, no modifica nada y GitHub avisa por correo del workflow fallido.
+2. **Ajusta** cada liga (el mismo Dixon-Coles de la web) y **predice** los partidos de los próximos días que todavía no tienen predicción para la versión actual del modelo. La versión es el hash git del árbol `src/clubs/`: cambia solo cuando cambia el código del modelo.
+3. **Registra** los resultados de lo ya jugado y su cuota de cierre, y **recalcula** las métricas en vivo.
+4. Recién entonces **escribe**: los JSON por liga, `data/processed/live.json`, el almacén y la web. `.github/workflows/pages.yml` la publica en GitHub Pages junto con los JSON.
+
+**Dónde viven las predicciones:** [`data/predictions/predicciones.csv`](data/predictions/predicciones.csv), una fila por partido y versión del modelo, con la hora UTC en que se hizo. Una predicción guardada **nunca se sobrescribe**: el código lo verifica contra el archivo antes de escribir, y el historial de git prueba que cada fila existía antes del partido. Solo se completan después el resultado y la cuota de cierre.
+
+**Cómo leer la métrica en vivo:** se evalúa la primera predicción de cada partido contra lo que pasó y, sobre los mismos partidos, contra la cuota de cierre sin margen (Brier y RPS, menor es mejor). Es la única evaluación sin posibilidad de fuga de datos, pero **con pocas semanas no es concluyente**: el backtest de arriba necesitó temporadas enteras para separar al modelo del mercado.
+
+```bash
+python -m src.pipeline.daily      # el mismo ciclo, a mano (descarga, predice, registra, exporta)
+gh workflow run daily.yml         # en GitHub
+```
+
 ## Arquitectura
 
 El corazón del proyecto es un **pipeline ETL** (`src/etl/`) que toma datos crudos de las 48 selecciones (`data/raw/teams_2026.csv`), los valida con contratos Pydantic (fail fast: una fila corrupta detiene el pipeline con un mensaje exacto de qué falló) y calcula una **fuerza por equipo** combinando 20% historia mundialista + 50% forma/xG reciente. Ese CSV es solo el punto de partida: el ETL lo enriquece con scrapers en vivo (ELO actual de eloratings.net, historial de partidos desde 1872 para resiliencia y forma dinámica, valor de plantilla de Transfermarkt), cada uno con la misma **degradación elegante** del narrador — si una fuente falla, el pipeline cae al valor del CSV en vez de romperse. Esa fuerza (70% base estadística) se combina en tiempo de partido con un 30% de contexto (lesiones, clima, altura, hinchada) inyectado por el Breaking News Engine. El resultado se serializa a `data/processed/strengths_2026.json`, única fuente de verdad tanto para la CLI como para la app web.
@@ -105,7 +123,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 95 tests, sin red
+pytest                                 # 109 tests, sin red
 ruff check .                           # lo mismo que corre CI
 ```
 
