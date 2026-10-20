@@ -10,9 +10,9 @@
 - **Modelo de fuerzas** inspirado en Bayes: 20% historia + 50% actualidad = 70% base estadística + 30% contexto del partido
 - **Motor Maher + Dixon-Coles**: ataque/defensa separados y corrección ρ=−0.13 de marcadores bajos; prórroga y penales
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
-- **Interfaz web** autocontenida (`app/index.html`), dividida en dos secciones:
+- **Interfaz web** autocontenida (`app/index.html`). El menú tiene Inicio, Selecciones, Ligas y Archivo; cada sección se divide en subsecciones:
   - **Selecciones 2026-27**: próxima ventana (predicciones del 11 al 17-nov: Nations League, Concacaf, clasif. Copa África, amistosos), última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
-  - **Clubes · cinco grandes ligas**: por liga, tabla proyectada (10.000 temporadas simuladas), próximos 7 días contra las cuotas y backtest contra el mercado
+  - **Ligas · cinco grandes**: un selector de liga y, para cada una, tabla proyectada (10.000 temporadas simuladas), próxima jornada contra las cuotas, partido y cuotas entre cualquier par de clubes, ranking (xPts contra un rival promedio, ataque contra defensa) y backtest contra el mercado
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
 ## xG de StatsBomb
@@ -29,11 +29,13 @@ Cobertura: 40 de las 48 selecciones del modelo. Sin datos: Bosnia, Haití, Curaz
 - **Calendario** (`calendar.py`): la temporada completa sale de [fixturedownload.com](https://fixturedownload.com/). Los nombres no coinciden con los de football-data, así que el cruce se deduce de los partidos ya jugados (mismo día ±1 y mismo marcador) y falla con el nombre exacto si un equipo queda sin pareja. También exige una liga a dos ruedas: el feed de Ligue 1 trae Rennes-PSG dos veces y ningún PSG-Rennes, se corrige a la vista (consola y `calendar_fixes` en el JSON). Si el feed no está disponible, la simulación usa todo cruce no jugado.
 - **Modelo** (`model.py`): ataque y defensa por club, localía, μ y ρ por máxima verosimilitud Poisson (algoritmo iterativo de Maher, sin scipy), con peso `exp(−0.0019·días)` y 3 goles ficticios de shrinkage. Se ajusta junto con la segunda división para que los ascendidos lleguen con historia. Cuando hay xG, el objetivo es 50% goles + 50% xG.
 - **Temporada** (`season.py`): Monte Carlo de los partidos que faltan → puntos esperados y probabilidad de cada puesto.
+- **Partido y cuotas** (`h2h.py`): cualquier cruce de una liga con los parámetros publicados en `clubs_<div>.json`: 1X2, goles, ambos anotan, marcadores, cuota justa y EV/¼-Kelly contra las cuotas que le pases. La web usa la misma fórmula y da los mismos números. A diferencia de selecciones, no hay noticias ni contexto: solo ataque, defensa y localía estimados con los partidos.
 - **Contra el mercado** (`backtest.py`): walk-forward semanal. Sobre los mismos partidos se comparan el modelo, las cuotas de cierre promedio sin margen y una base que solo conoce la frecuencia de 1/X/2 de la liga hasta esa semana.
 
 ```bash
 python -m src.clubs.run                 # las cinco: escribe data/processed/clubs_<div>.json
 python -m src.clubs.run --league SP1    # una sola
+python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6   # partido y cuotas
 python -m tools.export_frontend         # lo inyecta en la web
 ```
 
@@ -75,7 +77,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 78 tests, sin red
+pytest                                 # 84 tests, sin red
 ruff check .                           # lo mismo que corre CI
 ```
 

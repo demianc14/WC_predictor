@@ -305,15 +305,15 @@ td.muted{color:var(--ink2)}
 
 /* ─── xG ─── */
 .xg-plot{position:relative}
-#xgPlot{width:100%;height:auto;display:block;overflow:visible}
-#xgPlot .ax{stroke:var(--line2);stroke-width:1}
-#xgPlot .med{stroke:var(--ink2);stroke-width:1;stroke-dasharray:2 4;opacity:.7}
-#xgPlot .tk{font:400 10.5px var(--mono);fill:var(--ink2)}
-#xgPlot .axl,#xgPlot .qd{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;fill:var(--ink2)}
-#xgPlot .dot{fill:var(--ink);stroke:var(--paper);stroke-width:1.5;cursor:pointer}
-#xgPlot .dot.on{fill:var(--red)}
-#xgPlot .hit{fill:transparent;cursor:pointer}
-#xgPlot .lbl{font:500 10.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3px;pointer-events:none}
+.xg-plot svg{width:100%;height:auto;display:block;overflow:visible}
+.xg-plot svg .ax{stroke:var(--line2);stroke-width:1}
+.xg-plot svg .med{stroke:var(--ink2);stroke-width:1;stroke-dasharray:2 4;opacity:.7}
+.xg-plot svg .tk{font:400 10.5px var(--mono);fill:var(--ink2)}
+.xg-plot svg .axl,.xg-plot svg .qd{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;fill:var(--ink2)}
+.xg-plot svg .dot{fill:var(--ink);stroke:var(--paper);stroke-width:1.5;cursor:pointer}
+.xg-plot svg .dot.on{fill:var(--red)}
+.xg-plot svg .hit{fill:transparent;cursor:pointer}
+.xg-plot svg .lbl{font:500 10.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3px;pointer-events:none}
 .xg-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);padding:8px 11px;font-size:12.5px;line-height:1.45;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px))}
 .xg-tip b{font-family:var(--serif);font-size:15px;font-weight:500}
 
@@ -382,6 +382,21 @@ h2{font-size:clamp(38px,6vw,68px);line-height:.92;letter-spacing:0}
 .pills button.arch{font-style:normal;font-family:var(--sans);font-size:13px;color:var(--gold)}
 .pills button.arch.on{color:var(--gold);border-bottom-color:var(--gold)}
 .pills button:focus-visible{outline-color:var(--lime)}
+
+/* subsecciones: pastillas mono bajo el menú */
+.subnav{border-top:1px solid var(--line)}
+.topbar .subnav .in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;flex-wrap:nowrap;gap:16px;overflow-x:auto;scrollbar-width:none}
+.subnav .in::-webkit-scrollbar{display:none}
+@media(max-width:640px){.topbar .subnav .in{padding:0 16px}.subnav .sublbl{display:none}}
+.sublbl{font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.sublbl::after{content:"";width:18px;height:1px;background:var(--line2)}
+.subtabs{display:flex;gap:4px;padding:7px 0}
+.subtabs button{font:500 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);background:none;border:1px solid transparent;border-radius:99px;padding:6px 13px 5px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+.subtabs button .no{color:var(--ink3);margin-right:7px}
+.subtabs button:hover{color:var(--ink);border-color:var(--line2)}
+.subtabs button.on{color:#0A1208;background:var(--lime);border-color:var(--lime);box-shadow:0 0 18px -4px rgba(214,255,61,.55)}
+.subtabs button.on .no{color:rgba(10,18,8,.5)}
+.subtabs button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 
 /* cinta de partidos */
 .ticker{border-bottom:1px solid var(--line);overflow:hidden;background:rgba(214,255,61,.05);white-space:nowrap}
@@ -507,8 +522,8 @@ input[type=range]{accent-color:var(--lime);height:4px}
 .side.B::before{background:radial-gradient(420px 200px at 100% 0,rgba(255,106,69,.10),transparent 70%)}
 .side>*{position:relative}
 .team-head{gap:14px;margin-bottom:6px}
-.flag{font-size:44px;line-height:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
-.team-head select{font-family:var(--serif);font-size:26px;font-weight:800;text-transform:uppercase;padding:8px 36px 8px 14px}
+.flag{font-size:30px;line-height:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+.team-head select{font-family:var(--sans);font-size:15px;font-weight:600;padding:9px 34px 9px 12px}
 .side h3{margin-top:20px;font-size:10.5px}
 .chip{background:rgba(255,255,255,.04);border-radius:8px;border-left-width:3px}
 .sliders-box h3{margin-top:22px}
@@ -598,24 +613,83 @@ footer{border-top:1px solid var(--line2);color:var(--ink3)}
 footer a{color:var(--ink2)}
 @media(max-width:640px){.front h1{max-width:none}.pitchart{opacity:.08}.predcard::after{display:none}.fgrid{margin-top:30px}}
 @media(prefers-reduced-motion:reduce){.ticker-track{animation:none}.label::before{animation:none}}
+
+/* ═════════ LIGAS ═════════ */
+/* marcador de ligas: cinco placas con el favorito al título */
+.lgboard{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0 22px}
+@media(max-width:860px){.lgboard{grid-template-columns:repeat(5,minmax(150px,1fr));overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px}}
+.lgboard button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;cursor:pointer;
+  background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line2);border-radius:12px;padding:11px 14px 12px;color:var(--ink);font:inherit;
+  transition:border-color .18s,transform .18s,box-shadow .18s}
+.lgboard button:hover{border-color:rgba(214,255,61,.45);transform:translateY(-1px)}
+.lgboard button.on{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime),0 18px 40px -22px rgba(214,255,61,.55)}
+.lgboard button.on::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--lime);box-shadow:0 0 12px var(--lime)}
+.lgboard .lc{font:500 10px var(--mono);letter-spacing:.12em;color:var(--ink3)}
+.lgboard button.on .lc{color:var(--lime)}
+.lgboard b{font-family:var(--serif);font-weight:800;text-transform:uppercase;font-size:21px;line-height:1;letter-spacing:.01em}
+.lgboard .lf{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lgboard .lf em{font:500 11px var(--mono);font-style:normal;color:var(--ink)}
+.lgboard button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.lpanel{display:none}.lpanel.on{display:block;animation:up .35s ease}
+.lpanel>h3:first-child{margin-top:26px}
+
+/* partido de clubes */
+.cpick{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:end;margin-top:18px}
+@media(max-width:560px){.cpick{grid-template-columns:1fr}.cswap{justify-self:center;transform:rotate(90deg)}}
+.cside{display:flex;flex-direction:column;gap:6px}
+.cside span{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.cside.A span{color:var(--blue)}.cside.B span{color:var(--red)}
+.cside select{width:100%;font-family:var(--sans);font-size:15px;font-weight:600;padding:9px 34px 9px 12px}
+.cswap{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:var(--card);color:var(--lime);font-size:18px;cursor:pointer;transition:transform .25s,border-color .15s}
+.cswap:hover{border-color:var(--lime);transform:rotate(180deg)}
+.crestb{display:inline-grid;place-items:center;width:clamp(58px,9vw,76px);aspect-ratio:1;border-radius:50%;font:800 clamp(17px,2.6vw,23px) var(--serif)!important;letter-spacing:.04em;
+  border:2px solid currentColor;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.08),transparent 60%)}
+.crestb.A{color:var(--blue);box-shadow:0 0 30px -8px var(--blue)}.crestb.B{color:var(--red);box-shadow:0 0 30px -8px var(--red)}
+.c3bar{display:flex;gap:3px;height:30px;margin:0 0 2px}
+.c3bar i{display:flex;align-items:center;justify-content:center;min-width:34px;border-radius:4px;transition:flex .5s cubic-bezier(.2,.8,.2,1)}
+.c3bar b{font:500 12px var(--mono);color:#081008}
+.c3bar .a{background:var(--blue)}.c3bar .d{background:var(--ink3)}.c3bar .d b{color:var(--ink)}.c3bar .b{background:var(--red)}
+/* la ecuación λ: el modelo a la vista */
+.lameq{margin:18px 0 6px;padding:16px 18px;border:1px dashed var(--line2);border-radius:14px;background:rgba(214,255,61,.03)}
+.lameq .eqh{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lime);margin-bottom:10px}
+.eq{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;padding:6px 0;font-size:12.5px;color:var(--ink2)}
+.eq+.eq{border-top:1px solid var(--line)}
+.eq .res{font:800 30px/1 var(--serif);min-width:62px}.eq .res.A{color:var(--blue)}.eq .res.B{color:var(--red)}
+.eq .op{font:400 14px var(--mono);color:var(--ink3)}
+.eq .t{display:inline-flex;align-items:baseline;gap:5px}
+.eq .t b{font:500 15px var(--mono);color:var(--ink)}
+.lameq .note{margin-top:8px}
+.cgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:34px}
+@media(max-width:860px){.cgrid{grid-template-columns:1fr;gap:0}}
+.smap{display:grid;grid-template-columns:22px repeat(var(--n,6),1fr);gap:3px;margin-top:10px;max-width:380px}
+.smap .sx{font:500 10.5px var(--mono);color:var(--ink3);display:grid;place-items:center}
+.smap .sc{aspect-ratio:1;display:grid;place-items:center;border-radius:5px;font:500 10.5px var(--mono);color:var(--ink);
+  background:color-mix(in srgb,var(--lime) calc(var(--k)*92%),rgba(255,255,255,.03))}
+.smap .sc.hi{color:#081008}
+.smap .sc.top{outline:2px solid var(--ink);outline-offset:1px}
+table.mkt{width:100%;margin-top:8px}
+#cRank td:nth-child(2){white-space:nowrap}
+.crests{display:inline-block;min-width:38px;font:500 10px var(--mono);letter-spacing:.06em;color:var(--ink3)}
+.xpbar{display:inline-block;width:70px;height:6px;border-radius:99px;background:var(--line);margin-right:10px;vertical-align:middle;overflow:hidden}
+.xpbar i{display:block;height:100%;background:var(--lime);border-radius:99px}
 </style>
 </head>
 <body>
 
 <div class="topbar"><div class="in">
-  <span class="brand" data-v="home" role="link" tabindex="0">World Cup Predictor <small>Selecciones 26/27</small></span>
+  <span class="brand" data-v="home" role="link" tabindex="0">World Cup Predictor <small>Temporada 26/27</small></span>
   <nav class="pills" aria-label="Secciones">
     <button data-v="home" class="on">Inicio</button>
-    <button data-v="next">Próxima ventana</button>
-    <button data-v="win">Última ventana</button>
-    <button data-v="h2h">Partido & Cuotas</button>
-    <button data-v="rank">Ranking</button>
-    <span class="navsep" aria-hidden="true"></span>
-    <button data-v="pl" title="Las cinco grandes ligas">Clubes</button>
+    <button data-v="sel" title="Selecciones nacionales">Selecciones</button>
+    <button data-v="lig" title="Las cinco grandes ligas">Ligas</button>
     <span class="navsep" aria-hidden="true"></span>
     <button data-v="cup" class="arch" title="Archivo: el torneo para el que nació el proyecto">Archivo: Mundial 2026</button>
   </nav>
-</div></div>
+</div>
+<nav class="subnav" id="subnav" aria-label="Subsecciones" hidden><div class="in">
+  <span class="sublbl" id="subLbl"></span><div class="subtabs" id="subTabs"></div>
+</div></nav>
+</div>
 
 <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
 
@@ -691,27 +765,67 @@ footer a{color:var(--ink2)}
   </div>
 </div></section>
 
-<!-- ════════ CLUBES · CINCO LIGAS ════════ -->
+<!-- ════════ LIGAS · CINCO GRANDES ════════ -->
 <section class="view" id="v-pl"><div class="wrap">
   <div class="card">
     <div class="kicker">Clubes · cinco grandes ligas</div>
-    <div class="wfilter" id="plLeagues"></div>
+    <div class="lgboard" id="plLeagues" role="tablist" aria-label="Liga"></div>
     <h2 id="plTitle">Premier League 2026-27</h2>
     <p class="note" id="plLead"></p>
-    <div class="wstats" id="plStats"></div>
 
-    <h3>Próxima jornada: modelo contra mercado</h3>
-    <p class="note" id="plNextNote"></p>
-    <div class="tbl-scroll"><table id="plNext"></table></div>
+    <div class="lpanel" data-p="tabla">
+      <div class="wstats" id="plStats"></div>
+      <h3>Tabla proyectada</h3>
+      <p class="note">Puntos actuales más 10.000 simulaciones del resto de la temporada, partido a partido. Hacé clic en una columna para ordenar.</p>
+      <div class="tbl-scroll"><table id="plTable" class="sortable"></table></div>
+    </div>
 
-    <h3>Tabla proyectada</h3>
-    <p class="note">Puntos actuales más 10.000 simulaciones del resto de la temporada, partido a partido. Hacé clic en una columna para ordenar.</p>
-    <div class="tbl-scroll"><table id="plTable" class="sortable"></table></div>
+    <div class="lpanel" data-p="jornada">
+      <h3>Próxima jornada: modelo contra mercado</h3>
+      <p class="note" id="plNextNote"></p>
+      <div class="tbl-scroll"><table id="plNext"></table></div>
+    </div>
 
-    <h3>¿Le gana al mercado?</h3>
-    <p class="note">Walk-forward: antes de cada semana el modelo se reajusta solo con lo ya jugado y predice esa semana; se compara, sobre los mismos partidos, con las cuotas de cierre promedio y con una base que solo conoce la frecuencia de 1/X/2 de la liga. Brier, RPS y log-loss: menor es mejor.</p>
-    <div class="tbl-scroll"><table id="plBt"></table></div>
-    <p class="note" id="plMethod"></p>
+    <div class="lpanel" data-p="partido">
+      <h3>Partido &amp; cuotas</h3>
+      <p class="note">Cualquier cruce de la liga con el modelo de clubes. Los números son exactos (matriz Dixon-Coles completa, sin muestreo) y coinciden con <code>python -m src.clubs.h2h</code>. A diferencia de selecciones, no hay noticias ni contexto: solo ataque, defensa y localía estimados con los partidos.</p>
+      <div class="cpick">
+        <label class="cside A"><span>Local</span><select id="cH"></select></label>
+        <button class="cswap" id="cSwap" type="button" title="Invertir la localía" aria-label="Invertir la localía">⇄</button>
+        <label class="cside B"><span>Visitante</span><select id="cA"></select></label>
+      </div>
+      <div class="predcard" id="cPred"></div>
+      <div class="lameq" id="cWhy"></div>
+      <div class="cgrid">
+        <div><h3>Mapa de marcadores</h3><div class="smap" id="cMap"></div>
+          <p class="note">Probabilidad de cada marcador a 90'. Filas: goles del local; columnas: del visitante.</p></div>
+        <div><h3>Contra el mercado</h3><div id="cMkt"></div></div>
+      </div>
+      <h3>Cuotas por mercado</h3>
+      <p class="note">La <b>cuota justa</b> es 1 ÷ probabilidad, sin margen de la casa.</p>
+      <div class="odds-grid" id="cOdds"></div>
+      <h3>Detector de valor</h3>
+      <p class="note" id="cValueNote"></p>
+      <div class="tbl-scroll"><table id="cValue"></table></div>
+    </div>
+
+    <div class="lpanel" data-p="ranking">
+      <h3>Ranking de clubes</h3>
+      <p class="note">Ordenado por <b>xPts</b>: puntos esperados por partido contra un rival promedio de la liga, mitad de local y mitad de visita. Resume ataque y defensa en una sola cifra que no depende del calendario jugado. Cada liga tiene su propia escala, así que no se compara entre ligas.</p>
+      <div class="tbl-scroll"><table id="cRank" class="sortable"></table></div>
+      <div class="chartbox">
+        <h4>Ataque contra defensa</h4>
+        <div class="xg-plot"><svg id="cPlot" role="img" aria-label="Dispersión de ataque contra defensa por club"></svg></div>
+        <p class="note" style="margin-top:6px">1 = promedio de la liga. Arriba a la derecha: hacen más goles y reciben menos de lo normal. El eje vertical está invertido (arriba = concede menos). Con nombre: los 5 mejores, los 3 peores y los del partido elegido (en rojo); pasá el cursor por el resto.</p>
+      </div>
+    </div>
+
+    <div class="lpanel" data-p="mercado">
+      <h3>¿Le gana al mercado?</h3>
+      <p class="note">Walk-forward: antes de cada semana el modelo se reajusta solo con lo ya jugado y predice esa semana; se compara, sobre los mismos partidos, con las cuotas de cierre promedio y con una base que solo conoce la frecuencia de 1/X/2 de la liga. Brier, RPS y log-loss: menor es mejor.</p>
+      <div class="tbl-scroll"><table id="plBt"></table></div>
+      <p class="note" id="plMethod"></p>
+    </div>
   </div>
 </div></section>
 
@@ -1054,15 +1168,15 @@ function lambdaPair(a,b,ctxA,ctxB){
 }
 /* ── CUOTAS ANALÍTICAS: matriz Dixon-Coles 0..8 (exacta, sin Monte Carlo) ── */
 function poissP(lam,n){const out=[];let lf=0;for(let k=0;k<=n;k++){if(k>0)lf+=Math.log(k);out.push(Math.exp(k*Math.log(lam)-lam-lf));}return out;}
-function jointMatrix(lh,la){
+function jointMatrix(lh,la,rho=RHO){
   const N=8,ph=poissP(lh,N),pa=poissP(la,N),g=[];let tot=0;
-  for(let x=0;x<=N;x++){g[x]=[];for(let y=0;y<=N;y++){const v=ph[x]*pa[y]*tau(x,y,lh,la);g[x][y]=v;tot+=v;}}
+  for(let x=0;x<=N;x++){g[x]=[];for(let y=0;y<=N;y++){const v=ph[x]*pa[y]*tau(x,y,lh,la,rho);g[x][y]=v;tot+=v;}}
   for(let x=0;x<=N;x++)for(let y=0;y<=N;y++)g[x][y]/=tot;
   return g;
 }
-/* Devuelve probabilidades de todos los mercados desde (λh, λa). */
-function matchOdds(lh,la){
-  const g=jointMatrix(lh,la),N=g.length;
+/* Devuelve probabilidades de todos los mercados desde (λh, λa); ρ de la liga en clubes. */
+function matchOdds(lh,la,rho=RHO){
+  const g=jointMatrix(lh,la,rho),N=g.length;
   let pH=0,pD=0,pA=0,btts=0,aScores2=0,bScores2=0,expMargin=0;
   const over={},under={};const lines=[0.5,1.5,2.5,3.5,4.5];
   lines.forEach(L=>over[L]=0);
@@ -1088,7 +1202,7 @@ function matchOdds(lh,la){
     Am25:pMarginGE(3), Bm25:pMarginLE(-3),    // local/visitante -2.5
   };
   return {pH,pD,pA,btts,noBtts:1-btts,over,under,top:scores.slice(0,6),
-          hcp,aScores2,bScores2,expMargin,margin};
+          hcp,aScores2,bScores2,expMargin,margin,grid:g};
 }
 const fairOdds=p=>p<=0?Infinity:1/p;
 /* EV y Kelly dada cuota decimal de la casa. */
@@ -1213,11 +1327,11 @@ function lineChart(cv,series,opts){
 }
 function poisson(l){const L=Math.exp(-l);let k=0,p=1;do{p*=Math.random();k++}while(p>L);return k-1}
 /* Corrección Dixon-Coles: sube 0-0/1-1, baja 1-0/0-1 (ρ=-0.13) */
-function tau(x,y,lam,mu){
-  if(x===0&&y===0)return 1-lam*mu*RHO;
-  if(x===0&&y===1)return 1+lam*RHO;
-  if(x===1&&y===0)return 1+mu*RHO;
-  if(x===1&&y===1)return 1-RHO;
+function tau(x,y,lam,mu,rho=RHO){
+  if(x===0&&y===0)return 1-lam*mu*rho;
+  if(x===0&&y===1)return 1+lam*rho;
+  if(x===1&&y===0)return 1+mu*rho;
+  if(x===1&&y===1)return 1-rho;
   return 1;
 }
 /* Muestreo exacto por rechazo de la distribución Dixon-Coles */
@@ -1290,15 +1404,45 @@ function koFixed(ta,tb){
 }
 
 
-/* ════════════════ NAVEGACIÓN ════════════════ */
+/* ════════════════ NAVEGACIÓN ════════════════
+   Menú principal: Inicio · Selecciones · Ligas · Archivo. Cada grupo tiene sus
+   subsecciones en la barra de abajo. Ligas es una sola vista (#v-pl) con
+   paneles, así el selector de liga se mantiene al cambiar de subsección.
+   goto("sel") vuelve a la última subsección de selecciones; goto("pl:partido")
+   abre un panel de ligas. */
+const GROUP={home:"home",next:"sel",win:"sel",h2h:"sel",rank:"sel",pl:"lig",cup:"cup"};
+const SUBNAV={
+  sel:{lbl:"Selecciones",tabs:[["next","Próxima ventana"],["win","Última ventana"],["h2h","Partido & cuotas"],["rank","Ranking"]]},
+  lig:{lbl:"Ligas",tabs:[["pl:tabla","Tabla"],["pl:jornada","Próxima jornada"],["pl:partido","Partido & cuotas"],["pl:ranking","Ranking"],["pl:mercado","¿Le gana al mercado?"]]},
+};
+let lastSel="next", plPanel="tabla";
 function goto(v){
-  document.querySelectorAll(".pills button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="sel")v=lastSel;
+  if(v==="lig")v="pl";
+  if(v.startsWith("pl:")){plPanel=v.slice(3);v="pl";}
+  const g=GROUP[v];
+  if(g==="sel")lastSel=v;
+  document.querySelectorAll(".pills button").forEach(b=>b.classList.toggle("on",b.dataset.v===g));
   document.querySelectorAll(".view").forEach(x=>x.classList.remove("on"));
   document.getElementById("v-"+v).classList.add("on");
+  const sn=document.getElementById("subnav"), cfg=SUBNAV[g];
+  sn.hidden=!cfg;
+  if(cfg){
+    const cur=g==="lig"?"pl:"+plPanel:v;
+    document.getElementById("subLbl").textContent=cfg.lbl;
+    document.getElementById("subTabs").innerHTML=cfg.tabs.map(([k,l],i)=>
+      `<button data-sv="${k}" class="${k===cur?"on":""}" ${k===cur?'aria-current="page"':""}><span class="no">0${i+1}</span>${l}</button>`).join("");
+    const on=sn.querySelector(".subtabs .on"), row=sn.querySelector(".in");   // en móvil, la activa a la vista
+    row.scrollLeft=Math.max(0,on.offsetLeft-row.offsetLeft-16);
+  }
+  if(v==="pl")showPlPanel();
   if(v==="rank")renderXgPlot();   // mide el ancho real una vez visible
   window.scrollTo({top:0,behavior:"smooth"});
 }
 document.querySelectorAll("[data-v]").forEach(b=>b.addEventListener("click",()=>goto(b.dataset.v)));
+document.getElementById("subTabs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-sv]"); if(b)goto(b.dataset.sv);
+});
 
 /* ════════════════ PARTIDO ════════════════ */
 
@@ -1899,16 +2043,17 @@ function valueMarkets(o,A,B){
   return [base[0],base[1],base[2],["Doble 1X",o.pH+o.pD],["Doble 12",o.pH+o.pA],["Doble X2",o.pD+o.pA],...base.slice(3)];
 }
 /* Renderiza la grilla de mercados + el detector de valor para un partido ya
-   calculado (A,B,o). */
-function renderOddsBlock(A,B,o){
+   calculado (A,B,o). Selecciones usa los ids por defecto; clubes pasa los suyos,
+   su etiqueta de equipo y, si hay, las cuotas 1-X-2 del mercado precargadas. */
+function renderOddsBlock(A,B,o,{grid="oddsGrid",table="valueTable",tag=t=>`${FLAG[t.c]} ${t.c}`,prefill=null}={}){
   const card=(title,rows)=>`<div class="ocard"><h4>${title}</h4>${rows}</div>`;
   const row=(lbl,p)=>`<div class="orow"><span>${lbl}</span><span class="op">${pct(p)}</span><span class="oq">${odd(p)}</span></div>`;
   const resultCard =
       card("Resultado (1X2)",
-        row(`${FLAG[A.c]} ${A.c}`,o.pH)+row("Empate",o.pD)+row(`${FLAG[B.c]} ${B.c}`,o.pA))+
+        row(tag(A),o.pH)+row("Empate",o.pD)+row(tag(B),o.pA))+
       card("Doble oportunidad",
         row("1X",o.pH+o.pD)+row("12",o.pH+o.pA)+row("X2",o.pD+o.pA));
-  document.getElementById("oddsGrid").innerHTML=resultCard+
+  document.getElementById(grid).innerHTML=resultCard+
     card("Total de goles",
       row("Over 1.5",o.over[1.5])+row("Over 2.5",o.over[2.5])+row("Over 3.5",o.over[3.5])+row("Under 2.5",o.under[2.5]))+
     card("Hándicap (90')",
@@ -1921,49 +2066,78 @@ function renderOddsBlock(A,B,o){
       o.top.map(s=>row(`${s[0]}–${s[1]}`,s[2])).join(""));
 
   const mk=valueMarkets(o,A,B);
-  const t=document.getElementById("valueTable");
+  const t=document.getElementById(table);
   t.innerHTML=`<thead><tr><th>Mercado</th><th class="num">Prob.</th><th class="num">Cuota justa</th>
     <th class="num">Cuota casa</th><th class="num">Valor</th><th class="num">¼-Kelly</th></tr></thead>
     <tbody>${mk.map((m,i)=>`<tr>
       <td>${m[0]}</td><td class="num">${pct(m[1])}</td><td class="num">${odd(m[1])}</td>
       <td class="num"><input type="number" step="0.01" min="1" class="bookin" data-i="${i}" placeholder="—" style="width:74px"></td>
-      <td class="num" id="ev${i}">—</td><td class="num" id="kl${i}">—</td></tr>`).join("")}</tbody>`;
+      <td class="num ev">—</td><td class="num kl">—</td></tr>`).join("")}</tbody>`;
   t.querySelectorAll(".bookin").forEach(inp=>inp.oninput=()=>{
     const i=+inp.dataset.i, p=mk[i][1], b=parseFloat(inp.value);
-    const evCell=document.getElementById("ev"+i), klCell=document.getElementById("kl"+i);
-    if(!b||b<=1){evCell.textContent="—";klCell.textContent="—";evCell.className="num";return;}
+    const tr=inp.closest("tr"), evCell=tr.querySelector(".ev"), klCell=tr.querySelector(".kl");
+    if(!b||b<=1){evCell.textContent="—";klCell.textContent="—";evCell.className="num ev";return;}
     const v=valueBet(p,b);
     evCell.textContent=(v.ev>0?"+":"")+(v.ev*100).toFixed(1)+"%";
-    evCell.className="num "+(v.ev>0?"valpos":"valneg");
+    evCell.className="num ev "+(v.ev>0?"valpos":"valneg");
     klCell.textContent=v.kelly>0?(v.kelly*25).toFixed(1)+"% bank":"no apostar";
-    klCell.className="num "+(v.kelly>0?"valpos":"");
+    klCell.className="num kl "+(v.kelly>0?"valpos":"");
   });
+  if(prefill)prefill.forEach((q,i)=>{const inp=t.querySelector(`.bookin[data-i="${i}"]`);inp.value=q;inp.oninput();});
 }
 renderHome();
 
-/* ════════════════ CLUBES · CINCO LIGAS ════════════════ */
-let plSort={k:"xpts",asc:false}, plCode="E0", PL=null;
+/* ════════════════ LIGAS · CINCO GRANDES ════════════════
+   Una vista con paneles (tabla, jornada, partido, ranking, mercado); el
+   selector de liga vale para todos. Partido & cuotas usa los mismos
+   parámetros que src/clubs/h2h.py: λ = μ · localía · ataque · defensa. */
+let plSort={k:"xpts",asc:false}, rkSort={k:"xp",asc:false}, plCode="E0", PL=null, cPair=null;
+const pc=p=>Math.round(100*p)+"%";
+const lgFav=l=>[...l.teams].sort((a,b)=>b.pos[0]-a.pos[0])[0];
+/* Monograma del club: iniciales si el nombre tiene varias palabras, si no las
+   3 primeras letras. Si dos clubes de la liga chocan (Valencia y Vallecano),
+   el segundo prueba con las iniciales y la última palabra de su nombre largo. */
+let CREST={};
+function crestCandidates(t){
+  const words=s=>s.normalize("NFD").replace(/[^A-Za-z ]/g,"").split(" ").filter(x=>x&&!/^(FC|CF|AC|SC|UD|CA|RC|RCD|SV|TSG|VfB|AS|OGC|LOSC)$/.test(x));
+  const ini=w=>w.slice(0,3).map(x=>x[0]).join(""), w=words(t.t), wn=words(t.n);
+  return [w.length>1?ini(w):(w[0]||t.t).slice(0,3), wn.length>1?ini(wn):"", (wn[wn.length-1]||"").slice(0,3)]
+    .filter(c=>c.length>=2).map(c=>c.toUpperCase());
+}
+function buildCrests(teams){
+  CREST={}; const used=new Set();
+  for(const t of teams){const c=crestCandidates(t).find(x=>!used.has(x))||t.t.slice(0,4).toUpperCase();
+    used.add(c); CREST[t.t]=c;}
+}
+const crest=t=>CREST[t.t]||crestCandidates(t)[0];
+const clubLam=(h,a)=>[PL.params.mu*PL.params.home*h.att*a.def, PL.params.mu*a.att*h.def];
+function showPlPanel(){
+  document.querySelectorAll("#v-pl .lpanel").forEach(p=>p.classList.toggle("on",p.dataset.p===plPanel));
+  if(plPanel==="ranking")renderClubPlot();
+}
 function renderPL(){
   if(!CLUBS||!CLUBS[plCode])return;
   PL=CLUBS[plCode];
-  document.getElementById("plLeagues").innerHTML=Object.values(CLUBS).map(l=>`<button class="${l.league===plCode?"on":""}" data-l="${l.league}">${l.name}</button>`).join("");
+  buildCrests(PL.teams);
+  document.getElementById("plLeagues").innerHTML=Object.values(CLUBS).map(l=>{const f=lgFav(l);
+    return `<button role="tab" aria-selected="${l.league===plCode}" class="${l.league===plCode?"on":""}" data-l="${l.league}">
+      <span class="lc">${l.league}</span><b>${l.name}</b><span class="lf">${f.n} <em>${pc(f.pos[0])}</em></span></button>`;}).join("");
   document.getElementById("plTitle").textContent=`${PL.name} 2026-27`;
   const [c0,c1]=PL.places.champions, [d0,d1]=PL.places.descenso, nT=PL.teams.length;
-  const pc=p=>Math.round(100*p)+"%";
   const sp=s=>"20"+s.slice(0,2)+"-"+s.slice(2);
   const bt=PL.backtest, cur=bt["2627"], prev=bt["2526"];
   const jornada=Math.round(PL.played/(nT/2));
   document.getElementById("plLead").innerHTML=`El mismo motor que usamos con selecciones, ajustado a una liga: ataque y defensa por club, localía y ρ de Dixon-Coles estimados con las últimas tres temporadas de ${PL.name} y ${PL.lower} (lo reciente pesa más) y el xG de esta temporada. Datos al ${fmtD(PL.updated)} de 2026, tras ${jornada} jornadas.${PL.calendar_fixes&&PL.calendar_fixes.length?` Calendario corregido: ${PL.calendar_fixes.join("; ")}.`:""}`;
-  document.getElementById("plNextNote").innerHTML=`Los próximos 7 días. Mercado = cuota promedio de las casas, sin margen; football-data la publica pocos días antes, así que puede faltar. Fecha con ≈: horario sin confirmar. <b>Discrepa</b> marca el resultado donde el modelo se aparta más del mercado, en puntos porcentuales, si la diferencia pasa de 5. No es una recomendación de apuesta${prev?`: en 2025-26 apostar cada discrepancia así habría dado ${(prev.value.roi>0?"+":"")+(100*prev.value.roi).toFixed(0)}% (ver abajo), y el mercado fue ${prev.market.brier<prev.model.brier?"más":"menos"} preciso que el modelo`:""}.`;
   document.getElementById("plStats").innerHTML=[
     [PL.played,`partidos jugados · ${PL.remaining} por jugar`],
     [prev?prev.model.brier.toFixed(3):"—",`Brier 2025-26 (mercado ${prev?prev.market.brier.toFixed(3):"—"})`],
     [cur?cur.model.brier.toFixed(3):"—",`Brier 2026-27 (mercado ${cur?cur.market.brier.toFixed(3):"—"}, ${cur?cur.model.n:0} partidos)`],
     ["+"+Math.round(100*(PL.params.home-1))+"%","goles de más por jugar de local"],
   ].map(([v,l])=>`<div class="wstat"><b>${v}</b><span>${l}</span></div>`).join("");
+  document.getElementById("plNextNote").innerHTML=`Los próximos 7 días. Mercado = cuota promedio de las casas, sin margen; football-data la publica pocos días antes, así que puede faltar. Fecha con ≈: horario sin confirmar. <b>Discrepa</b> marca el resultado donde el modelo se aparta más del mercado, en puntos porcentuales, si la diferencia pasa de 5. No es una recomendación de apuesta${prev?`: en 2025-26 apostar cada discrepancia así habría dado ${(prev.value.roi>0?"+":"")+(100*prev.value.roi).toFixed(0)}% (ver «¿Le gana al mercado?»), y el mercado fue ${prev.market.brier<prev.model.brier?"más":"menos"} preciso que el modelo`:""}.`;
 
   const nm=Object.fromEntries(PL.teams.map(t=>[t.t,t.n]));
-  document.getElementById("plNext").innerHTML=`<thead><tr><th>Fecha</th><th class="num">Local</th><th>Visitante</th><th>Modelo 1-X-2</th><th>Mercado 1-X-2</th><th class="num">Más probable</th><th>Discrepa</th></tr></thead><tbody>${
+  document.getElementById("plNext").innerHTML=PL.next.length?`<thead><tr><th>Fecha</th><th class="num">Local</th><th>Visitante</th><th>Modelo 1-X-2</th><th>Mercado 1-X-2</th><th class="num">Más probable</th><th>Discrepa</th><th></th></tr></thead><tbody>${
     PL.next.map(f=>{
       let val='<span class="muted">—</span>';
       if(f.market){const d=f.model.map((p,i)=>p-f.market[i]), i=d.map(Math.abs).indexOf(Math.max(...d.map(Math.abs)));
@@ -1971,7 +2145,9 @@ function renderPL(){
       return `<tr><td class="muted">${f.tbc?"≈ ":""}${fmtDow(f.day)}</td><td class="num">${nm[f.home]}</td><td>${nm[f.away]}</td>
         <td>${pctBar(f.model)}<span class="wpct">${f.model.map(p=>Math.round(100*p)).join(" · ")}</span></td>
         <td>${f.market?pctBar(f.market)+`<span class="wpct">${f.market.map(p=>Math.round(100*p)).join(" · ")}</span>`:"—"}</td>
-        <td class="num"><span class="wsc">${f.top[0]}–${f.top[1]}</span></td><td>${val}</td></tr>`;}).join("")}</tbody>`;
+        <td class="num"><span class="wsc">${f.top[0]}–${f.top[1]}</span></td><td>${val}</td>
+        <td><button class="linkbtn" data-h="${f.home}" data-a="${f.away}">Analizar</button></td></tr>`;}).join("")}</tbody>`
+    :`<tbody><tr><td class="muted">No hay partidos de ${PL.name} en los próximos 7 días.</td></tr></tbody>`;
 
   const COLS=[
     {k:"pts",h:"Pts",v:t=>t.pts},{k:"pj",h:"PJ",v:t=>t.pj},{k:"dg",h:"DG",v:t=>t.gf-t.gc,f:v=>(v>0?"+":"")+v},
@@ -1980,7 +2156,7 @@ function renderPL(){
     {k:"rel",h:`Descenso (${d0}-${d1})`,v:t=>t.pos.slice(d0-1,d1).reduce((a,b)=>a+b,0),f:pc},
     {k:"att",h:"Ataque",v:t=>t.att,f:v=>v.toFixed(2)},{k:"def",h:"Defensa (menos = mejor)",v:t=>t.def,f:v=>v.toFixed(2),asc:true},
   ];
-  const col=COLS.find(c=>c.k===plSort.k);
+  const col=COLS.find(c=>c.k===plSort.k)||COLS[3];
   const rows=[...PL.teams].sort((a,b)=>plSort.asc?col.v(a)-col.v(b):col.v(b)-col.v(a));
   const cur_=[...PL.teams].sort((a,b)=>b.pts-a.pts||(b.gf-b.gc)-(a.gf-a.gc)||b.gf-a.gf).map(t=>t.t);
   document.getElementById("plTable").innerHTML=`<thead><tr><th>#</th><th>Club</th>${COLS.map(c=>`<th class="num${c.k===plSort.k?" sorted"+(plSort.asc?" asc":""):""}" data-k="${c.k}">${c.h}</th>`).join("")}</tr></thead><tbody>${
@@ -1992,15 +2168,150 @@ function renderPL(){
   document.getElementById("plBt").innerHTML=`<thead><tr><th>Temporada</th><th class="num">Partidos</th><th class="num">Brier modelo</th><th class="num">Brier mercado</th><th class="num">Brier base</th><th class="num">RPS modelo</th><th class="num">RPS mercado</th><th class="num">Log-loss modelo</th><th class="num">Log-loss mercado</th><th class="num">Acierto modelo</th><th class="num">Acierto mercado</th><th class="num">Apuestas con valor · ROI</th></tr></thead><tbody>${
     Object.entries(bt).map(([s,v])=>row(sp(s),v)).join("")}</tbody>`;
   document.getElementById("plMethod").innerHTML=`Parámetros: μ=${PL.params.mu} goles por equipo, localía ×${PL.params.home}, ρ=${PL.params.rho}, decaimiento ξ=${PL.params.xi}/día (un partido de hace un año pesa ~50%), xG con peso ${PL.params.xg_weight} cuando existe. ROI: apuesta plana a la cuota de cierre cada vez que el modelo ve más de 5% de valor; con esta muestra es ruido, no una estrategia. Fuentes: <a href="https://www.football-data.co.uk/">football-data.co.uk</a> (resultados, xG, cuotas) y <a href="https://fixturedownload.com/">fixturedownload.com</a> (calendario).`;
+
+  renderClubRank();
+  initClubMatch();
+  showPlPanel();
 }
+
+/* ── Partido & cuotas de clubes ── */
+function initClubMatch(){
+  const byN=[...PL.teams].sort((a,b)=>a.n.localeCompare(b.n));
+  const ok=cPair&&PL.teams.some(t=>t.t===cPair[0])&&PL.teams.some(t=>t.t===cPair[1]);
+  if(!ok){const f=PL.next.find(x=>x.market)||PL.next[0];
+    cPair=f?[f.home,f.away]:[...PL.teams].sort((a,b)=>b.xpts-a.xpts).slice(0,2).map(t=>t.t);}
+  for(const [id,v] of [["cH",cPair[0]],["cA",cPair[1]]])
+    document.getElementById(id).innerHTML=byN.map(t=>`<option value="${t.t}" ${t.t===v?"selected":""}>${t.n}</option>`).join("");
+  renderClubMatch();
+}
+function renderClubMatch(){
+  const T=Object.fromEntries(PL.teams.map(t=>[t.t,t]));
+  const H=T[cPair[0]], A=T[cPair[1]], p=PL.params;
+  if(H===A){document.getElementById("cPred").innerHTML=`<p class="pverdict">Elegí dos clubes distintos.</p>`;return;}
+  const [lh,la]=clubLam(H,A), o=matchOdds(lh,la,p.rho), top=o.top[0];
+  const fav=o.pH>=o.pA?H:A, fp=Math.max(o.pH,o.pA);
+  const verdict=Math.abs(o.pH-o.pA)<0.06?`Partido parejo: ${pc(o.pH)} contra ${pc(o.pA)}, empate ${pc(o.pD)}.`
+    :`<b>${fav.n}</b> es favorito (${(100*fp).toFixed(1)}%)${fav===H?", con la localía a favor":" aun jugando de visitante"}.`;
+  document.getElementById("cPred").innerHTML=`
+    <div class="ph">
+      <div class="pteam"><span class="pf crestb A">${crest(H)}</span><span class="pn">${H.n}</span></div>
+      <div class="pscore">${top[0]}–${top[1]}<small>MARCADOR MÁS PROBABLE · ${(100*top[2]).toFixed(1)}%</small></div>
+      <div class="pteam"><span class="pf crestb B">${crest(A)}</span><span class="pn">${A.n}</span></div>
+    </div>
+    <div class="c3bar"><i class="a" style="flex:${o.pH}"><b>${pc(o.pH)}</b></i><i class="d" style="flex:${o.pD}"><b>${pc(o.pD)}</b></i><i class="b" style="flex:${o.pA}"><b>${pc(o.pA)}</b></i></div>
+    <div class="pverdict">${verdict}</div>
+    <div class="pstats">
+      <div class="pstat"><div class="pv">${lh.toFixed(2)}</div><div class="pl">goles esperados ${crest(H)}</div></div>
+      <div class="pstat"><div class="pv">${la.toFixed(2)}</div><div class="pl">goles esperados ${crest(A)}</div></div>
+      <div class="pstat"><div class="pv">${pc(o.over[2.5])}</div><div class="pl">más de 2.5 goles</div></div>
+      <div class="pstat"><div class="pv">${pc(o.btts)}</div><div class="pl">ambos anotan</div></div>
+      <div class="pstat"><div class="pv">${(1/o.pD).toFixed(2)}</div><div class="pl">cuota justa del empate</div></div>
+    </div>`;
+  const f2=v=>v.toFixed(2);
+  document.getElementById("cWhy").innerHTML=`
+    <div class="eqh">Por qué: la fórmula, con los números de hoy</div>
+    <div class="eq"><span class="res A">${f2(lh)}</span><span class="op">=</span><span class="t"><b>${f2(p.mu)}</b>μ liga</span><span class="op">×</span><span class="t"><b>${f2(p.home)}</b>localía</span><span class="op">×</span><span class="t"><b>${f2(H.att)}</b>ataque ${H.n}</span><span class="op">×</span><span class="t"><b>${f2(A.def)}</b>defensa ${A.n}</span></div>
+    <div class="eq"><span class="res B">${f2(la)}</span><span class="op">=</span><span class="t"><b>${f2(p.mu)}</b>μ liga</span><span class="op">×</span><span class="t"><b>${f2(A.att)}</b>ataque ${A.n}</span><span class="op">×</span><span class="t"><b>${f2(H.def)}</b>defensa ${H.n}</span></div>
+    <p class="note">Ataque y defensa valen 1 en un equipo promedio de la liga: ataque 1.30 = marca 30% más; defensa 0.80 = recibe 20% menos. Con esas dos λ, la matriz Dixon-Coles (ρ = ${p.rho}) da cada marcador.</p>`;
+
+  const N=6, mx=Math.max(...o.grid.slice(0,N).flatMap(r=>r.slice(0,N)));
+  let mp=`<span class="sx"></span>${[...Array(N).keys()].map(y=>`<span class="sx">${y}</span>`).join("")}`;
+  for(let x=0;x<N;x++){mp+=`<span class="sx">${x}</span>`;
+    for(let y=0;y<N;y++){const q=o.grid[x][y], k=q/mx;
+      mp+=`<span class="sc${x===top[0]&&y===top[1]?" top":""}${k>0.5?" hi":""}" style="--k:${k.toFixed(3)}" title="${H.n} ${x}–${y} ${A.n}: ${(100*q).toFixed(1)}%">${q>=0.005?(100*q).toFixed(q>=0.1?0:1):""}</span>`;}}
+  document.getElementById("cMap").innerHTML=mp;
+  document.getElementById("cMap").style.setProperty("--n",N);
+
+  const f=PL.next.find(x=>x.home===H.t&&x.away===A.t), M=[o.pH,o.pD,o.pA];
+  if(f&&f.market){
+    const lb=["1 · "+H.n,"X · Empate","2 · "+A.n];
+    document.getElementById("cMkt").innerHTML=`<p class="note">Se juega el ${fmtDow(f.day)}${f.tbc?" (horario sin confirmar)":""}. Mercado = cuota promedio de las casas, sin margen.</p>
+      <table class="mkt"><thead><tr><th></th><th class="num">Modelo</th><th class="num">Mercado</th><th class="num">Diferencia</th></tr></thead><tbody>${
+      lb.map((l,i)=>{const d=M[i]-f.market[i];return `<tr><td>${l}</td><td class="num">${pc(M[i])}</td><td class="num">${pc(f.market[i])}</td><td class="num ${Math.abs(d)>=0.05?(d>0?"pos":"neg"):"muted"}">${d>0?"+":"−"}${Math.abs(100*d).toFixed(0)} pp</td></tr>`;}).join("")}</tbody></table>
+      <p class="note">Las cuotas de la casa ya están cargadas en el detector de valor.</p>`;
+  }else{
+    document.getElementById("cMkt").innerHTML=`<p class="note">${f?"Este partido se juega el "+fmtDow(f.day)+", pero football-data todavía no publicó sus cuotas.":"Este cruce no está entre los partidos de los próximos 7 días, así que no hay cuotas del mercado para comparar."} Podés escribir las de tu casa en el detector de valor.</p>`;
+  }
+  const prev=PL.backtest["2526"];
+  document.getElementById("cValueNote").innerHTML=`Escribí la cuota decimal de tu casa en cada mercado. Verde = el modelo ve valor; rojo = te pagan de menos. Kelly al 25%. Ojo: ${prev?`en 2025-26 el mercado fue ${prev.market.brier<prev.model.brier?"más":"menos"} preciso que este modelo y apostar sus discrepancias dio ${(prev.value.roi>0?"+":"")+(100*prev.value.roi).toFixed(0)}%`:"no hay backtest de la temporada pasada"}: un valor positivo no es una recomendación.`;
+  renderOddsBlock({c:crest(H),n:H.n},{c:crest(A),n:A.n},o,{grid:"cOdds",table:"cValue",tag:t=>t.n,prefill:f&&f.odds?f.odds:null});
+}
+
+/* ── Ranking de clubes: xPts contra un rival promedio ── */
+function clubStrength(t){
+  const p=PL.params;
+  const home=matchOdds(p.mu*p.home*t.att, p.mu*t.def, p.rho);     // de local contra el promedio
+  const away=matchOdds(p.mu*p.home*t.def, p.mu*t.att, p.rho);     // de visita
+  return {xp:(3*home.pH+home.pD+3*away.pA+away.pD)/2,
+          gf:(p.mu*p.home*t.att+p.mu*t.att)/2, gc:(p.mu*t.def+p.mu*p.home*t.def)/2};
+}
+function renderClubRank(){
+  const R=PL.teams.map(t=>({t,...clubStrength(t),ppg:t.pj?t.pts/t.pj:0}));
+  const COLS=[
+    {k:"xp",h:"xPts / partido",v:r=>r.xp,f:v=>v.toFixed(2)},
+    {k:"ppg",h:"Pts reales / partido",v:r=>r.ppg,f:v=>v.toFixed(2)},
+    {k:"gf",h:"Goles a favor esp.",v:r=>r.gf,f:v=>v.toFixed(2)},
+    {k:"gc",h:"Goles en contra esp.",v:r=>r.gc,f:v=>v.toFixed(2),asc:true},
+    {k:"att",h:"Ataque",v:r=>r.t.att,f:v=>v.toFixed(2)},
+    {k:"def",h:"Defensa (menos = mejor)",v:r=>r.t.def,f:v=>v.toFixed(2),asc:true},
+  ];
+  const col=COLS.find(c=>c.k===rkSort.k)||COLS[0];
+  const rows=[...R].sort((a,b)=>rkSort.asc?col.v(a)-col.v(b):col.v(b)-col.v(a));
+  const order=[...R].sort((a,b)=>b.xp-a.xp).map(r=>r.t.t), mx=Math.max(...R.map(r=>r.xp));
+  document.getElementById("cRank").innerHTML=`<thead><tr><th>#</th><th>Club</th>${COLS.map(c=>`<th class="num${c.k===rkSort.k?" sorted"+(rkSort.asc?" asc":""):""}" data-k="${c.k}">${c.h}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r=>`<tr><td class="muted">${order.indexOf(r.t.t)+1}</td><td><span class="crests">${crest(r.t)}</span>${r.t.n}</td>${COLS.map(c=>{const v=c.v(r);
+      return c.k==="xp"?`<td class="num"><span class="xpbar"><i style="width:${(100*v/mx).toFixed(1)}%"></i></span>${c.f(v)}</td>`:`<td class="num">${c.f(v)}</td>`;}).join("")}</tr>`).join("")}</tbody>`;
+}
+function renderClubPlot(){
+  const svg=document.getElementById("cPlot"), pts=PL.teams;
+  const narrow=(svg.clientWidth||640)<520;
+  const W=narrow?400:640,H=narrow?360:420,m={l:46,r:16,t:14,b:40};
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const xs=pts.map(t=>t.att), ys=pts.map(t=>t.def);
+  const pad=v=>[Math.floor((Math.min(...v)-.05)*10)/10, Math.ceil((Math.max(...v)+.05)*10)/10];
+  const [x0,x1]=pad(xs), [y0,y1]=pad(ys), step=(x1-x0)>1.2?0.2:0.1;
+  const X=v=>m.l+(v-x0)/(x1-x0)*(W-m.l-m.r), Y=v=>m.t+(v-y0)/(y1-y0)*(H-m.t-m.b);
+  let g="";
+  for(let v=Math.ceil(x0/step)*step;v<=x1+1e-9;v+=step){const x=X(v);
+    g+=`<line class="ax" x1="${x}" x2="${x}" y1="${m.t}" y2="${H-m.b}"/><text class="tk" x="${x}" y="${H-m.b+15}" text-anchor="middle">${v.toFixed(1)}</text>`;}
+  for(let v=Math.ceil(y0/step)*step;v<=y1+1e-9;v+=step){const y=Y(v);
+    g+=`<line class="ax" x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}"/><text class="tk" x="${m.l-7}" y="${y+4}" text-anchor="end">${v.toFixed(1)}</text>`;}
+  if(x0<1&&x1>1)g+=`<line class="med" x1="${X(1)}" x2="${X(1)}" y1="${m.t}" y2="${H-m.b}"/>`;
+  if(y0<1&&y1>1)g+=`<line class="med" x1="${m.l}" x2="${W-m.r}" y1="${Y(1)}" y2="${Y(1)}"/>`;
+  g+=`<text class="qd" x="${W-m.r-6}" y="${m.t+14}" text-anchor="end">Dominan</text><text class="qd" x="${m.l+6}" y="${H-m.b-8}">Sufren</text>`;
+  g+=`<text class="axl" x="${(m.l+W-m.r)/2}" y="${H-4}" text-anchor="middle">Ataque →</text>`;
+  g+=`<text class="axl" transform="translate(12,${(m.t+H-m.b)/2}) rotate(-90)" text-anchor="middle">Defensa (↑ concede menos)</text>`;
+  // etiquetas solo para los extremos y el partido elegido; el resto, al pasar el cursor
+  const byX=[...pts].sort((a,b)=>clubStrength(b).xp-clubStrength(a).xp).map(t=>t.t);
+  const lab=new Set([...byX.slice(0,5),...byX.slice(-3),...(cPair||[])]);
+  for(const t of pts){const cx=X(t.att),cy=Y(t.def),sel=cPair&&cPair.includes(t.t);
+    g+=`<circle class="dot${sel?" on":""}" cx="${cx}" cy="${cy}" r="5.5"><title>${t.n}: ataque ${t.att.toFixed(2)}, defensa ${t.def.toFixed(2)}</title></circle>`;
+    if(lab.has(t.t))g+=`<text class="lbl" x="${cx+9}" y="${cy+4}">${crest(t)}</text>`;}
+  svg.innerHTML=g;
+}
+
 document.getElementById("plLeagues").addEventListener("click",e=>{
-  const l=e.target.closest("button")?.dataset.l; if(!l)return;
+  const l=e.target.closest("button")?.dataset.l; if(!l||l===plCode)return;
   plCode=l; renderPL();
 });
 document.getElementById("plTable").addEventListener("click",e=>{
   const k=e.target.closest("th")?.dataset.k; if(!k)return;
   plSort=plSort.k===k?{k,asc:!plSort.asc}:{k,asc:k==="def"};
   renderPL();
+});
+document.getElementById("cRank").addEventListener("click",e=>{
+  const k=e.target.closest("th")?.dataset.k; if(!k)return;
+  rkSort=rkSort.k===k?{k,asc:!rkSort.asc}:{k,asc:k==="def"||k==="gc"};
+  renderClubRank();
+});
+document.getElementById("plNext").addEventListener("click",e=>{
+  const b=e.target.closest("[data-h]"); if(!b)return;
+  cPair=[b.dataset.h,b.dataset.a]; initClubMatch(); goto("pl:partido");
+});
+for(const [id,i] of [["cH",0],["cA",1]])
+  document.getElementById(id).addEventListener("change",e=>{cPair[i]=e.target.value;renderClubMatch();});
+document.getElementById("cSwap").addEventListener("click",()=>{
+  cPair=[cPair[1],cPair[0]]; initClubMatch();
 });
 renderPL();
 </script>
