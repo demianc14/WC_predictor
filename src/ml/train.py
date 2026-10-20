@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 from datetime import date
 from pathlib import Path
@@ -101,6 +102,8 @@ def test(df: pd.DataFrame, chosen: dict[str, Spec]) -> tuple[pd.DataFrame, dict[
 
 
 def git_commit() -> str:
+    if os.environ.get("WCP_COMMIT", "desconocido") != "desconocido":   # imagen de Docker
+        return os.environ["WCP_COMMIT"]
     try:
         # "-dirty" si el código corrió con cambios sin commitear
         return subprocess.run(["git", "describe", "--always", "--dirty"], capture_output=True,
