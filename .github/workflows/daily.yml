@@ -1,0 +1,43 @@
+name: Daily
+
+# Ciclo diario: datos nuevos, resultados, predicciones antes de cada partido,
+# métricas en vivo y web. Si una fuente cae, el paso falla, no se commitea
+# nada y GitHub avisa por correo.
+on:
+  schedule:
+    - cron: "30 5 * * *"          # 05:30 UTC, antes de cualquier partido europeo
+  workflow_dispatch:
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write             # solo este job puede commitear
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e .
+      - name: Ciclo diario
+        run: python -m src.pipeline.daily
+      - name: Commit si hubo cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/predictions data/processed data/cache/clubs app/index.html
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git commit -m "Ciclo diario $(date -u +%F): datos, predicciones y métricas en vivo"
+          git push origin HEAD:${{ github.ref_name }}

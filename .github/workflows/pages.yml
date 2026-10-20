@@ -1,0 +1,49 @@
+name: Pages
+
+# Publica la web (app/) y los JSON de datos en GitHub Pages. Se dispara
+# cuando cambia app/ en main y después de cada ciclo diario exitoso (los
+# commits del bot no disparan otros workflows por sí solos).
+on:
+  push:
+    branches: [main]
+    paths: ["app/**", "data/processed/**", "data/predictions/**"]
+  workflow_run:
+    workflows: [Daily]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Armar el sitio
+        run: |
+          mkdir -p _site/data
+          cp -r app/. _site/
+          cp data/processed/clubs_*.json _site/data/
+          cp data/processed/live.json _site/data/ 2>/dev/null || true
+          cp data/predictions/predicciones.csv _site/data/ 2>/dev/null || true
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

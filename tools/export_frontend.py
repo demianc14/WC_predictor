@@ -36,6 +36,7 @@ WINDOW_SNAPSHOT = Path("data/snapshots/strengths_2026-09-22.json")
 WINDOW_FROM = "2026-09-22"
 RESULTS = Path("data/cache/history/results.csv")
 CLUBS_DIR = Path("data/processed")                     # python -m src.clubs.run
+CLUBS_LIVE = CLUBS_DIR / "live.json"
 # Próxima ventana: calendario curado a mano (fuentes en la columna `source`).
 FIXTURES = Path("data/raw/fixtures_2026-11.csv")
 ELO_NAMES = Path("data/cache/elo/teams.tsv")       # eloratings.net en.teams.tsv
@@ -306,6 +307,10 @@ def main() -> None:
             clubs[code] = lg
     html = re.sub(r"^const CLUBS=.*;$", lambda _: "const CLUBS=" + json.dumps(
         clubs, ensure_ascii=False, separators=(",", ":")) + ";", html, count=1, flags=re.M)
+    live = (json.loads(CLUBS_LIVE.read_text(encoding="utf-8"))   # python -m src.pipeline.daily
+            if CLUBS_LIVE.exists() else None)
+    html = re.sub(r"^const LIVE=.*;$", lambda _: "const LIVE=" + json.dumps(
+        live, ensure_ascii=False, separators=(",", ":")) + ";", html, count=1, flags=re.M)
     INDEX.write_text(html, encoding="utf-8")
     n_xg = sum(1 for b in bundle if "xf" in b)
     print(f"✅ {len(bundle)} equipos ({n_xg} con xG StatsBomb), {len(window)} partidos "
