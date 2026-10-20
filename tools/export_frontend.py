@@ -24,6 +24,7 @@ import re
 from datetime import date
 from pathlib import Path
 
+from src.clubs.leagues import LEAGUES
 from src.etl.scrapers import elo as elo_scraper
 from src.etl.scrapers import transfermarkt as tm
 from src.etl.scrapers.history import FIFA_TO_HISTORY
@@ -34,7 +35,7 @@ SNAPSHOT = Path("data/snapshots/strengths_2026-06-15.json")
 WINDOW_SNAPSHOT = Path("data/snapshots/strengths_2026-09-22.json")
 WINDOW_FROM = "2026-09-22"
 RESULTS = Path("data/cache/history/results.csv")
-CLUBS_PL = Path("data/processed/clubs_premier.json")   # python -m src.clubs.premier
+CLUBS_DIR = Path("data/processed")                     # python -m src.clubs.run
 # Próxima ventana: calendario curado a mano (fuentes en la columna `source`).
 FIXTURES = Path("data/raw/fixtures_2026-11.csv")
 ELO_NAMES = Path("data/cache/elo/teams.tsv")       # eloratings.net en.teams.tsv
@@ -296,10 +297,15 @@ def main() -> None:
                   "WINDOW", window)
     fixtures, proxies = build_fixtures(bundle)
     html = inject(inject(html, "NEXT", fixtures), "TEAMS_PROXY", proxies)
-    if CLUBS_PL.exists():
-        pl = json.loads(CLUBS_PL.read_text(encoding="utf-8"))
-        html = re.sub(r"^const PL=.*;$", lambda _: "const PL=" + json.dumps(
-            pl, ensure_ascii=False, separators=(",", ":")) + ";", html, count=1, flags=re.M)
+    clubs = {}
+    for code in LEAGUES:
+        path = CLUBS_DIR / f"clubs_{code}.json"
+        if path.exists():
+            lg = json.loads(path.read_text(encoding="utf-8"))
+            lg.pop("calendar", None)        # la web solo muestra los próximos 7 días
+            clubs[code] = lg
+    html = re.sub(r"^const CLUBS=.*;$", lambda _: "const CLUBS=" + json.dumps(
+        clubs, ensure_ascii=False, separators=(",", ":")) + ";", html, count=1, flags=re.M)
     INDEX.write_text(html, encoding="utf-8")
     n_xg = sum(1 for b in bundle if "xf" in b)
     print(f"✅ {len(bundle)} equipos ({n_xg} con xG StatsBomb), {len(window)} partidos "
