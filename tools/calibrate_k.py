@@ -144,15 +144,15 @@ def evaluate(k: float, ctx_mode: str, strengths: dict[str, TeamStrength]) -> dic
         lam_h, lam_a = expected_goals_pair(h, a, cx_h, cx_a, k=k)
         p = compute_match_probabilities(lam_h, lam_a)
         b = brier_3way(p.p_home, p.p_draw, p.p_away, m["real"])
-        l = log_loss_3way(p.p_home, p.p_draw, p.p_away, m["real"])
+        ll = log_loss_3way(p.p_home, p.p_draw, p.p_away, m["real"])
         briers.append(b)
-        losses.append(l)
-        by_kind[m["kind"]].append(l)
+        losses.append(ll)
+        by_kind[m["kind"]].append(ll)
         rows.append({
             "label": m["label"], "real": m["real"], "score": m["score"],
             "kind": m["kind"], "lam_h": lam_h, "lam_a": lam_a,
             "p1": p.p_home, "px": p.p_draw, "p2": p.p_away,
-            "brier": b, "logloss": l,
+            "brier": b, "logloss": ll,
         })
     return {
         "k": k, "mode": ctx_mode,

@@ -1,5 +1,5 @@
 """Tests del modulo de cuotas analiticas."""
-from src.betting.odds import compute_match_probabilities, MatchProbabilities
+from src.betting.odds import MatchProbabilities, compute_match_probabilities
 
 
 def test_probabilidades_suman_uno():

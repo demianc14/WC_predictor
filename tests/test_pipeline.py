@@ -1,6 +1,5 @@
 """Tests del ETL y del modelo de probabilidad."""
-from src.etl.pipeline import (compute_likelihood, compute_posterior,
-                              compute_prior, extract, transform, validate_rows)
+from src.etl.pipeline import compute_posterior, extract, transform, validate_rows
 
 
 def test_extract_carga_48_equipos():

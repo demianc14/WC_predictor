@@ -23,7 +23,6 @@ viejo (1.0 = promedio del torneo), para que el match engine no cambie.
 """
 from __future__ import annotations
 
-from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, timedelta
 
@@ -161,7 +160,6 @@ def compute_dynamic_form(
 
 
 if __name__ == "__main__":
-    import csv
     import json
     from pathlib import Path
 

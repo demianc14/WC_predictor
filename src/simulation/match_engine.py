@@ -80,7 +80,10 @@ def expected_goals_pair(
     defe_away_eff = away.defe * resilience_modifier(away.resilience, s_h - s_a)
     lam_h = base * home.att * defe_away_eff * math.exp(k * (s_h - s_a))
     lam_a = base * away.att * defe_home_eff * math.exp(k * (s_a - s_h))
-    clamp = lambda x: min(MAX_LAMBDA, max(MIN_LAMBDA, x))
+
+    def clamp(x: float) -> float:
+        return min(MAX_LAMBDA, max(MIN_LAMBDA, x))
+
     return clamp(lam_h), clamp(lam_a)
 
 

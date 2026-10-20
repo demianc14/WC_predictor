@@ -89,8 +89,9 @@ class TeamStrength(BaseModel):
     defe: float = Field(default=1.0, ge=0.2, le=2.5,
                         description="Multiplicador defensivo (>1 = concede más que el promedio)")
     resilience: float = Field(default=0.5, ge=0.0, le=1.0,
-                              description="Capacidad de competir vs equipos superiores (0=frágil, 1=temple). "
-                                          "Se aplica como bonus defensivo SOLO cuando hay brecha de clase.")
+                              description="Capacidad de competir vs equipos superiores "
+                                          "(0=frágil, 1=temple). Se aplica como bonus defensivo "
+                                          "SOLO cuando hay brecha de clase.")
 
     def final_strength(self, context: float = 0.5) -> float:
         """Fuerza final = 70% posterior + 30% contexto del partido.
@@ -132,7 +133,8 @@ class MatchResult(BaseModel):
 
     @property
     def scoreline(self) -> str:
-        extra = " (pen.)" if self.went_to_penalties else (" (pró.)" if self.went_to_extra_time else "")
+        extra = (" (pen.)" if self.went_to_penalties
+                 else " (pró.)" if self.went_to_extra_time else "")
         return f"{self.home} {self.home_goals}-{self.away_goals} {self.away}{extra}"
 
 

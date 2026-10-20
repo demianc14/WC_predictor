@@ -9,6 +9,7 @@ description = "Predictor de fútbol de selecciones: fuerzas bayesianas, xG de St
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "numpy>=1.26.0",
     "pandas>=2.2.0",
     "pydantic>=2.7.0",
     "python-dotenv>=1.0.0",
@@ -35,3 +36,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# catálogo de eventos: una fila por evento se lee mejor que partida
+"src/agents/breaking_news.py" = ["E501"]

@@ -1,8 +1,9 @@
 """Tests del modulo de resiliencia y el modificador en el match engine."""
-from src.etl.models import TeamStrength
 from src.etl.resilience import _shrink
 from src.simulation.match_engine import (
-    RESILIENCE_GAP_SATURATION, RESILIENCE_GAP_THRESHOLD, RESILIENCE_MAX_REDUCTION,
+    RESILIENCE_GAP_SATURATION,
+    RESILIENCE_GAP_THRESHOLD,
+    RESILIENCE_MAX_REDUCTION,
     resilience_modifier,
 )
 

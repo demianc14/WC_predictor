@@ -255,8 +255,8 @@ if __name__ == "__main__":
         codes = [r["fifa_code"] for r in csv.DictReader(f)]
     breakdowns = compute_all(codes)
     rows = sorted(breakdowns.values(), key=lambda b: -b.score)
-    print(f"{'fifa':5s} {'score':>6s}  {'noLoss_top':>10s} {'CS_top':>7s} {'comeback':>9s} {'comp_wr':>8s}  "
-          f"{'n_top':>5s} {'n_HT':>4s} {'n_comp':>6s}")
+    print(f"{'fifa':5s} {'score':>6s}  {'noLoss_top':>10s} {'CS_top':>7s} {'comeback':>9s} "
+          f"{'comp_wr':>8s}  {'n_top':>5s} {'n_HT':>4s} {'n_comp':>6s}")
     for b in rows:
         print(f"{b.fifa_code:5s} {b.score:6.3f}  "
               f"{b.no_loss_vs_top:10.3f} {b.clean_sheet_vs_top:7.3f} "

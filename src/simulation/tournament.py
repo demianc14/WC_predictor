@@ -173,7 +173,9 @@ class TournamentSimulator:
         for g in GROUPS:
             res.group_matches[g], res.group_tables[g] = self._play_group(g)
 
-        key = lambda s: (s.points, s.goal_diff, s.goals_for)
+        def key(s):
+            return (s.points, s.goal_diff, s.goals_for)
+
         thirds = sorted(((g, res.group_tables[g][2]) for g in GROUPS),
                         key=lambda t: key(t[1]), reverse=True)
         qual_thirds = [g for g, _ in thirds[:8]]

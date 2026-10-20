@@ -4,9 +4,14 @@ import random
 import pytest
 
 from src.etl.models import Stage, TeamStrength
-from src.simulation.match_engine import (BASE, RHO, expected_goals_pair,
-                                         poisson_sample, sample_score_dc,
-                                         simulate_match, tau)
+from src.simulation.match_engine import (
+    BASE,
+    expected_goals_pair,
+    poisson_sample,
+    sample_score_dc,
+    simulate_match,
+    tau,
+)
 
 
 def make(code, post, att, defe):

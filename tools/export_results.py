@@ -103,7 +103,6 @@ def main() -> None:
             score = [as_, hs] if swap else [hs, as_]  # orientado al CSV
             key = f"{g}|{idx}"
             fixed[key] = score
-            ti = groups[g][0:][:]  # not used; clarity
             matches.append({
                 "key": key, "date": r["date"], "group": g,
                 "home": ha, "away": aw, "score": f"{hs}-{as_}",
@@ -129,7 +128,8 @@ def main() -> None:
                               ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"✅ {len(fixed)} partidos de grupos jugados -> {OUT}")
     for m in matches:
-        print(f"   [{m['key']}] {m['date']}  {m['home']} {m['score']} {m['away']}  (grupo {m['group']})")
+        print(f"   [{m['key']}] {m['date']}  {m['home']} {m['score']} {m['away']}"
+              f"  (grupo {m['group']})")
 
 
 if __name__ == "__main__":

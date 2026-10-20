@@ -171,7 +171,7 @@ def transform(teams: list[Team]) -> list[TeamStrength]:
     strengths = []
     for t in teams:
         p = compute_prior(t)
-        l = compute_likelihood(t)
+        lik = compute_likelihood(t)
         form = forms.get(t.fifa_code)
         att = form.att_dyn if form else csv_att[t.fifa_code]
         defe = form.defe_dyn if form else csv_defe[t.fifa_code]
@@ -181,8 +181,8 @@ def transform(teams: list[Team]) -> list[TeamStrength]:
                 name=t.name,
                 group=t.group,
                 prior=p,
-                likelihood=l,
-                posterior=compute_posterior(p, l),
+                likelihood=lik,
+                posterior=compute_posterior(p, lik),
                 att=att,
                 defe=defe,
                 resilience=resilience_map.get(t.fifa_code, 0.5),

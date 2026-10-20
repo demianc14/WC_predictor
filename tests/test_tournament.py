@@ -3,8 +3,7 @@ import random
 
 from src.agents.breaking_news import BreakingNewsEngine
 from src.etl.pipeline import extract, transform, validate_rows
-from src.simulation.tournament import (R32, TournamentSimulator, assign_thirds,
-                                       monte_carlo)
+from src.simulation.tournament import R32, TournamentSimulator, assign_thirds, monte_carlo
 
 
 def get_strengths():

@@ -124,7 +124,8 @@ def main() -> None:
     p_h2h.add_argument("-n", type=int, default=10000)
     p_h2h.add_argument("--seed", type=int, default=None)
     p_h2h.add_argument("--group", action="store_true", help="Partido de grupos (admite empate)")
-    p_h2h.add_argument("--ctx-home", type=float, default=None, help="Contexto equipo A [0-1], 0.5 neutro")
+    p_h2h.add_argument("--ctx-home", type=float, default=None,
+                       help="Contexto equipo A [0-1], 0.5 neutro")
     p_h2h.add_argument("--ctx-away", type=float, default=None, help="Contexto equipo B [0-1]")
 
     p_bt = sub.add_parser("backtest", help="Calibración contra los resultados reales del 2026")

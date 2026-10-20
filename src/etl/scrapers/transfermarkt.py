@@ -49,7 +49,8 @@ FIFA_TO_QUERY: dict[str, str] = {
     "ENG": "England", "CRO": "Croatia", "GHA": "Ghana", "PAN": "Panama",
 }
 
-# El valor viene como:  ...market-value-wrapper"><span class="waehrung">€</span>1.22<span class="waehrung">bn</span>
+# El valor viene como:
+#   ...market-value-wrapper"><span class="waehrung">€</span>1.22<span class="waehrung">bn</span>
 # IDs verificados a mano para selecciones que la busqueda confunde con
 # territorios homonimos que TAMBIEN tienen categorias juveniles (la heuristica
 # del companero juvenil no basta): USA vs Islas Virgenes, FRA vs Guayana Francesa.

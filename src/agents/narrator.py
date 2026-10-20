@@ -13,7 +13,7 @@ import os
 
 from dotenv import load_dotenv
 
-from src.etl.models import MatchResult, Stage
+from src.etl.models import MatchResult
 
 load_dotenv()
 
