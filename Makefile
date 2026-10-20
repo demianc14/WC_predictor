@@ -1,5 +1,6 @@
 # Atajos del proyecto. Sin Docker: make test / make daily / make train.
 # Con Docker: make docker-build y después make docker-test / docker-daily / docker-serve.
+# (docker-test y docker-train usan la imagen :ml; docker-daily y docker-serve, la liviana)
 
 PY ?= python
 IMAGE ?= wc-predictor
@@ -26,19 +27,22 @@ leagues:
 serve:
 	$(PY) -m http.server 8000 --directory app
 
+BUILD_ARGS = --build-arg MODEL_VERSION=$$(git rev-parse --short HEAD:src/clubs) \
+	--build-arg GIT_COMMIT=$$(git rev-parse --short HEAD)
+
+# dos imágenes: $(IMAGE) (ciclo diario y web, liviana) y $(IMAGE):ml (entrenamiento y tests)
 docker-build:
-	docker build -t $(IMAGE) \
-		--build-arg MODEL_VERSION=$$(git rev-parse --short HEAD:src/clubs) \
-		--build-arg GIT_COMMIT=$$(git rev-parse --short HEAD) .
+	docker build --target app -t $(IMAGE) $(BUILD_ARGS) .
+	docker build --target ml -t $(IMAGE):ml $(BUILD_ARGS) .
 
 docker-test:
-	docker run --rm $(IMAGE) pytest -q
+	docker run --rm $(IMAGE):ml pytest -q
 
 docker-daily:
 	$(DOCKER_RUN) -v "$$PWD/app:/app/app" $(IMAGE) python -m src.pipeline.daily
 
 docker-train:
-	$(DOCKER_RUN) -v "$$PWD/docs:/app/docs" $(IMAGE) python -m src.ml.train --leagues all
+	$(DOCKER_RUN) -v "$$PWD/docs:/app/docs" $(IMAGE):ml python -m src.ml.train --leagues all
 
 docker-serve:
 	docker run --rm -p 8000:8000 $(IMAGE) python -m http.server 8000 --directory app

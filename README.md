@@ -104,20 +104,26 @@ gh workflow run daily.yml         # en GitHub
 
 ## Reproducir con Docker
 
-Sin instalar Python: la imagen (`python:3.11-slim`, la misma versión que CI) trae el código y las dependencias, corre con un usuario sin privilegios y no lleva datos ni secretos. Los datos viven fuera y se montan:
+Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11-slim` (la misma versión que CI). Las dos corren con un usuario sin privilegios y no llevan datos ni secretos:
+
+| Imagen | Para qué | Tamaño |
+|---|---|---|
+| `wc-predictor` | ciclo diario, web, ligas, partido y cuotas (solo el núcleo: numpy, pandas, pydantic) | 439 MB |
+| `wc-predictor:ml` | entrenamiento del modelo supervisado y la suite de tests (suma scikit-learn y pytest) | 742 MB |
 
 ```bash
-make docker-build    # docker build -t wc-predictor con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor pytest -q  → los mismos 109 tests que CI
+make docker-build    # construye las dos con la versión del modelo y el commit de git
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 110 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
+make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
 ```
 
-- **Qué se monta**: `./data` (caché de las fuentes, JSON procesados, almacén de predicciones y artefactos de ML) en `/app/data`, y para el ciclo diario también `./app`, porque actualiza la web. `make docker-train` monta además `./docs` para escribir el reporte de ML.
-- **Versión del modelo**: dentro del contenedor no hay `.git`, así que `make docker-build` graba en la imagen el hash de `src/clubs/` y el commit. Una predicción hecha desde Docker lleva la misma versión que las del bot y no se duplica.
-- **Fuera de la imagen** (`.dockerignore`): `.git`, entornos, cachés, `data/cache`, `data/ml`, `data/processed`, `data/predictions` y `docs`. El código y los tests ocupan menos de 1 MB; el resto de la imagen son numpy, pandas, scipy y scikit-learn.
-- `ANTHROPIC_API_KEY` es opcional (solo para las crónicas del narrador) y entra en tiempo de ejecución con `-e`, nunca en la imagen.
-- CI construye la imagen y corre la suite adentro en cada push (`make docker-build docker-test`).
+- **Qué se monta**: `./data` (caché de las fuentes, JSON procesados, almacén de predicciones y artefactos de ML) en `/app/data`. El ciclo diario monta también `./app`, porque actualiza la web, y el entrenamiento monta `./docs`, porque escribe el reporte.
+- **Versión del modelo**: dentro del contenedor no hay `.git`, así que `make docker-build` graba en las imágenes el hash de `src/clubs/` y el commit. Una predicción hecha desde Docker lleva la misma versión que las del bot y no se duplica.
+- **Dependencias opcionales**: `pip install ".[ml]"` (scikit-learn, para `src/ml`), `".[llm]"` (anthropic, para las crónicas generativas) y `".[dev]"` (todo, más las herramientas). `ANTHROPIC_API_KEY` entra en tiempo de ejecución con `-e`, nunca en la imagen; sin el paquete o sin clave, el narrador usa plantillas.
+- **Fuera de las imágenes** (`.dockerignore`): `.git`, entornos, cachés, `data/cache`, `data/ml`, `data/processed`, `data/predictions` y `docs`.
+- **CI** construye las imágenes y corre la suite adentro en cada push (`make docker-build docker-test`).
 
 ## Arquitectura
 
@@ -140,7 +146,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 109 tests, sin red
+pytest                                 # 110 tests, sin red
 ruff check .                           # lo mismo que corre CI
 ```
 

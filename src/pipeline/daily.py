@@ -33,7 +33,7 @@ import numpy as np
 from src.clubs import calendar, data, run
 from src.clubs.backtest import no_vig
 from src.clubs.leagues import LEAGUES, League
-from src.ml.evaluate import summary
+from src.ml.metrics import summary
 from src.pipeline import store
 
 MODEL = "dixon-coles"
