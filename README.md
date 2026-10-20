@@ -1,5 +1,7 @@
 # 🏆 World Cup Predictor
 
+[![CI](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml)
+
 > El proyecto nació como predictor del **Mundial 2026** (grupos reales del sorteo del 5-dic-2025) y de ahí conserva el nombre. Terminado el torneo (🇪🇸 España campeona, 1-0 a Argentina el 19-jul), hoy es un **predictor de fútbol de selecciones** para la temporada internacional 2026-27. El Mundial quedó como archivo.
 
 - **Datos al 6-oct-2026**: incluye la ventana del 23-sep al 6-oct (UEFA y Concacaf Nations League, clasificación a la Copa África, amistosos)
@@ -61,8 +63,11 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 53 tests
+pytest                                 # 57 tests, sin red
+ruff check .                           # lo mismo que corre CI
 ```
+
+**Datos versionados:** `data/cache/` (~18 MB) va en el repo a propósito: con la caché, el ETL, los backtests y las cifras de este README se reproducen sin red y aunque una fuente cambie o desaparezca. Las temporadas cerradas no se vuelven a bajar; lo vivo se refresca cada 12 h.
 
 **Interfaz para amigos:** abre `app/index.html` en el navegador. Sin servidor, sin instalación. Tras cada `etl`, correr `python -m tools.export_frontend` para actualizarla. La vista "Última ventana" compara contra `data/snapshots/strengths_2026-09-22.json` (fuerzas congeladas antes de la ventana); en la próxima fecha FIFA, guardar un snapshot nuevo y actualizar `WINDOW_SNAPSHOT`/`WINDOW_FROM` en `tools/export_frontend.py`.
 
