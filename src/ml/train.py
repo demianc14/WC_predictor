@@ -58,9 +58,10 @@ def comparable(df: pd.DataFrame, seasons: tuple[str, ...], need_market: bool) ->
 def select(df: pd.DataFrame, quick: bool) -> tuple[dict[str, Spec], list[dict]]:
     sample = comparable(df, dataset.VALID, need_market=False)
     y = df.loc[sample, "y"].to_numpy()
-    chosen, table = {}, []
+    chosen: dict[str, Spec] = {}
+    table: list[dict] = []
     for family, specs in grid(quick).items():
-        best = None
+        best: tuple[Spec, float] | None = None
         for spec in specs:
             p = evaluate.walk_forward(df, spec, dataset.VALID)[sample]
             s = evaluate.summary(y, p)
@@ -68,6 +69,7 @@ def select(df: pd.DataFrame, quick: bool) -> tuple[dict[str, Spec], list[dict]]:
             print(f"   validación {spec.label}: log-loss {s['logloss']:.4f}, RPS {s['rps']:.4f}")
             if best is None or s["logloss"] < best[1]:
                 best = (spec, s["logloss"])
+        assert best is not None                            # cada familia tiene candidatos
         chosen[family] = best[0]
     s = evaluate.summary(y, df.loc[sample, DC].to_numpy())
     table.append({"model": "Dixon-Coles", "family": "dc", **s})
@@ -83,7 +85,8 @@ def ablation(df: pd.DataFrame, c: float) -> list[dict]:
              ("+ descanso", features.FEATURES_REST),
              ("+ liga", features.LEAGUE_COLS),
              ("+ Dixon-Coles", features.FEATURES_DC)]
-    cols, out = [], []
+    cols: list[str] = []
+    out: list[dict] = []
     for name, add in steps:
         cols = cols + list(add)
         p = evaluate.walk_forward(df, Spec("logit_ablation", tuple(cols), {"C": c}),

@@ -26,6 +26,7 @@ import random
 from dataclasses import asdict, dataclass
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 from src.betting.odds import joint_matrix
 from src.etl.models import TeamStrength
@@ -210,14 +211,14 @@ def score_matches(matches: list[RealMatch], strengths: dict[str, TeamStrength],
                              "logloss": log_loss(p[idx]),
                              "hit": max(range(3), key=lambda i: p[i]) == idx}
         else:
-            preds = {"modelo": model_advance(h, a, params), "elo": we, "uniforme": 0.5}
+            adv_preds = {"modelo": model_advance(h, a, params), "elo": we, "uniforme": 0.5}
             adv = m.home_advanced
             row["advanced"] = m.home if adv else m.away
-            for name, p in preds.items():
-                row[name] = {"p": round(p, 4),
-                             "brier": brier_binary(p, adv),
-                             "logloss": log_loss(p if adv else 1.0 - p),
-                             "hit": (p > 0.5) == adv}
+            for name, q in adv_preds.items():
+                row[name] = {"p": round(q, 4),
+                             "brier": brier_binary(q, adv),
+                             "logloss": log_loss(q if adv else 1.0 - q),
+                             "hit": (q > 0.5) == adv}
         rows.append(row)
     return rows
 
@@ -231,7 +232,7 @@ def paired_bootstrap(diffs: list[float], n: int = BOOTSTRAP_SAMPLES,
 
 
 def summarize(rows: list[dict], metrics: tuple[str, ...]) -> dict:
-    out = {}
+    out: dict[str, Any] = {}
     for name in ("modelo", "elo", "uniforme"):
         out[name] = {mt: sum(r[name][mt] for r in rows) / len(rows) for mt in metrics}
         out[name]["acierto"] = sum(r[name]["hit"] for r in rows) / len(rows)

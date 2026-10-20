@@ -21,7 +21,8 @@ def no_vig(odds: tuple[float, float, float]) -> tuple[float, float, float]:
 
 
 def _outcome(m: Match) -> int:
-    return 0 if m.hg > m.ag else 1 if m.hg == m.ag else 2
+    hg, ag = m.score()
+    return 0 if hg > ag else 1 if hg == ag else 2
 
 
 def walk_forward(matches: list[Match], div: str, seasons: list[str], xi: float = XI,
@@ -43,6 +44,7 @@ def walk_forward(matches: list[Match], div: str, seasons: list[str], xi: float =
                 if m.home not in r.att or m.away not in r.att:
                     continue
                 ph, pd, pa, _ = r.probs(m.home, m.away)
+                assert m.odds is not None             # `target` solo trae partidos con cuotas
                 out.append({"season": m.season, "day": m.day.isoformat(),
                             "home": m.home, "away": m.away,
                             "o": _outcome(m), "model": [ph, pd, pa], "market": list(no_vig(m.odds)),

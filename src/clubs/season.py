@@ -12,7 +12,8 @@ from src.clubs.model import Ratings
 def current_table(played: list[Match], teams: list[str]) -> dict[str, dict]:
     t = {c: {"pj": 0, "pts": 0, "gf": 0, "gc": 0} for c in teams}
     for m in played:
-        for c, gf, gc in ((m.home, m.hg, m.ag), (m.away, m.ag, m.hg)):
+        hg, ag = m.score()
+        for c, gf, gc in ((m.home, hg, ag), (m.away, ag, hg)):
             t[c]["pj"] += 1
             t[c]["gf"] += gf
             t[c]["gc"] += gc

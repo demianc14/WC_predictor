@@ -40,6 +40,12 @@ class Match:
     def played(self) -> bool:
         return self.hg is not None
 
+    def score(self) -> tuple[int, int]:
+        """(goles local, goles visita) de un partido jugado; falla si no se jugó."""
+        if self.hg is None or self.ag is None:
+            raise ValueError(f"{self.home}-{self.away} ({self.day}) no se jugó")
+        return self.hg, self.ag
+
 
 def _fresh(path: Path, permanent: bool) -> bool:
     if not path.exists() or path.stat().st_size == 0:
@@ -71,7 +77,7 @@ def ensure_fixtures(force: bool = False) -> Path:
 
 def _num(v: str | None) -> float | None:
     try:
-        return float(v) if v not in (None, "") else None
+        return float(v) if v else None
     except ValueError:
         return None
 

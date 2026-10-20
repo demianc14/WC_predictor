@@ -44,3 +44,10 @@ select = ["E", "W", "F", "I"]
 [tool.ruff.lint.per-file-ignores]
 # catálogo de eventos: una fila por evento se lee mejor que partida
 "src/agents/breaking_news.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src", "tools"]
+explicit_package_bases = true
+# pandas, sklearn y joblib no traen stubs instalados
+ignore_missing_imports = true

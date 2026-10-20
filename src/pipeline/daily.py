@@ -116,10 +116,11 @@ def results(matches: list[data.Match]) -> dict[str, dict]:
     for m in matches:
         if not m.played:
             continue
+        hg, ag = m.score()
         mk = no_vig(m.odds) if m.odds else ("", "", "")
         out[store.match_id(m.div, m.season, m.home, m.away)] = {
-            "result": "H" if m.hg > m.ag else "D" if m.hg == m.ag else "A",
-            "hg": m.hg, "ag": m.ag,
+            "result": "H" if hg > ag else "D" if hg == ag else "A",
+            "hg": hg, "ag": ag,
             **{c: (f"{v:.4f}" if v != "" else "") for c, v in zip(("mk1", "mkx", "mk2"), mk)}}
     return out
 
@@ -162,9 +163,9 @@ def _git(*args: str) -> str:
 
 def model_version() -> tuple[str, str]:
     """(versión del modelo, commit). En Docker no hay .git: vienen del build (WCP_*)."""
-    env = os.environ.get("WCP_MODEL_VERSION"), os.environ.get("WCP_COMMIT")
-    if all(env) and env[0] != "desconocida":
-        return env[0], env[1]
+    version, commit = os.environ.get("WCP_MODEL_VERSION"), os.environ.get("WCP_COMMIT")
+    if version and commit and version != "desconocida":
+        return version, commit
     try:
         return (_git("rev-parse", "--short", "HEAD:src/clubs"),
                 _git("rev-parse", "--short", "HEAD"))

@@ -146,8 +146,9 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
-pytest                                 # 110 tests, sin red
+pytest                                 # 111 tests, sin red
 ruff check .                           # lo mismo que corre CI
+mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```
 
 **Datos versionados:** `data/cache/` (~18 MB) va en el repo a propósito: con la caché, el ETL, los backtests y las cifras de este README se reproducen sin red y aunque una fuente cambie o desaparezca. Las temporadas cerradas no se vuelven a bajar; lo vivo se refresca cada 12 h.

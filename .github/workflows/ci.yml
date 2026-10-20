@@ -19,6 +19,7 @@ jobs:
           cache: pip
       - run: pip install -e ".[dev]"
       - run: ruff check .
+      - run: mypy
       # la suite es hermética (tests/conftest.py bloquea la red)
       - run: pytest
 

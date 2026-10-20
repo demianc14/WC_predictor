@@ -35,6 +35,7 @@ def narrate(match: MatchResult, use_llm: bool = False) -> str:
 
     try:
         import anthropic
+        from anthropic.types import TextBlock
 
         client = anthropic.Anthropic()
         news = ("Contexto previo: " + "; ".join(match.news)) if match.news else ""
@@ -50,6 +51,7 @@ def narrate(match: MatchResult, use_llm: bool = False) -> str:
                 ),
             }],
         )
-        return msg.content[0].text.strip()
+        text = "".join(b.text for b in msg.content if isinstance(b, TextBlock)).strip()
+        return text or _offline_narration(match)
     except Exception:  # noqa: BLE001 - sin red o sin créditos: degradar
         return _offline_narration(match)

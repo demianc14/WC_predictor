@@ -18,6 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
+from typing import Any
 from urllib.request import Request, urlopen
 
 BASE_URL = "https://raw.githubusercontent.com/statsbomb/open-data/master/data"
@@ -71,7 +72,7 @@ class TeamMatch:
     shots: int
 
 
-def _get_json(url: str) -> object:
+def _get_json(url: str) -> Any:
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (WC_predictor/1.0)"})
     with urlopen(req, timeout=60) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -148,7 +149,7 @@ def team_rows(match: dict, summary: dict, competition: str) -> list[TeamMatch]:
             goals=goals[team], goals_against=goals[opp],
             xg=round(agg[team]["xg"], 4), np_xg=round(agg[team]["np"], 4),
             xg_against=round(agg[opp]["xg"], 4), np_xg_against=round(agg[opp]["np"], 4),
-            shots=agg[team]["n"],
+            shots=int(agg[team]["n"]),
         ))
     return rows
 
