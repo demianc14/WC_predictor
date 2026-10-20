@@ -14,3 +14,5 @@ build/
 htmlcov/
 .impeccable/
 .DS_Store
+data/ml/runs/*/models/
+data/ml/cache/
