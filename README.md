@@ -36,9 +36,9 @@ python -m tools.export_frontend        # lo inyecta en la web
 | Temporada | Partidos | Brier modelo | Brier mercado |
 |---|---|---|---|
 | 2025-26 | 380 | 0.623 | **0.608** |
-| 2026-27 (hasta el 12-oct) | 60 | **0.621** | 0.634 |
+| 2026-27 (hasta el 19-oct) | 70 | **0.597** | 0.601 |
 
-En una temporada completa el mercado es más preciso. Los 60 partidos de este año no alcanzan para decir lo contrario. Apostar cada discrepancia de más de 5% habría perdido 20% en 2025-26, así que la web muestra dónde discrepa el modelo, no "valor".
+En una temporada completa el mercado es más preciso. Los 70 partidos de este año no alcanzan para decir lo contrario. Apostar cada discrepancia de más de 5% habría perdido 20% en 2025-26, así que la web muestra dónde discrepa el modelo, no "valor".
 
 ## Arquitectura
 
