@@ -17,6 +17,20 @@
   - **Ligas · cinco grandes**: un selector de liga y, para cada una, tabla proyectada (10.000 temporadas simuladas), próxima jornada contra las cuotas, partido y cuotas entre cualquier par de clubes, ranking (xPts contra un rival promedio, ataque contra defensa) y backtest contra el mercado
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
+## La web en imágenes
+
+![Inicio de la web: selecciones 2026-27, con la próxima ventana y el ranking](docs/img/web.png)
+
+Un recorrido por las vistas: inicio, próxima ventana, tabla proyectada, jornada contra las cuotas, el modelo contra el mercado, ranking y el cuadro del Mundial.
+
+![Recorrido por la web](docs/img/web.gif)
+
+En el celular (inicio, tabla, próxima jornada y "¿le gana al mercado?"):
+
+![La web en el celular](docs/img/web-movil.png)
+
+Capturas de la web real al 21-oct-2026, generadas con `python -m tools.capturas` (Chrome headless). El mismo script escribe las portadas para compartir el proyecto: [`linkedin-1200x627.png`](docs/img/linkedin-1200x627.png) y [`linkedin-1080x1350.png`](docs/img/linkedin-1080x1350.png).
+
 ## xG de StatsBomb
 
 `src/etl/scrapers/statsbomb.py` baja los eventos de cada partido una sola vez y guarda solo un resumen de tiros (`data/cache/statsbomb/shots/`, ~1.8 MB para los 250 partidos). `src/etl/xg_ratings.py` ajusta `npxG(i vs j) ≈ MU × ataque_i × defensa_j` por mínimos cuadrados ponderados, con peso `exp(-edad/730 días)` y 2 partidos ficticios de shrinkage. El ETL mezcla ese xG con el del CSV según la muestra efectiva de cada equipo (`n_eff / (n_eff + 2)`) y escribe el detalle en `data/processed/xg_statsbomb.json`.
@@ -150,6 +164,7 @@ python -m src.cli h2h BRA MAR          # Brasil vs Marruecos
 python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real?
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
+python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
 pytest                                 # 111 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)

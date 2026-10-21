@@ -30,6 +30,7 @@ python -m src.ml.train --leagues all      # entrena y regenera docs/RESULTADOS_M
 python -m src.ml.report data/ml/runs/<run>  # regenera el reporte sin reentrenar
 python -m src.pipeline.daily              # ciclo diario completo (descarga, predice, exporta)
 python -m tools.export_frontend           # reinyecta los datos en app/index.html
+python -m tools.capturas                  # capturas, GIF y portadas → docs/img/ (pillow + Chrome)
 make docker-build docker-test             # imágenes wc-predictor (app) y wc-predictor:ml
 ```
 
