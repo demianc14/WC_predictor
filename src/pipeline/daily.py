@@ -33,7 +33,7 @@ import numpy as np
 from src.clubs import calendar, data, run
 from src.clubs.backtest import no_vig
 from src.clubs.leagues import LEAGUES, League
-from src.ml.evaluate import summary
+from src.ml.metrics import summary
 from src.pipeline import store
 
 MODEL = "dixon-coles"
@@ -161,7 +161,16 @@ def _git(*args: str) -> str:
 
 
 def model_version() -> tuple[str, str]:
-    return _git("rev-parse", "--short", "HEAD:src/clubs"), _git("rev-parse", "--short", "HEAD")
+    """(versión del modelo, commit). En Docker no hay .git: vienen del build (WCP_*)."""
+    env = os.environ.get("WCP_MODEL_VERSION"), os.environ.get("WCP_COMMIT")
+    if all(env) and env[0] != "desconocida":
+        return env[0], env[1]
+    try:
+        return (_git("rev-parse", "--short", "HEAD:src/clubs"),
+                _git("rev-parse", "--short", "HEAD"))
+    except (OSError, subprocess.CalledProcessError) as e:
+        raise RuntimeError("Sin versión del modelo: corre desde el repo con git, o construye "
+                           "la imagen con `make docker-build`") from e
 
 
 def cycle(now: datetime, leagues: list[League], *, fetcher: Callable[[], None],

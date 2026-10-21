@@ -1,0 +1,21 @@
+# fuera de la imagen: historia de git, entornos y cachés locales
+.git
+.github
+.venv
+venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.claude
+.impeccable
+.env
+.DS_Store
+# datos pesados o regenerables: se montan con -v ./data:/app/data
+data/cache
+data/ml
+data/processed
+data/predictions
+# documentación del proyecto (el reporte de ML se escribe montando ./docs)
+docs

@@ -21,3 +21,10 @@ jobs:
       - run: ruff check .
       # la suite es hermética (tests/conftest.py bloquea la red)
       - run: pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # la imagen se construye y la suite corre adentro, igual que en local
+      - run: make docker-build docker-test
