@@ -38,6 +38,11 @@ class Fixture:
     def played(self) -> bool:
         return self.hg is not None
 
+    def score(self) -> tuple[int, int]:
+        if self.hg is None or self.ag is None:
+            raise ValueError(f"{self.home}-{self.away} ({self.day}) no se jugó")
+        return self.hg, self.ag
+
 
 def ensure_calendar(lg: League, force: bool = False) -> list[dict]:
     path = data.CACHE_DIR / f"calendar_{lg.feed}_{SEASON_YEAR}.json"
@@ -69,12 +74,12 @@ def match_names(cal: list[Fixture], played: list[data.Match]) -> dict[str, str]:
     """
     by_score: dict[tuple[int, int], list[data.Match]] = {}
     for m in played:
-        by_score.setdefault((m.hg, m.ag), []).append(m)
+        by_score.setdefault(m.score(), []).append(m)
     votes: dict[str, Counter] = {}
     for f in cal:
         if not f.played:
             continue
-        for m in by_score.get((f.hg, f.ag), []):
+        for m in by_score.get(f.score(), []):
             if abs((m.day - f.day).days) <= 1:
                 votes.setdefault(f.home, Counter())[m.home] += 1
                 votes.setdefault(f.away, Counter())[m.away] += 1

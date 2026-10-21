@@ -65,8 +65,8 @@ def fit(matches: list[Match], ref: date, xi: float = XI, xg_weight: float = XG_W
 
     def target(g: int, xg: float | None) -> float:
         return g if xg is None else (1 - xg_weight) * g + xg_weight * xg
-    yh = np.array([target(m.hg, m.hxg) for m in played])
-    ya = np.array([target(m.ag, m.axg) for m in played])
+    yh = np.array([target(m.score()[0], m.hxg) for m in played])
+    ya = np.array([target(m.score()[1], m.axg) for m in played])
 
     n = len(teams)
     att, dfn = np.ones(n), np.ones(n)
@@ -106,7 +106,7 @@ def fit_rho(r: Ratings, played: list[Match], w: np.ndarray) -> float:
     for rho in np.arange(-0.25, 0.101, 0.01):
         ll = 0.0
         for (lh, la), m, wi in zip(lam, played, w):
-            x, y = m.hg, m.ag
+            x, y = m.score()
             if x > 1 or y > 1:
                 continue
             t = {(0, 0): 1 - lh * la * rho, (0, 1): 1 + lh * rho,

@@ -49,7 +49,8 @@ FEATURES_FULL = FEATURES_BASIC + FEATURES_DC
 
 
 def outcome(m: Match) -> int:
-    return 0 if m.hg > m.ag else 1 if m.hg == m.ag else 2
+    hg, ag = m.score()
+    return 0 if hg > ag else 1 if hg == ag else 2
 
 
 def _country(div: str) -> str:
@@ -91,12 +92,13 @@ def elo_form_rest(matches: list[Match], top_divs: set[str]) -> dict[tuple, dict]
             kh, ka = (_country(m.div), m.home), (_country(m.div), m.away)
             rh, ra = elo.get(kh, start), elo.get(ka, start)
             exp_h = 1 / (1 + 10 ** (-(rh + ELO_HOME - ra) / 400))
-            s = 1.0 if m.hg > m.ag else 0.5 if m.hg == m.ag else 0.0
+            hg, ag = m.score()
+            s = 1.0 if hg > ag else 0.5 if hg == ag else 0.0
             elo[kh] = rh + ELO_K * (s - exp_h)
             elo[ka] = ra - ELO_K * (s - exp_h)
-            pts = 3 if m.hg > m.ag else 1 if m.hg == m.ag else 0
-            hist[kh].append((pts, m.hg, m.ag))
-            hist[ka].append((3 - pts if pts != 1 else 1, m.ag, m.hg))
+            pts = 3 if hg > ag else 1 if hg == ag else 0
+            hist[kh].append((pts, hg, ag))
+            hist[ka].append((3 - pts if pts != 1 else 1, ag, hg))
             last[kh] = last[ka] = day
     return out
 

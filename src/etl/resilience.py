@@ -116,7 +116,7 @@ def _ht_score_lookup(goals: list[dict]) -> dict[tuple, tuple[int, int]]:
             ht_goals[key][0] += 1
         else:
             ht_goals[key][1] += 1
-    return {k: tuple(v) for k, v in ht_goals.items()}
+    return {k: (v[0], v[1]) for k, v in ht_goals.items()}
 
 
 # ─── computos por equipo ────────────────────────────────────────────

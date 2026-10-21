@@ -23,6 +23,7 @@ import json
 import re
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 from src.clubs.leagues import LEAGUES
 from src.etl.scrapers import elo as elo_scraper
@@ -89,6 +90,12 @@ TOURNAMENT_ES = {
 }
 
 
+
+def _name_es(code: str | None, team: str) -> str:
+    """Nombre en español: el de la selección si está en el modelo, si no el del rival."""
+    fallback = OPP_ES.get(team, team)
+    return NAME_ES.get(code, fallback) if code else fallback
+
 def build_window(path: Path = RESULTS, since: str = WINDOW_FROM) -> list[dict]:
     """Partidos de las 48 jugados después de `since`, en orden cronológico.
 
@@ -113,8 +120,8 @@ def build_window(path: Path = RESULTS, since: str = WINDOW_FROM) -> list[dict]:
             seen[key] = d
             out.append({
                 "dt": r["date"],
-                "h": to_code.get(h), "hn": NAME_ES.get(to_code.get(h), OPP_ES.get(h, h)),
-                "a": to_code.get(a), "an": NAME_ES.get(to_code.get(a), OPP_ES.get(a, a)),
+                "h": to_code.get(h), "hn": _name_es(to_code.get(h), h),
+                "a": to_code.get(a), "an": _name_es(to_code.get(a), a),
                 "s": [int(r["home_score"]), int(r["away_score"])],
                 "t": TOURNAMENT_ES.get(r["tournament"], r["tournament"]),
                 "nt": r["neutral"].upper() == "TRUE",
@@ -157,11 +164,11 @@ def build_extras(results: Path = RESULTS, n_form: int = 5) -> dict[str, dict]:
             hs, as_ = int(r["home_score"]), int(r["away_score"])
             for team, opp, gf, ga in ((r["home_team"], r["away_team"], hs, as_),
                                       (r["away_team"], r["home_team"], as_, hs)):
-                c = to_code.get(team)
-                if c:
+                tc = to_code.get(team)
+                if tc:
                     res = "W" if gf > ga else "D" if gf == ga else "L"
-                    opp_n = NAME_ES.get(to_code.get(opp), OPP_ES.get(opp, opp))
-                    form[c].append([res, gf, ga, opp_n, r["date"]])
+                    opp_n = _name_es(to_code.get(opp), opp)
+                    form[tc].append([res, gf, ga, opp_n, r["date"]])
     for c, rows in form.items():
         rows.sort(key=lambda x: x[4], reverse=True)
         out[c]["f"] = _dedupe_form(rows)[:n_form]
@@ -232,14 +239,14 @@ def build_fixtures(bundle: list[dict], path: Path = FIXTURES) -> tuple[list[dict
             proxies[c] = row
         return c
 
-    out = []
+    out: list[dict[str, Any]] = []
     with path.open(encoding="utf-8") as f:
         for r in csv.DictReader(f):
             h, a = r["home_team"], r["away_team"]
             out.append({
                 "dt": r["date"], "h": code_for(h), "a": code_for(a),
-                "hn": NAME_ES.get(to_code.get(h), OPP_ES.get(h, h)),
-                "an": NAME_ES.get(to_code.get(a), OPP_ES.get(a, a)),
+                "hn": _name_es(to_code.get(h), h),
+                "an": _name_es(to_code.get(a), a),
                 "t": TOURNAMENT_ES.get(r["tournament"], r["tournament"]),
                 "nt": r["neutral"].upper() == "TRUE",
             })

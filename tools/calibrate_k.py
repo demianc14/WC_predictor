@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
+from typing import Any
 
 from src.betting.odds import compute_match_probabilities
 from src.etl.models import TeamStrength
@@ -34,7 +35,7 @@ STRENGTHS = Path("data/processed/strengths_2026.json")
 # real = '1' (gana home), 'X' (empate), '2' (gana away)
 # ctx_h, ctx_a en [0,1]: 0.5 = neutro. La asimetria refleja
 # lo que el usuario describio (estadio, DT, lesiones, debut).
-VAL_SET = [
+VAL_SET: list[dict[str, Any]] = [
     # ── UPSETS: favorito/lider-en-forma perdio o empato ───────────────
     {
         "label": "ESP 0-0 CPV  (debut Esp; Yamal lesionado; estadio 70-30 a favor CPV)",

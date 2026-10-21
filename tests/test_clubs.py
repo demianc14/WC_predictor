@@ -70,3 +70,11 @@ def test_simulacion_reparte_todas_las_posiciones():
 def test_no_vig_quita_el_margen():
     p = no_vig((2.0, 3.4, 3.8))
     assert abs(sum(p) - 1) < 1e-12 and p[0] > p[2]
+
+
+def test_score_solo_para_partidos_jugados():
+    import pytest
+    a, b = parse_csv(CSV, "2627")
+    assert a.score() == (3, 0)
+    with pytest.raises(ValueError, match="no se jugó"):
+        b.score()
