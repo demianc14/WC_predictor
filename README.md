@@ -2,7 +2,9 @@
 
 [![CI](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml)
 
-> El proyecto nació como predictor del **Mundial 2026** (grupos reales del sorteo del 5-dic-2025) y de ahí conserva el nombre. Terminado el torneo (🇪🇸 España campeona, 1-0 a Argentina el 19-jul), hoy es un **predictor de fútbol de selecciones** para la temporada internacional 2026-27. El Mundial quedó como archivo.
+> El proyecto nació como predictor del **Mundial 2026** (grupos reales del sorteo del 5-dic-2025) y de ahí conserva el nombre. Terminado el torneo (🇪🇸 España campeona, 1-0 a Argentina el 19-jul), hoy predice dos cosas: **selecciones** en la temporada internacional 2026-27 y las **cinco grandes ligas** europeas (Premier League, LaLiga, Bundesliga, Serie A y Ligue 1), con un modelo supervisado comparado de forma honesta contra el mercado y un ciclo diario que publica cada predicción antes del partido y la mide después. El Mundial quedó como archivo.
+>
+> **Web:** https://demianc14.github.io/WC_predictor/ (se actualiza sola cada día)
 
 - **Datos al 6-oct-2026**: incluye la ventana del 23-sep al 6-oct (UEFA y Concacaf Nations League, clasificación a la Copa África, amistosos)
 - **Pipeline ETL** validado con Pydantic (fail fast)
@@ -113,7 +115,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 110 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 111 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -132,6 +134,8 @@ El corazón del proyecto es un **pipeline ETL** (`src/etl/`) que toma datos crud
 Los goles se modelan con un **motor Maher + Dixon-Coles** (`src/simulation/match_engine.py`): Maher (1982) separa perfiles de ataque y defensa por equipo en vez de usar un solo número de fuerza, y Dixon-Coles (1997) corrige el sesgo conocido del Poisson independiente en marcadores bajos (subestima 0-0/1-1, sobreestima 1-0/0-1) con un factor ρ=−0.13 calibrado sobre la literatura. Un torneo completo (`src/simulation/tournament.py`) arma el cuadro oficial de la FIFA (M73–M104), resuelve la asignación de los 8 mejores terceros a sus llaves por backtracking, y resuelve empates en eliminación directa con prórroga y penales. Para responder preguntas probabilísticas ("¿qué tan probable es que Argentina sea campeón?") se corren miles de torneos independientes (**Monte Carlo**) y se cuenta la frecuencia de cada resultado — el error de la estimación cae como 1/√N, lo que fija cuántas simulaciones vale la pena correr (10.000 mundiales, 50.000 partidos cara a cara).
 
 El único punto de contacto con un LLM es el narrador (`src/agents/narrator.py`), y es deliberadamente opcional: por defecto genera crónicas con plantillas f-string, y solo si existe `ANTHROPIC_API_KEY` y se pasa `--llm` usa Claude para crónicas generativas. Es un patrón de **degradación elegante** — todo el sistema (ETL, motor de partido, torneo, Monte Carlo) funciona sin el LLM, que aquí es una mejora cosmética, no una dependencia. Por eso el proyecto se llama "Predictor" y no "Simulador LLM": la predicción es 100% estadística.
+
+Los clubes (`src/clubs/`) reutilizan la matriz Dixon-Coles, pero estiman sus parámetros por liga con los partidos de football-data. El modelo supervisado (`src/ml/`) usa esas mismas probabilidades como una feature más y se evalúa con walk-forward contra el Dixon-Coles y el mercado. El ciclo diario (`src/pipeline/`) solo orquesta: descarga todo o nada, predice, registra en un almacén solo-para-agregar y exporta la web. El detalle está en las Partes II a IV de la [bitácora](docs/PROYECTO_OBSIDIAN.md#parte-ii--clubes-las-cinco-grandes-ligas).
 
 ## Quickstart
 
@@ -191,9 +195,12 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 ## Cómo escalar
 
-El proyecto está pensado para crecer sin tocar el motor de partido: más selecciones o torneos, ajustar ρ y el modelo de empates sobre el historial completo, refresco automático del ETL, persistencia de simulaciones, etc. Cada cambio se puede validar con el mismo `backtest`. El detalle categorizado está en [`docs/PROYECTO_OBSIDIAN.md` §13](docs/PROYECTO_OBSIDIAN.md#13-roadmap-cómo-escalar-el-proyecto).
+El proyecto está pensado para crecer sin tocar el motor de partido: más selecciones o torneos, ajustar ρ y el modelo de empates sobre el historial completo, refresco automático del ETL, persistencia de simulaciones, etc. Cada cambio se puede validar con el mismo `backtest`. Lo hecho y lo pendiente (lesiones y alineaciones como features, xG en el supervisado, caché de features en Docker, más selecciones) está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
 
 ## Documentación completa
 
-Toda la explicación conceptual (modelo, matemática, arquitectura, testing, limitaciones, roadmap) está en
-[`docs/PROYECTO_OBSIDIAN.md`](docs/PROYECTO_OBSIDIAN.md) — listo para importar a Obsidian.
+Toda la explicación conceptual está en [`docs/PROYECTO_OBSIDIAN.md`](docs/PROYECTO_OBSIDIAN.md), lista para importar a Obsidian: principios de diseño, el motor de selecciones y el Mundial (Parte I), clubes (II), modelo supervisado (III), operación con ciclo diario, CI y Docker (IV), limitaciones y roadmap.
+
+Otros documentos:
+- [`docs/RESULTADOS_ML.md`](docs/RESULTADOS_ML.md): reporte del modelo supervisado, generado por el código.
+- `docs/PROMPT_AGENTE_FASE1.md` … `FASE5.md`: el brief de cada fase del roadmap de las cinco ligas.
