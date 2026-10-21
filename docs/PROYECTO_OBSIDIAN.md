@@ -1,22 +1,28 @@
 # 🏆 World Cup Predictor — Bitácora del Proyecto
 
 > [!info] Metadatos
-> **Autor:** Demian · **Stack:** Python 3.11+, Pydantic, pandas, pytest, HTML/JS vanilla
-> **Objetivo:** Simular la Copa del Mundo 2026 fase a fase con un modelo probabilístico inspirado en inferencia bayesiana, un motor de eventos ("Breaking News Engine") y una interfaz web para compartir con amigos.
+> **Autor:** Demian · **Stack:** Python 3.11+, numpy, pandas, Pydantic, scikit-learn (opcional), pytest, ruff, mypy, GitHub Actions, Docker, HTML/JS vanilla
+> **Objetivo:** predecir fútbol con modelos probabilísticos verificables. Cubre selecciones (temporada internacional 2026-27) y las cinco grandes ligas europeas, con un modelo supervisado reproducible y un ciclo diario automático que publica predicciones antes de cada partido y las mide después.
+> **Web:** https://demianc14.github.io/WC_predictor/ (se actualiza sola cada día)
 > **Nivel:** explicado para Ing. en Cs. de la Computación, 7mo semestre.
 
-> [!note] Nota histórica
-> El proyecto se llamó originalmente "World Cup LLM Simulator". Se renombró a **World Cup Predictor** porque el LLM (`src/agents/narrator.py`, §9) es un narrador opcional con degradación elegante, no parte del motor de predicción — el nombre anterior sobrevendía el rol del LLM.
+> [!note] Nota histórica: tres etapas
+> 1. **Mundial 2026 (jun-jul 2026).** El proyecto nació como "World Cup LLM Simulator" y se renombró a **World Cup Predictor**, porque el LLM (`src/agents/narrator.py`, §9) es un narrador opcional, no parte del motor. El nombre se conservó.
+> 2. **Selecciones 2026-27 (sep 2026).** Terminado el torneo (España campeona), el modelo siguió con las ventanas FIFA. El Mundial quedó como archivo y su backtest sigue en §10.1.
+> 3. **Cinco grandes ligas (oct 2026).** Premier League, LaLiga, Bundesliga, Serie A y Ligue 1, en cinco fases con brief escrito (`docs/PROMPT_AGENTE_FASE1.md` … `FASE5.md`): CI, ligas y calendarios, modelo supervisado, ejecución diaria y Docker.
+>
+> Esta bitácora se organiza igual: **Parte I** es el motor original de selecciones (§3-§11), **Parte II** los clubes (§12), **Parte III** el modelo supervisado (§13) y **Parte IV** la operación (§14).
 
 ---
 
 ## 1. La idea en una frase
 
-Convertir datos históricos y de forma reciente de las 48 selecciones del Mundial 2026 en una **distribución de probabilidad sobre resultados**, y luego muestrear esa distribución miles de veces (Monte Carlo) para responder preguntas como *"¿qué probabilidad tiene Marruecos de eliminar a Brasil si Neymar se lesiona?"*
+Convertir resultados históricos en una **distribución de probabilidad sobre resultados**, compararla de forma honesta con alternativas (azar, ELO, frecuencias, el mercado de apuestas) y dejar que el propio código pruebe que cada predicción existía antes del partido.
 
 ```
-Datos crudos → ETL → Fuerzas por equipo → Motor de partido (Poisson)
-            → Torneo completo → Monte Carlo → Probabilidades
+Datos crudos → validación → fuerzas por equipo → Dixon-Coles (Poisson corregido)
+            → partido / torneo / temporada (Monte Carlo) → probabilidades
+            → evaluación walk-forward contra baseline y mercado (Brier, RPS, log-loss, con n)
 ```
 
 ---
@@ -24,35 +30,52 @@ Datos crudos → ETL → Fuerzas por equipo → Motor de partido (Poisson)
 ## 2. Arquitectura del repositorio
 
 ```
-world_cup_predictor/
+WC_predictor/
 ├── data/
-│   ├── raw/teams_2026.csv          ← datos crudos, INTOCABLES
-│   ├── raw/wc2026_results.csv      ← los 104 resultados reales (congelados)
-│   ├── snapshots/                  ← entradas del modelo al 15-jun (backtest)
-│   └── processed/strengths_2026.json ← salida del ETL
+│   ├── raw/                        ← datos curados a mano (selecciones), INTOCABLES
+│   ├── snapshots/                  ← fuerzas congeladas antes de cada ventana (backtests)
+│   ├── cache/                      ← fuentes descargadas, versionadas a propósito (~18 MB)
+│   │   └── clubs/                  ← CSVs de football-data y calendarios de fixturedownload
+│   ├── processed/                  ← salidas: strengths_2026.json, clubs_<div>.json, live.json
+│   ├── predictions/predicciones.csv← almacén de predicciones, solo para agregar (§14.1)
+│   └── ml/runs/<fecha>_<huella>/   ← artefactos del modelo supervisado
 ├── src/
-│   ├── etl/
-│   │   ├── models.py               ← contratos Pydantic
-│   │   └── pipeline.py             ← Extract → Transform → Load
-│   ├── simulation/
-│   │   ├── match_engine.py         ← Poisson, prórroga, penales
-│   │   └── tournament.py           ← grupos, terceros, llaves, Monte Carlo
-│   ├── agents/
-│   │   ├── breaking_news.py        ← Eventos Canónicos (contexto 30%)
-│   │   └── narrator.py             ← crónicas (LLM opcional)
-│   ├── evaluation/
-│   │   ├── elo.py                  ← ELO reconstruido con fecha de corte
-│   │   └── backtest.py             ← calibración vs resultados reales (§10.1)
+│   ├── etl/                        ← selecciones: contratos Pydantic, scrapers, xG StatsBomb
+│   ├── simulation/                 ← motor de partido Maher + Dixon-Coles, torneo, Monte Carlo
+│   ├── agents/                     ← Breaking News Engine y narrador (LLM opcional)
+│   ├── evaluation/                 ← ELO reconstruido y backtest del Mundial
+│   ├── betting/odds.py             ← cuota justa, EV y Kelly
+│   ├── clubs/                      ← las cinco ligas: datos, calendario, modelo, temporada, h2h, backtest
+│   ├── ml/                         ← modelo supervisado: dataset, features, modelos, métricas, train, report
+│   ├── pipeline/                   ← ciclo diario y almacén de predicciones
 │   └── cli.py                      ← interfaz de línea de comandos
-├── app/index.html                  ← interfaz web autocontenida
-├── tests/                          ← 46 tests con pytest
-└── docs/                           ← este archivo
+├── tools/                          ← export a la web, snapshots, calibraciones
+├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
+├── tests/                          ← 111 tests con pytest, sin red
+├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
+├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
+└── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
 ```
 
 > [!tip] Principio de diseño: separación de capas
-> El ETL no sabe que existe un simulador. El simulador no sabe de dónde vienen los datos. El Breaking News Engine no sabe de Poisson. Cada capa se puede testear y reemplazar de forma independiente. Esto es **bajo acoplamiento / alta cohesión**, el corazón de la ingeniería de software.
+> El ETL no sabe que existe un simulador. El simulador no sabe de dónde vienen los datos. El Breaking News Engine no sabe de Poisson. Los clubes reutilizan la matriz Dixon-Coles, pero no el ETL de selecciones. El ciclo diario solo orquesta: no tiene modelo propio. Cada capa se puede testear y reemplazar de forma independiente: **bajo acoplamiento, alta cohesión**.
+
+### 2.1 Principios no negociables
+
+Los fijó el brief de la fase 1 y valen para todo el proyecto. En una entrevista, son la respuesta a "¿cómo sé que tus números son ciertos?":
+
+1. **"El LLM propone, el código verifica."** Ninguna predicción depende de un LLM. Todo número reportado sale de código con tests.
+2. **No inventar datos ni métricas.** Lo que no se pudo medir se escribe como pendiente.
+3. **Lo simple primero.** Sin dependencias ni capas que la tarea no pida (por eso no hay scipy: el ajuste de Maher es iterativo, §12.2).
+4. **Walk-forward siempre.** Se entrena con el pasado y se predice lo siguiente; nunca se mezclan fechas entre train y test.
+5. **Las cuotas de cierre nunca son feature.** Solo benchmark: si fueran feature, el modelo aprendería a copiar al mercado y la comparación no diría nada. Un test lo verifica (§13.1).
+6. **Brier, RPS y log-loss sobre la misma muestra** para modelo, baseline y mercado, siempre con el tamaño de muestra.
+7. **Degradación elegante.** Si una fuente falla, el pipeline no se rompe ni deja estado a medias.
 
 ---
+
+# Parte I · Selecciones y Mundial 2026 (archivo)
+
 
 ## 3. El Pipeline ETL paso a paso
 
@@ -284,8 +307,8 @@ Los intervalos salen de un **bootstrap pareado** (5.000 remuestreos de partidos)
 
 **¿Hay que recalibrar K/BASE/ρ?** `backtest --refit` busca los valores que maximizan la verosimilitud del marcador exacto en grupos y los valida en eliminatorias. Encuentra K=1.3, BASE=1.35, ρ=−0.20 (más empates, coherente con el punto 4), pero la ganancia es de 0.35 unidades de log-verosimilitud con 3 parámetros libres (una prueba de razón de verosimilitud pediría ~3.9) y en eliminatorias mejora el Brier en 0.0008, con un IC que cruza el 0. **Decisión: los valores actuales se quedan.** La superficie es casi plana alrededor de K=1.2 / BASE=1.4, así que cambiarlos sería ajustar ruido y además rompería la paridad con el motor JS de la app.
 
-> [!warning] Los tests del ETL tocan la red
-> `transform()` llama a los scrapers de resiliencia y forma, que refrescan `data/cache/` cuando vence el TTL semanal. Correr `pytest` puede reemplazar los cachés por datos posteriores al torneo. Por eso el backtest solo lee `data/snapshots/` y `data/raw/`.
+> [!warning] El backtest no lee cachés vivas
+> `transform()` llama a los scrapers de resiliencia y forma, que en uso normal refrescan `data/cache/` cuando vence el TTL semanal. La suite de tests está aislada (`tests/conftest.py` bloquea la red y no deja mutar `data/cache/`), pero el backtest igual solo lee `data/snapshots/` y `data/raw/`, para que sus cifras no dependan de cuándo se corre.
 
 ---
 
@@ -294,101 +317,253 @@ Los intervalos salen de un **bootstrap pareado** (5.000 remuestreos de partidos)
 ```bash
 # setup (una vez)
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[dev]"          # núcleo + scikit-learn + anthropic + herramientas
 
-# pipeline ETL
+# selecciones
 python -m src.cli etl
-
-# una copa completa, fase a fase
 python -m src.cli simulate --seed 2026
-
-# probabilidades de campeón (2000 mundiales)
 python -m src.cli montecarlo -n 2000
-
-# el cruce que le mostrarás a tus amigos
 python -m src.cli h2h BRA MAR -n 10000
 python -m src.cli h2h BRA MAR --ctx-home 0.25 --ctx-away 0.6   # con drama
+python -m src.cli backtest            # §10.1
+python -m src.cli backtest --refit
 
-# ¿qué tan bien predijo? (§10.1)
-python -m src.cli backtest
-python -m src.cli backtest --refit   # + reajuste de K/BASE/ρ validado en eliminatorias
+# clubes (§12), modelo supervisado (§13) y ciclo diario (§14)
+python -m src.clubs.run                                   # las cinco ligas → data/processed/clubs_<div>.json
+python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
+python -m src.ml.train --leagues all                      # entrena, evalúa y escribe docs/RESULTADOS_ML.md
+python -m src.pipeline.daily                              # descarga, predice, registra, exporta
+python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
-# tests
-pytest
+# calidad
+pytest            # 111 tests, sin red
+ruff check .
+mypy
 ```
 
-**La interfaz para amigos (v2):** abre `app/index.html` en cualquier navegador (doble clic, sin servidor). Cinco vistas con navegación fija arriba:
-- **Inicio**: landing con los colores tri-sede del Mundial (verde México, rojo Canadá, azul EE.UU.), tipografía Anton y fondo animado en `<canvas>`.
-- **Partido**: cualquier cruce en modo *eliminación directa* o *fase de grupos* (con probabilidad de empate). Las noticias pre-partido se eligen de un menú y aparecen como chips. Salida: barra de probabilidad estilo cancha + tabla compacta de los marcadores más frecuentes con sus λ.
-- **Mundial**: una copa completa con el cuadro oficial M73–M104, tablas de grupo compactas, terceros resaltados y confeti en canvas para el campeón. Sin noticias: contexto neutro.
-- **Monte Carlo**: 500 o 2.000 mundiales, tabla compacta Campeón/Finalista/Semis con barras.
-- **Pronóstico**: ingresa marcadores reales que ya se jugaron (o tus predicciones) en los 72 partidos de grupos; lo vacío se simula. Completa el mundial una vez o corre 300 mundiales **condicionados** a tus resultados — probabilidad condicional aplicada, literalmente.
+**La interfaz web:** `app/index.html` se abre con doble clic, sin servidor, o en https://demianc14.github.io/WC_predictor/. El menú tiene cuatro secciones, cada una con subsecciones:
+- **Inicio**: landing con los colores tri-sede del Mundial y fondo animado en `<canvas>`.
+- **Selecciones 2026-27**: próxima ventana, última ventana (resultados contra lo que esperaba el modelo), partido y cuotas entre cualquier par, con las noticias del Breaking News Engine como chips, y ranking.
+- **Ligas · cinco grandes**: selector de liga y, para cada una, tabla proyectada, próxima jornada contra las cuotas, partido y cuotas entre cualquier par de clubes, ranking (xPts, ataque contra defensa) y backtest contra el mercado. Arriba, la barra de métricas en vivo (§14.1).
+- **Archivo · Mundial 2026**: el cuadro real y el que esperaba el modelo, probabilidad de llegar a cada ronda y el backtest.
 
-Puedes subirla gratis a GitHub Pages o Netlify Drop y mandarles el link.
+La web y Python usan la misma fórmula: `python -m src.clubs.h2h` y la vista "Partido" de una liga dan los mismos números.
 
 ---
 
-## 12. Limitaciones honestas (para tu defensa)
+# Parte II · Clubes: las cinco grandes ligas
 
-1. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla ya se scrapean (§13.1), pero el xG del CSV es una estimación manual porque FBref bloquea el scraping. El punto de extensión es `extract()`: cambiar la fuente y el resto del pipeline no se entera (gracias a la separación de capas).
-2. ~~Poisson asume independencia entre goles~~ → **resuelto en v3** con la corrección Dixon-Coles (ρ=−0.13). Estimar ρ por máxima verosimilitud sobre el Mundial 2026 da −0.20, pero la mejora no es significativa (§10.1).
-3. El "Bayes" es una combinación lineal inspirada en el marco bayesiano, no inferencia formal (§4.1).
-4. **La validación tiene poca muestra.** En el backtest (§10.1) el modelo supera al azar con claridad y al ELO en la estimación puntual, pero en los 80 partidos fuera de muestra esa ventaja sobre ELO no es significativa. Subestima un poco los empates (21% vs 27.8%) y se confía de más en los favoritos del 80–100%.
+## 12. De selecciones a clubes
+
+`src/clubs/` reutiliza la matriz Dixon-Coles de §5, pero **estima** sus parámetros con los partidos de cada liga en vez de fijarlos a mano. A diferencia de selecciones, no hay noticias ni contexto: solo ataque, defensa y localía.
+
+### 12.1 Datos y calendario
+
+- **Resultados y cuotas** (`data.py`): CSVs de [football-data.co.uk](https://www.football-data.co.uk/), con el mismo formato para E0, SP1, D1, I1 y F1 y sus segundas divisiones. Traen las cuotas de cierre promedio (solo como benchmark, §2.1) y xG desde 2026-27. `fixtures.csv` trae los partidos de los próximos días con sus cuotas.
+- **Calendario completo** (`calendar.py`): feeds JSON de [fixturedownload.com](https://fixturedownload.com/). Tres problemas reales y cómo se resuelven:
+  1. **Los nombres no coinciden** ("Man United" contra "Man Utd", "Tottenham" contra "Spurs"). No hay diccionario a mano: el cruce se **deduce por votos** a partir de los partidos ya jugados (mismo día ±1 y mismo marcador). Si un equipo queda sin pareja, falla con el nombre exacto (fail fast, como §3.2).
+  2. **El feed puede estar mal.** El de Ligue 1 traía Rennes-PSG dos veces y ningún PSG-Rennes (305 partidos en vez de 306). `repair_round_robin` exige una liga a dos ruedas, invierte el duplicado no jugado más reciente y lo deja a la vista en la consola y en `calendar_fixes` del JSON. Corregir en silencio sería inventar datos.
+  3. **Horarios sin confirmar.** Vienen como medianoche local; se marcan `tbc` en vez de mostrarse como una hora real.
+- **Degradación elegante:** si el feed no está disponible, la simulación usa todo cruce no jugado.
+
+### 12.2 El modelo: Dixon-Coles estimado por liga
+
+`model.py` ajusta ataque y defensa por club, la localía, la media μ y ρ por **máxima verosimilitud Poisson**, con el algoritmo iterativo de Maher (cada parámetro se actualiza en forma cerrada dado el resto, sin scipy). Tres decisiones:
+
+- **Decaimiento temporal:** cada partido pesa `exp(−0.0019·días)`, así que uno de hace un año pesa ~50%. Era uno de los pendientes del roadmap de la etapa del Mundial.
+- **Shrinkage:** 3 goles ficticios hacia el promedio, para que un equipo con pocos partidos no tenga parámetros extremos.
+- **Segunda división en el mismo ajuste:** los ascendidos llegan con historia en vez de empezar en cero.
+- Cuando hay xG (2026-27), el objetivo es 50% goles + 50% xG: el xG tiene menos ruido que los goles.
+
+ρ se busca por grilla sobre la verosimilitud, con los mismos pesos.
+
+### 12.3 Temporada, partido y cuotas
+
+- **Temporada** (`season.py`): Monte Carlo de los partidos que faltan (10.000 temporadas) → puntos esperados y probabilidad de cada puesto.
+- **Partido y cuotas** (`h2h.py`): 1X2, goles, ambos anotan, marcadores, cuota justa y EV con ¼ de Kelly contra las cuotas que le pases. Busca el equipo sin importar tildes y falla si el nombre es ambiguo.
+
+### 12.4 Contra el mercado
+
+`backtest.py` hace un **walk-forward semanal**: cada lunes reajusta con lo jugado hasta ahí y predice esa semana. Sobre los mismos partidos compara tres cosas: el modelo, las cuotas de cierre promedio **sin margen** (no-vig) y una base que solo conoce la frecuencia de 1/X/2 de la liga hasta esa semana.
+
+| Liga | Temporada | n | Brier modelo | Brier mercado | Brier base | RPS modelo | RPS mercado |
+|---|---|---|---|---|---|---|---|
+| Premier League | 2025-26 | 380 | 0.623 | **0.608** | 0.656 | 0.212 | **0.204** |
+| LaLiga | 2025-26 | 380 | 0.579 | **0.572** | 0.633 | 0.200 | **0.196** |
+| Bundesliga | 2025-26 | 306 | 0.575 | **0.562** | 0.649 | 0.196 | **0.190** |
+| Serie A | 2025-26 | 380 | 0.598 | **0.583** | 0.661 | 0.203 | **0.196** |
+| Ligue 1 | 2025-26 | 306 | 0.599 | **0.582** | 0.644 | 0.207 | **0.200** |
+
+(La tabla con 2026-27 está en el README.)
+
+**Cómo leerlo:** el modelo le gana con claridad a la base en todas las ligas, pero **pierde contra el mercado en las cinco** en la temporada completa. Es lo esperable: el mercado de cierre incorpora lesiones, alineaciones y el dinero de miles de apostadores. Apostar cada discrepancia de más de 5% habría perdido entre 9% y 29% según la liga. Por eso la web muestra *dónde discrepa* el modelo, nunca "valor".
+
+---
+
+# Parte III · Modelo supervisado
+
+## 13. Clasificación 1X2 con validación honesta
+
+`src/ml/` responde una pregunta concreta: **¿un modelo entrenado con features mejora al Dixon-Coles?** El reporte completo, con tablas por liga, intervalos, calibración y ablación, lo genera el código: [`RESULTADOS_ML.md`](RESULTADOS_ML.md). Las cifras de esta sección salen de ahí.
+
+### 13.1 Features sin fuga de datos
+
+Todas se calculan con partidos de **días anteriores** (`features.py`):
+- **ELO de clubes:** K=20, +60 de localía; arranca en 1500 en primera y 1350 en segunda, y se actualiza también con los partidos de segunda.
+- **Forma de los últimos 5:** puntos, goles a favor y en contra.
+- **Días de descanso**, con tope 21.
+- **Liga**, en one-hot.
+- En una variante, las **probabilidades y λ del Dixon-Coles**, reajustado cada lunes con los 3 años previos.
+
+Quedan afuera el xG (solo existe desde 2026-27), las copas y Europa (el descanso solo ve la liga), las lesiones y las alineaciones.
+
+> [!warning] Cómo se prueba que no hay fuga
+> `test_cambiar_el_futuro_no_mueve_las_features_del_pasado` altera resultados futuros y comprueba que ninguna feature pasada cambia. `test_partidos_del_mismo_dia_no_se_ven_entre_si` cubre el caso borde de la misma jornada. `test_las_cuotas_nunca_son_feature` hace cumplir el principio 5. Un test de fuga vale más que cualquier explicación en el README.
+
+### 13.2 Modelos y validación
+
+- **Modelos:** base de frecuencias por liga, regresión logística multinomial (sin y con Dixon-Coles, con imputación y escalado) y `HistGradientBoostingClassifier`.
+- **Splits por temporada:**
+  - 2019-20 solo como historia previa;
+  - entrenamiento 2020-21 a 2022-23;
+  - validación 2023-24 y 2024-25, donde se eligen los hiperparámetros;
+  - test 2025-26 y lo que va de 2026-27, que no se mira hasta el final.
+- **Walk-forward mensual:** para predecir un mes se entrena solo con meses anteriores. Lo verifica `test_walk_forward_entrena_solo_con_meses_anteriores`.
+- **Elección:** en cada familia gana el de menor log-loss en validación. La ablación agrega features de a una: ELO, forma, descanso, liga y Dixon-Coles.
+
+### 13.3 Resultados (test, cinco ligas juntas, n = 2097 para todos)
+
+| Modelo | RPS [IC 95%] | Log-loss |
+|---|---|---|
+| Base (frecuencias) | 0.2294 [0.2265, 0.2324] | 1.0716 |
+| Logística sin Dixon-Coles | 0.2019 [0.1960, 0.2075] | 0.9914 |
+| Logística + Dixon-Coles | 0.2019 [0.1961, 0.2073] | 0.9908 |
+| Gradient boosting | 0.2031 [0.1973, 0.2086] | 0.9954 |
+| Dixon-Coles | 0.2027 [0.1977, 0.2076] | 0.9936 |
+| **Mercado (cierre, sin margen)** | **0.1970 [0.1916, 0.2022]** | **0.9740** |
+
+Las comparaciones se hacen con **diferencias pareadas por bootstrap**: se remuestrean partidos y se calcula la diferencia en cada remuestreo. Si el intervalo cruza el 0, la diferencia puede ser ruido.
+
+- Logística + Dixon-Coles contra Dixon-Coles: ΔRPS −0.0008 [−0.0019, +0.0003]. **No se distingue.**
+- Logística + Dixon-Coles contra mercado: ΔRPS +0.0048 [+0.0027, +0.0069]. **Peor.**
+- **Calibración:** los cuatro modelos están bien calibrados, también en empates (predicen 25.3-25.5%, hubo 25.2%). El sesgo de empates del Mundial (§10.1, punto 4) no aparece con muestras grandes.
+- El gradient boosting no supera a la logística: con ~11.000 partidos y señales casi lineales, no hay interacciones que aprovechar.
+
+**Conclusión para la defensa:** el supervisado no mejora al Dixon-Coles y no alcanza al mercado. Es un resultado negativo **bien medido**, y eso vale más que un número lindo sin intervalo. La meta realista del brief era igualar al mercado con buena calibración; la calibración se logró, igualarlo no.
+
+### 13.4 Reproducibilidad
+
+Cada corrida escribe `data/ml/runs/<fecha>_<huella>/` con las predicciones, las métricas, los modelos y un manifiesto con el commit, las versiones de las librerías, la semilla y la **huella SHA-256 del dataset**. `python -m src.ml.report <run>` regenera el reporte sin reentrenar. El commit se toma con `git describe --dirty`: una corrida desde un árbol con cambios sin commitear queda marcada, y por eso la oficial se corrió desde uno limpio (`84fdeb2`, huella `0a9df3af955e`).
+
+---
+
+# Parte IV · Operación
+
+## 14. Que corra solo, y que se pueda auditar
+
+### 14.1 Ciclo diario y almacén de predicciones
+
+Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`daily.yml`) corre `python -m src.pipeline.daily`:
+
+1. **Descarga todo o nada.** Baja la temporada actual de las 10 divisiones, `fixtures.csv` y los 5 calendarios a una carpeta temporal y valida cada archivo (una página de error HTML no pasa por CSV). Si una sola fuente falla, termina con código 2 sin tocar nada, y GitHub avisa por correo.
+2. **Ajusta y predice en memoria.** Predice los partidos de los próximos días que todavía no tienen predicción para la versión actual del modelo. Un partido de hoy solo se predice si el ciclo corre antes de las 10:00 UTC.
+3. **Registra** resultados y cuotas de cierre de lo jugado, y recalcula las métricas en vivo.
+4. **Recién entonces escribe**, con reemplazos atómicos: JSON por liga, `live.json`, el almacén y la web. El bot commitea y `pages.yml` publica.
+
+**El almacén** (`data/predictions/predicciones.csv`) tiene una fila por (partido, versión del modelo). La regla central: **una predicción guardada nunca se sobrescribe**. `store.save` compara contra el archivo en disco antes de escribir y se niega a borrar, cambiar una probabilidad o contradecir un resultado. Si el modelo cambia, entra otra fila con otra versión. Solo se completan después el resultado y la cuota de cierre. El historial de git del archivo es la prueba pública de que cada predicción existía antes del partido.
+
+**Versión del modelo = hash git del árbol `src/clubs/`.** Cambia solo si cambia el código del modelo, no con cualquier commit del bot.
+
+**Métricas en vivo:** se evalúa la **primera** predicción de cada partido, sobre los mismos partidos que la cuota de cierre. Es la única evaluación sin ninguna posibilidad de fuga. Las primeras predicciones son del 20-oct-2026 a las 19:12 UTC; al 21-oct había 52 predicciones y ningún partido evaluado todavía. **Con pocas semanas no es concluyente**: el backtest de §12.4 necesitó temporadas enteras para separar al modelo del mercado.
+
+> [!example] Tests del ciclo
+> `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` y `test_metricas_en_vivo_usan_la_primera_prediccion`. Prueban justamente lo que haría falso al almacén si fallara.
+
+### 14.2 CI y publicación
+
+- **`ci.yml`**, en cada push y PR, sobre Python 3.11 y 3.12: `ruff check .`, `mypy` (src/ y tools/, en cero errores) y `pytest`, más un job que construye las imágenes de Docker y corre la suite adentro.
+- **Tests herméticos:** `test_hermetic.py` asegura que la suite no toque la red.
+- **`pages.yml`** publica la web y los JSON en GitHub Pages después de cada ciclo diario exitoso.
+
+### 14.3 Docker: dos imágenes reproducibles
+
+Un `Dockerfile` multi-stage sobre `python:3.11-slim` (la misma versión que CI) arma dos targets. Los dos corren con un usuario sin privilegios y no llevan datos ni secretos:
+
+| Imagen | Para qué | Tamaño medido |
+|---|---|---|
+| `wc-predictor` | ciclo diario, web, ligas, partido y cuotas (solo numpy, pandas, pydantic) | 439 MB |
+| `wc-predictor:ml` | entrenamiento y suite de tests (suma scikit-learn y pytest) | 742 MB |
+
+La primera versión pesaba 826 MB. Bajó al sacar dependencias declaradas que nadie importaba y separar `scikit-learn` y `anthropic` en extras opcionales. Además, las métricas pasaron a `src/ml/metrics.py`, que solo usa numpy, para que el ciclo diario no cargue scikit-learn.
+
+**Prueba de reproducibilidad:** se reconstruyeron los datos del commit oficial con `git archive` (misma huella, `0a9df3af955e`) y se corrió el entrenamiento completo dentro de `:ml`. Contra el `metrics.json` oficial, la diferencia máxima fue **2,6·10⁻¹⁴**, redondeo de punto flotante entre Linux y macOS, con los mismos modelos elegidos. Tardó 54 minutos calculando las features desde cero.
+
+Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la versión del modelo y el commit, así una predicción hecha desde Docker no se duplica con las del bot. Comandos: `make docker-build docker-test docker-daily docker-train docker-serve`.
+
+---
+
+## 15. Limitaciones honestas (para tu defensa)
+
+**Clubes y modelo supervisado:**
+1. **El modelo pierde contra el mercado** en las cinco ligas (§12.4), y el supervisado no lo cambia (§13.3). Para cerrar la brecha haría falta información que el mercado sí ve: lesiones, alineaciones, calendario de copas.
+2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
+3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
+4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
+5. **El entrenamiento en Docker es lento sin la caché de features** (54 min contra unos 3 en local con la caché).
+
+**Selecciones (Parte I):**
+6. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla se scrapean, y StatsBomb cubre 40 de las 48 selecciones, pero el resto del xG es manual.
+7. **Cobertura limitada a 48 selecciones:** los scrapers solo mapean los equipos del Mundial 2026; otros rivales se estiman desde su ELO.
+8. **El "Bayes" es una combinación lineal** inspirada en el marco bayesiano, no inferencia formal (§4.1).
+9. **El backtest del Mundial tiene poca muestra:** en 80 partidos limpios la ventaja sobre ELO no es significativa (§10.1).
 
 Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en una entrevista.
 
 ---
 
-## 13. Roadmap: cómo escalar el proyecto
+## 16. Roadmap
 
-### 13.1 Ya implementado (v4 — no está descrito en §4, léelo como el estado actual)
+### 16.1 Hecho
 
-El prior y el likelihood de §4 ya no dependen solo del CSV curado: el ETL enriquece cada equipo con fuentes en vivo *antes* de calcular fuerzas, con el mismo patrón de **degradación elegante** del narrador (§9) — si una fuente falla, cae al valor del CSV y el pipeline nunca se rompe.
+- [x] Dixon-Coles con ρ (§5.2); ρ, μ, localía y decaimiento temporal estimados por máxima verosimilitud sobre muestra grande en clubes (§12.2)
+- [x] Fuentes en vivo para selecciones: ELO de eloratings.net, historial desde 1872, valor de plantilla y xG de StatsBomb, con degradación elegante
+- [x] Calibración formal contra los 104 partidos del Mundial, con bootstrap contra ELO (§10.1)
+- [x] Clubes con football-data: las cinco grandes ligas y sus calendarios (§12)
+- [x] Cuotas de casas de apuestas como benchmark, nunca como feature (§12.4, §13.1)
+- [x] Modelo entrenado (logística y gradient boosting) en vez de pesos a mano, comparado con IC (§13)
+- [x] Refresco automático con GitHub Actions, predicciones auditables y métricas en vivo (§14.1)
+- [x] CI con ruff, mypy, pytest y Docker; dos imágenes reproducibles (§14.2, §14.3)
 
-- [x] **ELO en vivo** (`src/etl/scrapers/elo.py`, fuente eloratings.net): domina el prior (peso 0.55) sobre el ranking FIFA, que queda como fallback
-- [x] **Historial de partidos desde 1872** (`src/etl/scrapers/history.py`, dataset martj42/international_results): alimenta `resilience.py` (no_loss_rate vs top, clean sheets, comebacks, winrate competitivo) y `form.py` (att/def dinámico ponderado por recencia y calidad del rival, en vez del xG fijo del CSV)
-- [x] **Valor de plantilla y edad** (`src/etl/scrapers/transfermarkt.py`): entra al likelihood como proxy de calidad individual (peso 0.30 cuando está disponible)
-- [x] Modelo Dixon-Coles con ρ=−0.13 (v3) → siguiente paso: estimar ρ por máxima verosimilitud (ver 13.3)
+### 16.2 Pendiente
 
-### 13.2 Importar más resultados / más datos
-
-- **Ampliar cobertura**: `FIFA_TO_ELO`, `FIFA_TO_HISTORY` y `FIFA_TO_QUERY` hoy solo mapean las 48 selecciones del Mundial 2026; extenderlos a todas las selecciones FIFA permite simular cualquier amistoso o clasificatorio, no solo el torneo oficial
-- **Ventanas configurables**: la ventana de resiliencia (4 años) y de forma dinámica (últimos N partidos) están hardcodeadas; exponerlas como parámetro permite comparar "forma últimos 3 meses" vs "últimos 2 años"
-- **Lesiones/convocatorias automatizadas**: sumar una fuente (API de plantillas o scraping de prensa deportiva) para alimentar el contexto del 30% en vez de elegirlo a mano desde el menú de Breaking News
-- **Cuotas de casas de apuestas** (p.ej. una Odds API) como benchmark externo para calibrar el modelo — nunca para reemplazarlo, ver 13.3
-- **Refresco automático**: un cron/GitHub Action que corra `python -m src.cli etl` en cada fecha FIFA y commitee el JSON actualizado, en vez de correrlo a mano
-
-### 13.3 Escalar el modelo estadístico
-
-- [x] **Calibración formal** contra los 104 partidos reales del Mundial 2026 (Brier, RPS, log-loss, bootstrap vs ELO): ver §10.1
-- Estimar ρ y un decaimiento temporal ξ por máxima verosimilitud sobre el **historial completo** (miles de partidos), no solo sobre el Mundial: con 72 partidos la superficie es demasiado plana para decidir (§10.1)
-- Corregir la subestimación de empates: un parámetro de inflación de empates o un ρ ajustado sobre muestra grande, validado con el mismo backtest
-- Reemplazar la combinación lineal 20/50/30 (§4.1) por un modelo entrenado (regresión logística o gradient boosting) sobre partidos históricos, usando prior/likelihood/contexto como *features* en vez de pesos fijados a mano
-- Extender Maher/Dixon-Coles con decaimiento temporal en el att/def (un gol de hace 2 años no debería pesar igual que uno del mes pasado — hoy eso solo se aplica en `resilience.py`/`form.py`, no en el att/def base del CSV)
-
-### 13.4 Escalar a otros torneos
-
-Gracias a la separación de capas (§2), el motor de partido (Maher + Dixon-Coles) no sabe nada de "Mundial": solo consume fuerzas y un cuadro. Escalar a otro torneo es sobre todo trabajo de **datos y cuadro**, no de reescribir el motor:
-
-- Un `tournament.py` alternativo con el cuadro de la Eurocopa o la Copa América reutiliza `match_engine.py` sin cambios
-- Simular clubes (Champions League) requiere cambiar la fuente en `extract()` — el dataset martj42 es de selecciones; para clubes hace falta otra fuente (p.ej. football-data.co.uk)
-
-### 13.5 Escalar la infraestructura
-
-- Persistir simulaciones en SQLite/Postgres para comparar escenarios en el tiempo en vez de recalcular cada vez
-- Exponer el pipeline y el motor de partido como API (FastAPI) para que `app/index.html` consulte datos frescos en vez de tener el JSON embebido y estático
-- Compartir la caché de los scrapers (hoy es un archivo local por máquina) si el proyecto pasa de "uso personal" a varios usuarios simultáneos
-- Narrador LLM que genere "diarios del mundial" completos por simulación (crónica de cada fase, no solo partido a partido) — pendiente desde la v2, sigue siendo una extensión natural del patrón de §9
+- **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).
+- **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
+- **Copas y Europa** en el cálculo de descanso y fatiga.
+- **Métricas en vivo:** volver a leerlas cuando haya temporadas enteras, no semanas.
+- **Caché de features en Docker** para no recalcular 54 minutos en cada entrenamiento.
+- **Selecciones:** ampliar los mapeos más allá de las 48 y estimar ρ y el modelo de empates sobre el historial completo.
+- **Otros torneos:** un `tournament.py` con el cuadro de la Euro o la Copa América reutiliza `match_engine.py` sin cambios.
+- **Infraestructura**, solo si hace falta: una base de datos (el brief pide aprobación antes de agregar Postgres o Supabase) o una API. Hoy el CSV versionado es más auditable que una base de datos.
 
 ---
 
-## 14. Glosario rápido
+## 17. Glosario rápido
 
 - **ETL**: Extract-Transform-Load, el pipeline que lleva datos crudos a datos listos para el modelo.
 - **xG (expected goals)**: calidad de las ocasiones creadas, medida en goles esperados.
 - **Prior / Likelihood / Posterior**: creencia previa / evidencia / creencia actualizada (marco bayesiano).
 - **Poisson**: distribución de conteo de eventos raros en un intervalo fijo.
+- **Dixon-Coles**: Poisson con una corrección ρ para los marcadores bajos (0-0, 1-0, 0-1, 1-1).
 - **Monte Carlo**: estimar probabilidades muestreando muchas veces un proceso aleatorio.
 - **Seed**: semilla del generador pseudoaleatorio; fija el "universo" simulado.
+- **Brier score**: error cuadrático entre las probabilidades y lo que pasó (0 = perfecto).
+- **RPS (Ranked Probability Score)**: como el Brier, pero sobre probabilidades acumuladas. Castiga menos decir "empate" cuando gana el local que decir "gana el visitante". Es la métrica estándar en fútbol.
+- **Log-loss**: −log de la probabilidad dada a lo que pasó. Castiga mucho la confianza equivocada.
+- **Walk-forward**: validar entrenando solo con el pasado y prediciendo el bloque siguiente, en orden.
+- **No-vig (sin margen)**: probabilidades implícitas de las cuotas, normalizadas para que sumen 1 y sin el margen de la casa.
+- **Bootstrap pareado**: remuestrear los mismos partidos para ambos modelos y mirar la distribución de la diferencia. Da un intervalo de confianza.
+- **Calibración**: que cuando el modelo dice 30%, pase cerca del 30%.
+- **Append-only**: almacén donde solo se agregan filas; lo escrito no se modifica.
+- **Huella del dataset**: hash SHA-256 de los datos de entrada. Dos corridas con la misma huella usaron exactamente los mismos datos.
 - **Fail fast**: fallar temprano y ruidosamente en vez de propagar datos corruptos.
 - **Graceful degradation**: el sistema pierde features opcionales, nunca la funcionalidad base.
