@@ -1,0 +1,6 @@
+[
+ {"MatchNumber": 1, "RoundNumber": 1, "DateUtc": "2024-01-02 20:00:00Z", "Location": "X", "HomeTeam": "Internazionale", "AwayTeam": "Celtic", "Group": "Group A", "HomeTeamScore": 2, "AwayTeamScore": 0, "Winner": "Internazionale"},
+ {"MatchNumber": 2, "RoundNumber": 1, "DateUtc": "2024-01-03 20:00:00Z", "Location": "X", "HomeTeam": "Ajax", "AwayTeam": "Arsenal", "Group": "Group B", "HomeTeamScore": 1, "AwayTeamScore": 1, "Winner": "Draw"},
+ {"MatchNumber": 3, "RoundNumber": 2, "DateUtc": "2024-01-09 20:00:00Z", "Location": "X", "HomeTeam": "Arsenal", "AwayTeam": "Man. City", "Group": null, "HomeTeamScore": 0, "AwayTeamScore": 3, "Winner": "Man. City"},
+ {"MatchNumber": 4, "RoundNumber": 3, "DateUtc": "2024-02-20 20:00:00Z", "Location": "X", "HomeTeam": "Arsenal", "AwayTeam": "Porto", "Group": null, "HomeTeamScore": null, "AwayTeamScore": null, "Winner": null}
+]
