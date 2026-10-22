@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 import sklearn
 
-from src.ml import dataset, evaluate, features, report
+from src.ml import dataset, europe, evaluate, features, report
 from src.ml.models import SEED, Spec, grid
 
 ML_DIR = Path("data/ml")
@@ -40,8 +40,10 @@ def load_features(leagues, fp: str, rebuild: bool) -> pd.DataFrame:
         df = pd.read_csv(cache, parse_dates=["day"], dtype={"season": str})
         print(f"📦 features desde la caché ({cache})")
         return df
-    print("🔧 calculando features (ELO, forma, descanso y Dixon-Coles semanal)…")
-    df = features.build(dataset.load(leagues), leagues, dataset.ROW_SEASONS)
+    print("🔧 calculando features (ELO, forma, descanso, Europa y Dixon-Coles semanal)…")
+    matches = dataset.load(leagues)
+    eu_days, _ = europe.club_days(matches)
+    df = features.build(matches, leagues, dataset.ROW_SEASONS, eu_days or None)
     cache.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(cache, index=False)
     return df
@@ -84,7 +86,8 @@ def ablation(df: pd.DataFrame, c: float) -> list[dict]:
              ("+ forma", features.FEATURES_FORM),
              ("+ descanso", features.FEATURES_REST),
              ("+ liga", features.LEAGUE_COLS),
-             ("+ Dixon-Coles", features.FEATURES_DC)]
+             ("+ Dixon-Coles", features.FEATURES_DC),
+             ("+ Europa", features.FEATURES_EUROPE)]
     cols: list[str] = []
     out: list[dict] = []
     for name, add in steps:
@@ -126,6 +129,7 @@ def main(argv: list[str] | None = None) -> None:
 
     leagues = dataset.leagues_from(args.leagues)
     dataset.load(leagues)                          # asegura la caché antes de la huella
+    europe.ensure_all()
     fp = dataset.fingerprint(leagues)
     df = load_features(leagues, fp, args.rebuild)
     n_rows = int(df["y"].notna().sum())

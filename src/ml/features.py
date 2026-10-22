@@ -10,8 +10,11 @@ entran en `FEATURES_*`.
   partidos de segunda, así los ascendidos llegan con su nivel.
 - Forma: puntos, goles a favor y en contra por partido en los últimos 5 (de
   cualquier división del país que tengamos). Sin historia queda NaN.
-- Descanso: días desde el último partido, tope 21. Solo vemos la liga: un
-  partido de copa o de Europa en el medio no cuenta (limitación conocida).
+- Descanso: días desde el último partido de liga, tope 21.
+- Europa (`src/ml/europe.py`): `rest_all` es el descanso contando también
+  Champions y Europa League, y `eu_n14` los partidos europeos de los 14 días
+  previos. Sin feeds europeos quedan NaN. Copas nacionales y Conference no
+  se ven (limitación conocida).
 - Dixon-Coles: el modelo de `src/clubs/model.py`, reajustado cada lunes con
   los 3 años previos de primera y segunda de esa liga.
 - xG: no entra. Solo existe desde 2026-27 y no hay con qué entrenarlo.
@@ -42,6 +45,8 @@ DC_HISTORY_DAYS = 3 * 365
 FEATURES_ELO = ["elo_diff"]
 FEATURES_FORM = ["form_pts_h", "form_pts_a", "form_gf_h", "form_ga_h", "form_gf_a", "form_ga_a"]
 FEATURES_REST = ["rest_h", "rest_a"]
+FEATURES_EUROPE = ["rest_all_h", "rest_all_a", "eu_n14_h", "eu_n14_a"]
+EU_WINDOW = 14
 FEATURES_DC = ["dc_ph", "dc_pd", "dc_pa", "dc_log_lh", "dc_log_la"]
 LEAGUE_COLS = [f"lg_{c}" for c in LEAGUES]
 FEATURES_BASIC = FEATURES_ELO + FEATURES_FORM + FEATURES_REST + LEAGUE_COLS
@@ -65,8 +70,22 @@ def _key(m: Match) -> tuple:
     return (m.div, m.day, m.home, m.away)
 
 
-def elo_form_rest(matches: list[Match], top_divs: set[str]) -> dict[tuple, dict]:
-    """Features de ELO, forma y descanso, día por día, antes de actualizar."""
+def _europe(days: list[date], day: date, last_league: date | None) -> tuple[float, float]:
+    """(rest_all, eu_n14) con los partidos europeos estrictamente antes de `day`."""
+    i = bisect.bisect_left(days, day)
+    n14 = i - bisect.bisect_left(days, day - timedelta(days=EU_WINDOW))
+    seen = [d for d in (last_league, days[i - 1] if i else None) if d is not None]
+    rest = min((day - max(seen)).days, REST_CAP) if seen else math.nan
+    return rest, float(n14)
+
+
+def elo_form_rest(matches: list[Match], top_divs: set[str],
+                  europe: dict[tuple, list[date]] | None = None) -> dict[tuple, dict]:
+    """Features de ELO, forma y descanso, día por día, antes de actualizar.
+
+    `europe`: (país, club) -> días con partido europeo, de `europe.club_days`.
+    Con None (sin feeds) las features europeas quedan NaN.
+    """
     elo: dict[tuple, float] = {}
     hist: dict[tuple, deque] = defaultdict(lambda: deque(maxlen=FORM_N))
     last: dict[tuple, date] = {}
@@ -84,6 +103,11 @@ def elo_form_rest(matches: list[Match], top_divs: set[str]) -> dict[tuple, dict]
                 f[f"form_gf_{side}"] = float(np.mean([x[1] for x in h])) if h else math.nan
                 f[f"form_ga_{side}"] = float(np.mean([x[2] for x in h])) if h else math.nan
                 f[f"rest_{side}"] = min((day - last[k]).days, REST_CAP) if k in last else math.nan
+                if europe is None:
+                    f[f"rest_all_{side}"] = f[f"eu_n14_{side}"] = math.nan
+                else:
+                    f[f"rest_all_{side}"], f[f"eu_n14_{side}"] = _europe(
+                        europe.get(k, []), day, last.get(k))
             out[_key(m)] = f
         for m in ms:                                   # 2) recién ahora se actualiza
             if not m.played:
@@ -125,10 +149,11 @@ def dc_features(matches: list[Match], lg: League, targets: list[Match]) -> dict[
     return out
 
 
-def build(matches: list[Match], leagues: list[League], seasons: tuple[str, ...]) -> pd.DataFrame:
+def build(matches: list[Match], leagues: list[League], seasons: tuple[str, ...],
+          europe: dict[tuple, list[date]] | None = None) -> pd.DataFrame:
     """Una fila por partido de primera en `seasons`, con features y benchmark."""
     top = {lg.code for lg in leagues}
-    efr = elo_form_rest(matches, top)
+    efr = elo_form_rest(matches, top, europe)
     rows = []
     for lg in leagues:
         targets = [m for m in matches if m.div == lg.code and m.season in seasons]
