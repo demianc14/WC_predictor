@@ -13,10 +13,10 @@
 <text x="40.0" y="109.49999999999997" text-anchor="end" fill="#555">0.6</text>
 <text x="294.0" y="300" text-anchor="middle" fill="#555">0.8</text>
 <text x="40.0" y="50.0" text-anchor="end" fill="#555">0.8</text>
-<polyline points="73.1,266.5 95.7,236.1 123.8,203.9 155.2,165.3 185.2,142.9 213.7,141.2 247.8,82.2 275.5,60.4" fill="none" stroke="#1b7f3b" stroke-width="2"/>
-<polyline points="72.5,284.0 95.8,234.4 124.6,201.6 155.4,170.0 185.0,150.8 215.7,128.6 246.7,73.8 276.5,60.9" fill="none" stroke="#2a6fdb" stroke-width="2"/>
-<polyline points="96.8,232.7 124.2,215.8 156.1,178.3 184.7,150.1 215.2,122.7 245.8,73.4 277.6,46.0" fill="none" stroke="#c2410c" stroke-width="2"/>
-<polyline points="71.6,284.0 95.2,245.6 125.1,209.1 155.2,182.2 185.2,141.4 215.4,121.1 246.7,78.6 277.3,47.9" fill="none" stroke="#555555" stroke-width="2"/>
+<polyline points="70.8,266.5 96.0,233.7 124.5,201.6 155.7,162.1 185.2,152.3 214.0,136.4 248.3,78.9 276.8,60.3" fill="none" stroke="#1b7f3b" stroke-width="2"/>
+<polyline points="72.5,284.0 95.8,234.4 124.6,201.6 155.4,169.6 185.0,150.8 215.7,128.6 246.7,73.8 276.5,60.9" fill="none" stroke="#2a6fdb" stroke-width="2"/>
+<polyline points="96.8,232.7 124.2,215.8 156.1,177.9 184.7,150.1 215.2,122.7 245.8,73.4 277.6,46.0" fill="none" stroke="#c2410c" stroke-width="2"/>
+<polyline points="71.6,284.0 95.2,245.6 125.1,208.4 155.2,182.2 185.2,141.4 215.4,121.1 246.7,78.6 277.3,47.9" fill="none" stroke="#555555" stroke-width="2"/>
 <text x="470.0" y="32" text-anchor="middle" font-weight="bold">Empate (X)</text>
 <rect x="346.0" y="46" width="248.0" height="238" fill="none" stroke="#bbb"/>
 <line x1="346.0" y1="284.0" x2="594.0" y2="46.0" stroke="#999" stroke-dasharray="4 4"/>
@@ -32,10 +32,10 @@
 <text x="340.0" y="97.6" text-anchor="end" fill="#555">0.4</text>
 <text x="594.0" y="300" text-anchor="middle" fill="#555">0.5</text>
 <text x="340.0" y="50.0" text-anchor="end" fill="#555">0.5</text>
-<polyline points="384.6,204.7 427.9,209.7 470.9,163.6 511.2,132.5 556.3,108.6" fill="none" stroke="#1b7f3b" stroke-width="2"/>
-<polyline points="428.2,211.4 473.5,162.1 503.6,133.9" fill="none" stroke="#2a6fdb" stroke-width="2"/>
-<polyline points="430.3,219.8 471.3,158.8 502.2,136.2" fill="none" stroke="#c2410c" stroke-width="2"/>
-<polyline points="427.5,215.8 473.9,156.4 502.3,148.2" fill="none" stroke="#555555" stroke-width="2"/>
+<polyline points="386.6,204.7 428.2,202.1 471.2,162.7 511.0,141.3 556.0,83.6" fill="none" stroke="#1b7f3b" stroke-width="2"/>
+<polyline points="428.2,211.4 473.5,162.2 503.6,133.9" fill="none" stroke="#2a6fdb" stroke-width="2"/>
+<polyline points="430.3,219.8 471.3,158.9 502.2,136.2" fill="none" stroke="#c2410c" stroke-width="2"/>
+<polyline points="427.5,215.8 473.9,156.5 502.3,148.2" fill="none" stroke="#555555" stroke-width="2"/>
 <text x="770.0" y="32" text-anchor="middle" font-weight="bold">Gana la visita (2)</text>
 <rect x="646.0" y="46" width="248.0" height="238" fill="none" stroke="#bbb"/>
 <line x1="646.0" y1="284.0" x2="894.0" y2="46.0" stroke="#999" stroke-dasharray="4 4"/>
@@ -49,10 +49,10 @@
 <text x="640.0" y="109.49999999999997" text-anchor="end" fill="#555">0.6</text>
 <text x="894.0" y="300" text-anchor="middle" fill="#555">0.8</text>
 <text x="640.0" y="50.0" text-anchor="end" fill="#555">0.8</text>
-<polyline points="669.3,256.4 691.6,239.1 724.1,205.2 752.1,203.8 785.7,146.9 815.3,131.3 843.8,107.7 873.0,46.0" fill="none" stroke="#1b7f3b" stroke-width="2"/>
-<polyline points="668.6,262.4 692.9,237.5 723.3,210.7 753.7,194.2 784.5,151.4 815.3,133.7 844.7,85.7 876.5,63.3" fill="none" stroke="#2a6fdb" stroke-width="2"/>
-<polyline points="669.6,273.2 694.3,239.5 725.2,211.4 753.4,194.2 784.7,147.3 814.4,115.6 844.1,81.9 875.4,60.9" fill="none" stroke="#c2410c" stroke-width="2"/>
-<polyline points="669.3,271.3 693.7,242.9 723.5,215.2 753.1,182.9 784.7,146.2 816.1,127.1 844.4,91.3 876.4,52.6" fill="none" stroke="#555555" stroke-width="2"/>
+<polyline points="669.0,260.6 691.4,236.9 724.2,205.5 752.4,202.9 786.3,153.1 815.0,120.6 843.8,104.9 877.2,69.8" fill="none" stroke="#1b7f3b" stroke-width="2"/>
+<polyline points="668.6,262.4 692.9,237.5 723.3,210.7 753.7,194.4 784.5,151.4 815.3,133.7 844.7,85.7 876.5,63.3" fill="none" stroke="#2a6fdb" stroke-width="2"/>
+<polyline points="669.6,273.2 694.3,239.5 725.2,211.4 753.4,194.3 784.7,147.3 814.4,115.6 844.1,81.9 875.4,60.9" fill="none" stroke="#c2410c" stroke-width="2"/>
+<polyline points="669.3,271.3 693.7,242.9 723.5,215.2 753.1,182.9 784.6,146.8 816.1,127.1 844.4,91.3 876.4,52.6" fill="none" stroke="#555555" stroke-width="2"/>
 <rect x="46" y="338" width="14" height="4" fill="#1b7f3b"/>
 <text x="66" y="344">Gradient boosting</text>
 <rect x="256" y="338" width="14" height="4" fill="#2a6fdb"/>
