@@ -81,22 +81,22 @@ python -m src.ml.train --leagues all     # features, validación, test, artefact
 python -m src.ml.report data/ml/runs/<fecha>_<huella>   # regenera el reporte sin reentrenar
 ```
 
-- **Features**, todas calculadas antes del partido: ELO de clubes, forma de los últimos 5, días de descanso, liga y, en una variante, las probabilidades y λ del Dixon-Coles reajustado cada lunes. Las cuotas no son feature: solo sirven de benchmark. El xG queda afuera porque solo existe desde 2026-27. Un test cambia resultados futuros y comprueba que ninguna feature pasada se mueve.
+- **Features**, todas calculadas antes del partido: ELO de clubes, forma de los últimos 5, días de descanso (también contando Champions y Europa League), liga y, en una variante, las probabilidades y λ del Dixon-Coles reajustado cada lunes. Las cuotas no son feature: solo sirven de benchmark. El xG queda afuera porque solo existe desde 2026-27. Un test cambia resultados futuros y comprueba que ninguna feature pasada se mueve.
 - **Modelos**: base de frecuencias, regresión logística multinomial (sin y con Dixon-Coles) y `HistGradientBoostingClassifier`.
 - **Validación walk-forward mensual**: los hiperparámetros se eligen en 2023-24 y 2024-25; el test es 2025-26 y lo que va de 2026-27. Entrena desde 2020-21, con 2019-20 solo como historia previa.
 
-Test con las cinco ligas juntas (2.097 partidos, la misma muestra para todos; menor es mejor):
+Test con las cinco ligas juntas (2.098 partidos, la misma muestra para todos; menor es mejor):
 
 | Modelo | RPS [IC 95%] | Log-loss |
 |---|---|---|
-| Base (frecuencias) | 0.2294 [0.2265, 0.2324] | 1.0716 |
-| Logística sin Dixon-Coles | 0.2019 [0.1960, 0.2075] | 0.9914 |
-| Logística + Dixon-Coles | 0.2019 [0.1961, 0.2073] | 0.9908 |
-| Gradient boosting | 0.2031 [0.1973, 0.2086] | 0.9954 |
-| Dixon-Coles | 0.2027 [0.1977, 0.2076] | 0.9936 |
-| **Mercado (cierre)** | **0.1970 [0.1916, 0.2022]** | **0.9740** |
+| Base (frecuencias) | 0.2294 [0.2263, 0.2324] | 1.0715 |
+| Logística sin Dixon-Coles | 0.2020 [0.1960, 0.2078] | 0.9914 |
+| Logística + Dixon-Coles | 0.2019 [0.1963, 0.2074] | 0.9908 |
+| Gradient boosting (+ Europa) | 0.2034 [0.1976, 0.2089] | 0.9969 |
+| Dixon-Coles | 0.2027 [0.1977, 0.2078] | 0.9936 |
+| **Mercado (cierre)** | **0.1971 [0.1918, 0.2024]** | **0.9742** |
 
-**Conclusión: el supervisado no mejora al Dixon-Coles y no alcanza al mercado.** La logística con Dixon-Coles queda a −0.0008 de RPS del Dixon-Coles (IC 95% −0.0019 a +0.0003, no se distingue) y a +0.0048 del mercado (IC +0.0027 a +0.0069, peor). Los cuatro modelos están bien calibrados, también en empates (predicen 25.3-25.5% y hubo 25.2%). El gradient boosting no supera a la logística: con unos 11.000 partidos y señales casi lineales no hay interacciones que aprovechar.
+**Conclusión: el supervisado no mejora al Dixon-Coles y no alcanza al mercado.** La logística con Dixon-Coles queda a −0.0008 de RPS del Dixon-Coles (IC 95% −0.0019 a +0.0003, no se distingue) y a +0.0048 del mercado (IC +0.0026 a +0.0070, peor). Los cuatro modelos están bien calibrados, también en empates (predicen 25.3-25.5% y hubo 25.2%). El gradient boosting no supera a la logística: con unos 11.000 partidos y señales casi lineales no hay interacciones que aprovechar. Sumar Champions y Europa League al descanso tampoco ayuda: en validación la logística empeora apenas (log-loss 0.9806 → 0.9811) y el boosting que la elige no se distingue del Dixon-Coles en test.
 
 El Dixon-Coles de este test se reajusta con los 3 años previos; el de la tabla por liga de más arriba usa toda la historia en caché, por eso sus Brier difieren hasta en 0.001.
 
@@ -129,7 +129,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 111 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 117 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -165,7 +165,7 @@ python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
 python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
-pytest                                 # 111 tests, sin red
+pytest                                 # 117 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```

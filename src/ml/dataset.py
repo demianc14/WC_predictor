@@ -16,6 +16,7 @@ import hashlib
 from src.clubs import data
 from src.clubs.data import Match
 from src.clubs.leagues import LEAGUES, League
+from src.ml import europe
 
 WARMUP = ("1920",)
 TRAIN = ("2021", "2122", "2223")
@@ -41,7 +42,7 @@ def load(leagues: list[League]) -> list[Match]:
 
 
 def fingerprint(leagues: list[League]) -> str:
-    """SHA-256 de los CSV que entran, en orden fijo: identifica el dataset."""
+    """SHA-256 de los CSV y feeds europeos que entran, en orden fijo: identifica el dataset."""
     h = hashlib.sha256()
     for lg in leagues:
         for div in (lg.code, lg.lower):
@@ -49,4 +50,7 @@ def fingerprint(leagues: list[League]) -> str:
                 path = data.CACHE_DIR / f"{div}_{s}.csv"
                 h.update(f"{div}_{s}".encode())
                 h.update(path.read_bytes())
+    for path in europe.cached_paths():               # Champions y Europa League
+        h.update(path.name.encode())
+        h.update(path.read_bytes())
     return h.hexdigest()[:12]

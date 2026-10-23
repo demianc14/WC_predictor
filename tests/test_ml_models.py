@@ -27,7 +27,8 @@ def test_modelos_sklearn_devuelven_tres_columnas_que_suman_uno():
 
 def test_grilla_rapida_un_candidato_por_familia():
     assert all(len(v) == 1 for v in grid(quick=True).values())
-    assert len(grid()["hgb"]) == 8
+    assert len(grid()["hgb"]) == 16                     # 8 combinaciones, con y sin Europa
+    assert sum("+ Europa" in s.label for s in grid()["logit_dc"]) == 3
 
 
 def test_conclusion_dice_empate_si_el_intervalo_cruza_cero():

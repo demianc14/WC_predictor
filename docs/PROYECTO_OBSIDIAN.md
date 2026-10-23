@@ -51,7 +51,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web, snapshots, calibraciones
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 111 tests con pytest, sin red
+├── tests/                          ← 117 tests con pytest, sin red
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
@@ -336,7 +336,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 111 tests, sin red
+pytest            # 117 tests, sin red
 ruff check .
 mypy
 ```
@@ -414,8 +414,9 @@ Todas se calculan con partidos de **días anteriores** (`features.py`):
 - **Días de descanso**, con tope 21.
 - **Liga**, en one-hot.
 - En una variante, las **probabilidades y λ del Dixon-Coles**, reajustado cada lunes con los 3 años previos.
+- **Europa** (fase 6, §13.5): descanso contando Champions y Europa League (`rest_all`) y partidos europeos en los 14 días previos (`eu_n14`).
 
-Quedan afuera el xG (solo existe desde 2026-27), las copas y Europa (el descanso solo ve la liga), las lesiones y las alineaciones.
+Quedan afuera el xG (solo existe desde 2026-27), las copas nacionales y la Conference League, las lesiones y las alineaciones.
 
 > [!warning] Cómo se prueba que no hay fuga
 > `test_cambiar_el_futuro_no_mueve_las_features_del_pasado` altera resultados futuros y comprueba que ninguna feature pasada cambia. `test_partidos_del_mismo_dia_no_se_ven_entre_si` cubre el caso borde de la misma jornada. `test_las_cuotas_nunca_son_feature` hace cumplir el principio 5. Un test de fuga vale más que cualquier explicación en el README.
@@ -429,23 +430,23 @@ Quedan afuera el xG (solo existe desde 2026-27), las copas y Europa (el descanso
   - validación 2023-24 y 2024-25, donde se eligen los hiperparámetros;
   - test 2025-26 y lo que va de 2026-27, que no se mira hasta el final.
 - **Walk-forward mensual:** para predecir un mes se entrena solo con meses anteriores. Lo verifica `test_walk_forward_entrena_solo_con_meses_anteriores`.
-- **Elección:** en cada familia gana el de menor log-loss en validación. La ablación agrega features de a una: ELO, forma, descanso, liga y Dixon-Coles.
+- **Elección:** en cada familia gana el de menor log-loss en validación, entre candidatos con y sin las features europeas. La ablación agrega features de a una: ELO, forma, descanso, liga, Dixon-Coles y Europa.
 
-### 13.3 Resultados (test, cinco ligas juntas, n = 2097 para todos)
+### 13.3 Resultados (test, cinco ligas juntas, n = 2098 para todos)
 
 | Modelo | RPS [IC 95%] | Log-loss |
 |---|---|---|
-| Base (frecuencias) | 0.2294 [0.2265, 0.2324] | 1.0716 |
-| Logística sin Dixon-Coles | 0.2019 [0.1960, 0.2075] | 0.9914 |
-| Logística + Dixon-Coles | 0.2019 [0.1961, 0.2073] | 0.9908 |
-| Gradient boosting | 0.2031 [0.1973, 0.2086] | 0.9954 |
-| Dixon-Coles | 0.2027 [0.1977, 0.2076] | 0.9936 |
-| **Mercado (cierre, sin margen)** | **0.1970 [0.1916, 0.2022]** | **0.9740** |
+| Base (frecuencias) | 0.2294 [0.2263, 0.2324] | 1.0715 |
+| Logística sin Dixon-Coles | 0.2020 [0.1960, 0.2078] | 0.9914 |
+| Logística + Dixon-Coles | 0.2019 [0.1963, 0.2074] | 0.9908 |
+| Gradient boosting (+ Europa) | 0.2034 [0.1976, 0.2089] | 0.9969 |
+| Dixon-Coles | 0.2027 [0.1977, 0.2078] | 0.9936 |
+| **Mercado (cierre, sin margen)** | **0.1971 [0.1918, 0.2024]** | **0.9742** |
 
 Las comparaciones se hacen con **diferencias pareadas por bootstrap**: se remuestrean partidos y se calcula la diferencia en cada remuestreo. Si el intervalo cruza el 0, la diferencia puede ser ruido.
 
 - Logística + Dixon-Coles contra Dixon-Coles: ΔRPS −0.0008 [−0.0019, +0.0003]. **No se distingue.**
-- Logística + Dixon-Coles contra mercado: ΔRPS +0.0048 [+0.0027, +0.0069]. **Peor.**
+- Logística + Dixon-Coles contra mercado: ΔRPS +0.0048 [+0.0026, +0.0070]. **Peor.**
 - **Calibración:** los cuatro modelos están bien calibrados, también en empates (predicen 25.3-25.5%, hubo 25.2%). El sesgo de empates del Mundial (§10.1, punto 4) no aparece con muestras grandes.
 - El gradient boosting no supera a la logística: con ~11.000 partidos y señales casi lineales, no hay interacciones que aprovechar.
 
@@ -453,7 +454,22 @@ Las comparaciones se hacen con **diferencias pareadas por bootstrap**: se remues
 
 ### 13.4 Reproducibilidad
 
-Cada corrida escribe `data/ml/runs/<fecha>_<huella>/` con las predicciones, las métricas, los modelos y un manifiesto con el commit, las versiones de las librerías, la semilla y la **huella SHA-256 del dataset**. `python -m src.ml.report <run>` regenera el reporte sin reentrenar. El commit se toma con `git describe --dirty`: una corrida desde un árbol con cambios sin commitear queda marcada, y por eso la oficial se corrió desde uno limpio (`84fdeb2`, huella `0a9df3af955e`).
+Cada corrida escribe `data/ml/runs/<fecha>_<huella>/` con las predicciones, las métricas, los modelos y un manifiesto con el commit, las versiones de las librerías, la semilla y la **huella SHA-256 del dataset**. `python -m src.ml.report <run>` regenera el reporte sin reentrenar. El commit se toma con `git describe --dirty`: una corrida desde un árbol con cambios sin commitear queda marcada, y por eso la oficial se corrió desde uno limpio. La vigente es la de la fase 6 (`8347a73`, huella `9bd592bc9bef`, 6 minutos en local con `--rebuild`); la anterior fue `84fdeb2`, huella `0a9df3af955e`.
+
+### 13.5 Europa en el descanso (fase 6)
+
+**Pregunta:** el descanso solo veía la liga, así que un equipo que jugó Champions el miércoles figuraba con 7 días de descanso. ¿Mejora el modelo si ve el calendario europeo?
+
+- **Fuente:** fixturedownload.com publica Champions y Europa League desde 2019-20, con fecha y marcador, desde la fase de grupos (`src/ml/europe.py`, caché en `data/cache/clubs/europe/`). Los nombres se cruzan con football-data por igualdad o con una tabla de 20 alias; `python -m src.ml.europe --report` lista lo que queda sin cruzar (115 nombres, todos clubes de fuera de las cinco ligas, revisados a mano). Resultado: 2296 partidos-club de 62 clubes.
+- **Fuera:** la Conference League (su feed existe recién desde 2024-25; meterla solo en test haría que train y test midieran cosas distintas) y las copas nacionales (no están en la fuente). Las previas europeas tampoco.
+- **Sin fuga:** solo cuentan partidos europeos de días anteriores (`tests/test_ml_europe.py`). La huella del dataset incluye los feeds europeos.
+
+**Resultado (validación 2023-24 y 2024-25, n = 3504):**
+- En la ablación de la logística, sumar Europa empeora apenas: log-loss 0.9806 → 0.9811, RPS 0.1979 → 0.1981.
+- La logística elige la variante sin Europa en sus dos familias.
+- El gradient boosting elige la variante con Europa por una diferencia mínima (log-loss 0.9919 contra 0.9927), pero en test sigue sin distinguirse del Dixon-Coles (ΔRPS +0.0007 [−0.0009, +0.0022]).
+
+**Conclusión:** saber qué clubes jugaron en Europa no cierra la brecha con el mercado. Una explicación plausible, **no verificada**, es que la carga europea ya está en el ELO y en el Dixon-Coles: los que juegan Europa son los mejores equipos, y el efecto de un partido entre semana es chico frente al ruido de un 1X2.
 
 ---
 
@@ -505,7 +521,7 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 ## 15. Limitaciones honestas (para tu defensa)
 
 **Clubes y modelo supervisado:**
-1. **El modelo pierde contra el mercado** en las cinco ligas (§12.4), y el supervisado no lo cambia (§13.3). Para cerrar la brecha haría falta información que el mercado sí ve: lesiones, alineaciones, calendario de copas.
+1. **El modelo pierde contra el mercado** en las cinco ligas (§12.4), y el supervisado no lo cambia (§13.3). Para cerrar la brecha haría falta información que el mercado sí ve: lesiones y alineaciones. El calendario europeo ya se probó y no alcanzó (§13.5); las copas nacionales siguen sin fuente.
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
@@ -533,12 +549,13 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Modelo entrenado (logística y gradient boosting) en vez de pesos a mano, comparado con IC (§13)
 - [x] Refresco automático con GitHub Actions, predicciones auditables y métricas en vivo (§14.1)
 - [x] CI con ruff, mypy, pytest y Docker; dos imágenes reproducibles (§14.2, §14.3)
+- [x] Champions y Europa League en el descanso, medido en validación y test (§13.5)
 
 ### 16.2 Pendiente
 
 - **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).
 - **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
-- **Copas y Europa** en el cálculo de descanso y fatiga.
+- **Copas nacionales y Conference** en el descanso, si aparece una fuente con fecha (Europa ya entró en la fase 6 y no mejoró, §13.5).
 - **Métricas en vivo:** volver a leerlas cuando haya temporadas enteras, no semanas.
 - **Caché de features en Docker** para no recalcular 54 minutos en cada entrenamiento.
 - **Selecciones:** ampliar los mapeos más allá de las 48 y estimar ρ y el modelo de empates sobre el historial completo.

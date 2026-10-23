@@ -16,7 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from src.ml.features import FEATURES_BASIC, FEATURES_FULL
+from src.ml.features import FEATURES_BASIC, FEATURES_EUROPE, FEATURES_FULL
 
 SEED = 2627
 
@@ -60,8 +60,9 @@ class Spec:
 
     @property
     def label(self) -> str:
-        return self.family + ("" if not self.params else
-                              " (" + ", ".join(f"{k}={v}" for k, v in self.params.items()) + ")")
+        eu = " + Europa" if set(FEATURES_EUROPE) & set(self.features) else ""
+        params = ", ".join(f"{k}={v}" for k, v in self.params.items())
+        return self.family + eu + (f" ({params})" if params else "")
 
     def make(self):
         if self.family == "base":
@@ -83,15 +84,20 @@ class Spec:
 
 
 def grid(quick: bool = False) -> dict[str, list[Spec]]:
-    """Candidatos por familia. `quick` deja uno por familia (para tests y pruebas)."""
+    """Candidatos por familia, con y sin las features europeas.
+
+    `quick` deja uno por familia, sin Europa (para tests y pruebas).
+    """
     cs = [0.1] if quick else [0.01, 0.1, 1.0]
     hgb = ([(0.05, 8, 80)] if quick else
            [(lr, leaves, msl) for lr in (0.03, 0.06) for leaves in (8, 16) for msl in (40, 120)])
+    variants = [()] if quick else [(), tuple(FEATURES_EUROPE)]
+    basic, full = tuple(FEATURES_BASIC), tuple(FEATURES_FULL)
     return {
         "base": [Spec("base")],
-        "logit_basic": [Spec("logit_basic", tuple(FEATURES_BASIC), {"C": c}) for c in cs],
-        "logit_dc": [Spec("logit_dc", tuple(FEATURES_FULL), {"C": c}) for c in cs],
-        "hgb": [Spec("hgb", tuple(FEATURES_FULL), {"learning_rate": lr, "max_leaf_nodes": lv,
-                                                    "min_samples_leaf": ms})
-                for lr, lv, ms in hgb],
+        "logit_basic": [Spec("logit_basic", basic + eu, {"C": c}) for eu in variants for c in cs],
+        "logit_dc": [Spec("logit_dc", full + eu, {"C": c}) for eu in variants for c in cs],
+        "hgb": [Spec("hgb", full + eu, {"learning_rate": lr, "max_leaf_nodes": lv,
+                                         "min_samples_leaf": ms})
+                for eu in variants for lr, lv, ms in hgb],
     }
