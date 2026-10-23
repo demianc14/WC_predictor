@@ -51,7 +51,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web, snapshots, calibraciones
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 117 tests con pytest, sin red
+├── tests/                          ← 120 tests con pytest, sin red
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
@@ -336,7 +336,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 117 tests, sin red
+pytest            # 120 tests, sin red
 ruff check .
 mypy
 ```
