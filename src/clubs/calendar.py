@@ -46,8 +46,8 @@ class Fixture:
 
 def ensure_calendar(lg: League, force: bool = False) -> list[dict]:
     path = data.CACHE_DIR / f"calendar_{lg.feed}_{SEASON_YEAR}.json"
-    if force or not data._fresh(path, permanent=False):
-        data._download(FEED_URL.format(feed=lg.feed, year=SEASON_YEAR), path)
+    data.refresh(FEED_URL.format(feed=lg.feed, year=SEASON_YEAR), path, permanent=False,
+                 force=force)
     return json.loads(path.read_text(encoding="utf-8"))
 
 

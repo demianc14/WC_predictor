@@ -4,6 +4,8 @@ Un CSV por liga y temporada (`mmz4281/{temporada}/{división}.csv`) con
 resultado, xG (desde 2026-27), tiros y cuotas de apertura/cierre, más
 `fixtures.csv` con la próxima jornada y sus cuotas. Las temporadas cerradas
 se bajan una vez; la actual y el calendario se refrescan cada 12 horas.
+Si un refresco por TTL falla y hay caché, se sigue con la caché y se avisa;
+un `force=True` (refresco pedido a mano) sí falla.
 """
 from __future__ import annotations
 
@@ -61,17 +63,28 @@ def _download(url: str, target: Path) -> None:
     target.write_bytes(body)
 
 
+def refresh(url: str, path: Path, permanent: bool, force: bool) -> None:
+    """Baja `url` a `path` si hace falta. Un refresco por TTL que falla usa la caché."""
+    if not force and _fresh(path, permanent):
+        return
+    try:
+        _download(url, path)
+    except Exception as e:
+        if force or not path.exists() or path.stat().st_size == 0:
+            raise
+        print(f"⚠️  {path.name}: no se pudo refrescar ({e}); sigo con la caché")
+
+
 def ensure_season(div: str, season: str, force: bool = False) -> Path:
     path = CACHE_DIR / f"{div}_{season}.csv"
-    if force or not _fresh(path, permanent=season != CURRENT_SEASON):
-        _download(BASE_URL.format(season=season, div=div), path)
+    refresh(BASE_URL.format(season=season, div=div), path,
+            permanent=season != CURRENT_SEASON, force=force)
     return path
 
 
 def ensure_fixtures(force: bool = False) -> Path:
     path = CACHE_DIR / "fixtures.csv"
-    if force or not _fresh(path, permanent=False):
-        _download(FIXTURES_URL, path)
+    refresh(FIXTURES_URL, path, permanent=False, force=force)
     return path
 
 
