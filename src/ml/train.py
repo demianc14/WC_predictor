@@ -3,8 +3,8 @@
     python -m src.ml.train --leagues all          # las cinco ligas
     python -m src.ml.train --leagues E0,SP1 --quick
 
-1. Features de todos los partidos (se guardan por huella del dataset y se
-   reutilizan si los CSV no cambiaron).
+1. Features de todos los partidos (se guardan por huella del dataset y del
+   código que las calcula, y se reutilizan si no cambió ninguno de los dos).
 2. Validación (2023-24 y 2024-25): walk-forward mensual de cada candidato;
    gana el de menor log-loss en cada familia. Más una ablación de features.
 3. Test (2025-26 y 2026-27): walk-forward con los elegidos, contra
@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -32,10 +33,23 @@ ML_DIR = Path("data/ml")
 FAMILIES = ("base", "logit_basic", "logit_dc", "hgb")
 MK = ["mk_h", "mk_d", "mk_a"]
 DC = ["dc_ph", "dc_pd", "dc_pa"]
+SRC = Path(__file__).resolve().parents[1]
+# el código del que salen las features: si cambia, la caché vieja no sirve
+FEATURE_CODE = tuple(SRC / f for f in ("ml/features.py", "ml/europe.py", "ml/dataset.py",
+                                        "clubs/model.py", "clubs/data.py", "betting/odds.py"))
+
+
+def code_hash() -> str:
+    """SHA-256 corto del código de FEATURE_CODE; sin git, para que valga en Docker."""
+    h = hashlib.sha256()
+    for path in FEATURE_CODE:
+        h.update(path.name.encode())
+        h.update(path.read_bytes())
+    return h.hexdigest()[:8]
 
 
 def load_features(leagues, fp: str, rebuild: bool) -> pd.DataFrame:
-    cache = ML_DIR / "cache" / f"features_{fp}.csv.gz"
+    cache = ML_DIR / "cache" / f"features_{fp}_{code_hash()}.csv.gz"
     if cache.exists() and not rebuild:
         df = pd.read_csv(cache, parse_dates=["day"], dtype={"season": str})
         print(f"📦 features desde la caché ({cache})")
