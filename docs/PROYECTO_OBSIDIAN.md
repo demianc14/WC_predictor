@@ -51,7 +51,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web, snapshots, calibraciones
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 120 tests con pytest, sin red
+├── tests/                          ← 122 tests con pytest, sin red
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
@@ -336,7 +336,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 120 tests, sin red
+pytest            # 122 tests, sin red
 ruff check .
 mypy
 ```
@@ -514,6 +514,8 @@ La primera versión pesaba 826 MB. Bajó al sacar dependencias declaradas que na
 
 **Prueba de reproducibilidad:** se reconstruyeron los datos del commit oficial con `git archive` (misma huella, `0a9df3af955e`) y se corrió el entrenamiento completo dentro de `:ml`. Contra el `metrics.json` oficial, la diferencia máxima fue **2,6·10⁻¹⁴**, redondeo de punto flotante entre Linux y macOS, con los mismos modelos elegidos. Tardó 54 minutos calculando las features desde cero.
 
+**Nota del 23-oct-2026 (medido de nuevo):** los 54 minutos no eran las features. Con los datos de la corrida oficial de la fase 6 (`git archive 8287a5f`, huella `9bd592bc9bef`, sin red), dentro de `:ml` las features tardaron **24 s** y la grilla de la logística **26 s**. Cada candidato de `hgb` tardó **entre 3,5 y 8 minutos**; en local la corrida entera tarda unos 6. Después del sexto candidato el log no avanzó en unas 13 horas (la Mac pudo dormir parte de ese tiempo) y el contenedor seguía al 800 % de CPU, así que hubo que cortarlo. El cuello de botella es el gradient boosting de scikit-learn dentro de Docker, probablemente por cómo usa los hilos de OpenMP. **OJO:** la causa no está verificada.
+
 Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la versión del modelo y el commit, así una predicción hecha desde Docker no se duplica con las del bot. Comandos: `make docker-build docker-test docker-daily docker-train docker-serve`.
 
 ---
@@ -525,7 +527,7 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
-5. **El entrenamiento en Docker es lento sin la caché de features** (54 min contra unos 3 en local con la caché).
+5. **El entrenamiento en Docker es lento por el gradient boosting, no por las features** (§14): cada candidato de `hgb` tarda minutos y una corrida completa se trabó. En local entrena en unos 6 minutos.
 
 **Selecciones (Parte I):**
 6. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla se scrapean, y StatsBomb cubre 40 de las 48 selecciones, pero el resto del xG es manual.
@@ -550,6 +552,7 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Refresco automático con GitHub Actions, predicciones auditables y métricas en vivo (§14.1)
 - [x] CI con ruff, mypy, pytest y Docker; dos imágenes reproducibles (§14.2, §14.3)
 - [x] Champions y Europa League en el descanso, medido en validación y test (§13.5)
+- [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
 
 ### 16.2 Pendiente
 
@@ -557,7 +560,7 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
 - **Copas nacionales y Conference** en el descanso, si aparece una fuente con fecha (Europa ya entró en la fase 6 y no mejoró, §13.5).
 - **Métricas en vivo:** volver a leerlas cuando haya temporadas enteras, no semanas.
-- **Caché de features en Docker** para no recalcular 54 minutos en cada entrenamiento.
+- **Siguiente sesión: `hgb` en Docker.** Cada candidato tarda minutos y la corrida completa se trabó al 800 % de CPU (§14). Primero probar `OMP_NUM_THREADS` (en el `Dockerfile` o en `make docker-train`) y medir un solo candidato. Si con eso no alcanza, paralelizar los candidatos con `ProcessPoolExecutor`. Se cierra cuando `make docker-train` termine y su `metrics.json` coincida con la corrida oficial `9bd592bc9bef`.
 - **Selecciones:** ampliar los mapeos más allá de las 48 y estimar ρ y el modelo de empates sobre el historial completo.
 - **Otros torneos:** un `tournament.py` con el cuadro de la Euro o la Copa América reutiliza `match_engine.py` sin cambios.
 - **Infraestructura**, solo si hace falta: una base de datos (el brief pide aprobación antes de agregar Postgres o Supabase) o una API. Hoy el CSV versionado es más auditable que una base de datos.

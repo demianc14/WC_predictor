@@ -22,7 +22,7 @@ Contexto completo: `README.md` y `docs/PROYECTO_OBSIDIAN.md` (bitácora, §2.1 p
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 120 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 122 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -65,4 +65,5 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
 - El bot commitea en `main` todos los días: hacer `git pull` / rebase antes de empujar a `main`.
 - Con PRs apilados, no mergear el PR base con `--delete-branch`, porque GitHub cierra el hijo.
 - En Docker no hay `.git`: la versión del modelo entra por build args (`make docker-build`).
-- Entrenar en Docker sin `data/ml/cache` recalcula las features (~54 min).
+- Entrenar en Docker es lento por `hgb` (minutos por candidato; una corrida completa se trabó, §14
+  de la bitácora). Las features tardan 24 s. Es lo próximo del roadmap (§16.2).
