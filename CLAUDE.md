@@ -65,5 +65,6 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
 - El bot commitea en `main` todos los días: hacer `git pull` / rebase antes de empujar a `main`.
 - Con PRs apilados, no mergear el PR base con `--delete-branch`, porque GitHub cierra el hijo.
 - En Docker no hay `.git`: la versión del modelo entra por build args (`make docker-build`).
-- Entrenar en Docker es lento por `hgb` (minutos por candidato; una corrida completa se trabó, §14
-  de la bitácora). Las features tardan 24 s. Es lo próximo del roadmap (§16.2).
+- `hgb` en Docker necesita `OMP_NUM_THREADS` fijo (4 en la imagen `:ml`; `make docker-train OMP=n`):
+  con un hilo por CPU visible es ~40× más lento (§14.3). Para reproducir una corrida oficial,
+  usar `--network none`, porque con red `dataset.load` refresca los datos y cambia la huella.
