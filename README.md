@@ -210,7 +210,7 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 ## Cómo escalar
 
-El proyecto está pensado para crecer sin tocar el motor de partido: más selecciones o torneos, ajustar ρ y el modelo de empates sobre el historial completo, refresco automático del ETL, persistencia de simulaciones, etc. Cada cambio se puede validar con el mismo `backtest`. Lo hecho y lo pendiente (lesiones y alineaciones como features, xG en el supervisado, caché de features en Docker, más selecciones) está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
+El proyecto está pensado para crecer sin tocar el motor de partido: más selecciones o torneos, ajustar ρ y el modelo de empates sobre el historial completo, refresco automático del ETL, persistencia de simulaciones, etc. Cada cambio se puede validar con el mismo `backtest`. Lo hecho y lo pendiente (lesiones y alineaciones como features, xG en el supervisado, más selecciones) está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
 
 ## Documentación completa
 

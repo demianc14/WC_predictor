@@ -4,6 +4,8 @@
 
 PY ?= python
 IMAGE ?= wc-predictor
+# hilos de OpenMP para hgb en Docker: con todas las CPU visibles se traba (bitácora §14.3)
+OMP ?= 4
 # los datos viven fuera de la imagen; corre con tu usuario para que los archivos sean tuyos
 DOCKER_RUN = docker run --rm --user $$(id -u):$$(id -g) -v "$$PWD/data:/app/data"
 
@@ -42,7 +44,8 @@ docker-daily:
 	$(DOCKER_RUN) -v "$$PWD/app:/app/app" $(IMAGE) python -m src.pipeline.daily
 
 docker-train:
-	$(DOCKER_RUN) -v "$$PWD/docs:/app/docs" $(IMAGE):ml python -m src.ml.train --leagues all
+	$(DOCKER_RUN) -e OMP_NUM_THREADS=$(OMP) -v "$$PWD/docs:/app/docs" $(IMAGE):ml \
+		python -m src.ml.train --leagues all
 
 docker-serve:
 	docker run --rm -p 8000:8000 $(IMAGE) python -m http.server 8000 --directory app

@@ -516,6 +516,14 @@ La primera versión pesaba 826 MB. Bajó al sacar dependencias declaradas que na
 
 **Nota del 23-oct-2026 (medido de nuevo):** los 54 minutos no eran las features. Con los datos de la corrida oficial de la fase 6 (`git archive 8287a5f`, huella `9bd592bc9bef`, sin red), dentro de `:ml` las features tardaron **24 s** y la grilla de la logística **26 s**. Cada candidato de `hgb` tardó **entre 3,5 y 8 minutos**; en local la corrida entera tarda unos 6. Después del sexto candidato el log no avanzó en unas 13 horas (la Mac pudo dormir parte de ese tiempo) y el contenedor seguía al 800 % de CPU, así que hubo que cortarlo. El cuello de botella es el gradient boosting de scikit-learn dentro de Docker, probablemente por cómo usa los hilos de OpenMP. **OJO:** la causa no está verificada.
 
+**Nota del 26-oct-2026 (causa verificada y corregida):** dentro de la imagen, scikit-learn usa el OpenMP de GNU (`libgomp`) y abre un hilo por CPU visible: Docker Desktop expone 10 (la Mac tiene 4 núcleos de rendimiento y 6 de eficiencia). Se midió un solo candidato de `hgb` (walk-forward de validación, mismos datos, sin red), variando `OMP_NUM_THREADS`:
+
+| Hilos de OpenMP | 1 | 2 | 4 | 8 | 10 (sin fijar) |
+|---|---|---|---|---|---|
+| Segundos por candidato | 10,3 | 5,6 | **5,0** | 8,2 | 199,7 / 204,3 / 202,7 |
+
+En la Mac (sin Docker), el mismo candidato tarda 12,4 s. Con un hilo por CPU visible, cada barrera de OpenMP espera al hilo más lento, y el entrenamiento se hace unas 40 veces más lento. Por eso la imagen `:ml` fija `OMP_NUM_THREADS=4`, que se puede cambiar con `make docker-train OMP=n`. Con eso, el entrenamiento completo dentro de `:ml` tardó **118 s** sobre los datos de `8287a5f`. Elige los mismos modelos que la corrida oficial `9bd592bc9bef`, y la diferencia máxima entre los 808 números de `metrics.json` es **7,1·10⁻¹⁵**. Para que la huella no cambie, la corrida va con `--network none`: con red, `dataset.load` refresca la temporada en curso y los feeds europeos, y la copia deja de ser la oficial. Paralelizar los candidatos no hizo falta. **OJO:** el valor 4 está medido en esta Mac; en otra máquina el mejor número de hilos puede cambiar.
+
 Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la versión del modelo y el commit, así una predicción hecha desde Docker no se duplica con las del bot. Comandos: `make docker-build docker-test docker-daily docker-train docker-serve`.
 
 ---
@@ -527,7 +535,7 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
-5. **El entrenamiento en Docker es lento por el gradient boosting, no por las features** (§14): cada candidato de `hgb` tarda minutos y una corrida completa se trabó. En local entrena en unos 6 minutos.
+5. **El número de hilos de OpenMP en Docker se fijó a mano** (§14.3): con un hilo por CPU visible, `hgb` es unas 40 veces más lento. Con 4 hilos, el entrenamiento completo tarda 2 minutos y reproduce la corrida oficial, pero el valor solo está medido en una máquina.
 
 **Selecciones (Parte I):**
 6. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla se scrapean, y StatsBomb cubre 40 de las 48 selecciones, pero el resto del xG es manual.
@@ -553,6 +561,7 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] CI con ruff, mypy, pytest y Docker; dos imágenes reproducibles (§14.2, §14.3)
 - [x] Champions y Europa League en el descanso, medido en validación y test (§13.5)
 - [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
+- [x] `hgb` en Docker: la lentitud venía de que OpenMP abría un hilo por CPU visible. Con `OMP_NUM_THREADS=4`, `make docker-train` tarda 2 minutos y reproduce la corrida oficial `9bd592bc9bef` (diferencia máxima 7,1·10⁻¹⁵, §14.3)
 
 ### 16.2 Pendiente
 
@@ -560,7 +569,6 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
 - **Copas nacionales y Conference** en el descanso, si aparece una fuente con fecha (Europa ya entró en la fase 6 y no mejoró, §13.5).
 - **Métricas en vivo:** volver a leerlas cuando haya temporadas enteras, no semanas.
-- **Siguiente sesión: `hgb` en Docker.** Cada candidato tarda minutos y la corrida completa se trabó al 800 % de CPU (§14). Primero probar `OMP_NUM_THREADS` (en el `Dockerfile` o en `make docker-train`) y medir un solo candidato. Si con eso no alcanza, paralelizar los candidatos con `ProcessPoolExecutor`. Se cierra cuando `make docker-train` termine y su `metrics.json` coincida con la corrida oficial `9bd592bc9bef`.
 - **Selecciones:** ampliar los mapeos más allá de las 48 y estimar ρ y el modelo de empates sobre el historial completo.
 - **Otros torneos:** un `tournament.py` con el cuadro de la Euro o la Copa América reutiliza `match_engine.py` sin cambios.
 - **Infraestructura**, solo si hace falta: una base de datos (el brief pide aprobación antes de agregar Postgres o Supabase) o una API. Hoy el CSV versionado es más auditable que una base de datos.

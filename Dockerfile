@@ -39,6 +39,9 @@ WORKDIR /app
 EXPOSE 8000
 
 FROM runtime AS ml
+# hgb con un hilo de OpenMP por CPU visible (10 en Docker Desktop) tardaba ~200 s
+# por candidato; con 4, ~5 s (medido el 26-oct-2026, bitácora §14.3)
+ENV OMP_NUM_THREADS=4
 COPY --from=deps-ml /opt/venv /opt/venv
 COPY --chown=app:app . .
 USER app
