@@ -1,144 +1,144 @@
 match_id,league,season,match_date,home,away,model,model_version,commit,predicted_at,p1,px,p2,result,hg,ag,mk1,mkx,mk2
 SP1-2627-Levante-Ath_Bilbao,SP1,2627,2026-10-21,Levante,Ath Bilbao,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3651,0.2728,0.3621,H,3,1,0.2922,0.2895,0.4182
-D1-2627-Stuttgart-M'gladbach,D1,2627,2026-10-23,Stuttgart,M'gladbach,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6494,0.1880,0.1626,,,,,,
-D1-2627-Stuttgart-M'gladbach,D1,2627,2026-10-23,Stuttgart,M'gladbach,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6494,0.1880,0.1627,,,,,,
-E0-2627-Ipswich-Nott'm_Forest,E0,2627,2026-10-23,Ipswich,Nott'm Forest,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3213,0.2575,0.4212,,,,,,
-E0-2627-Ipswich-Nott'm_Forest,E0,2627,2026-10-23,Ipswich,Nott'm Forest,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3206,0.2599,0.4195,,,,,,
-F1-2627-Brest-Nice,F1,2627,2026-10-23,Brest,Nice,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4537,0.2486,0.2977,,,,,,
-F1-2627-Brest-Nice,F1,2627,2026-10-23,Brest,Nice,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4537,0.2486,0.2977,,,,,,
-I1-2627-Torino-Monza,I1,2627,2026-10-23,Torino,Monza,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4337,0.2776,0.2886,,,,,,
-I1-2627-Torino-Monza,I1,2627,2026-10-23,Torino,Monza,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4337,0.2776,0.2887,,,,,,
-SP1-2627-Alaves-Malaga,SP1,2627,2026-10-23,Alaves,Malaga,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5005,0.2581,0.2414,,,,,,
-SP1-2627-Alaves-Malaga,SP1,2627,2026-10-23,Alaves,Malaga,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4997,0.2584,0.2420,,,,,,
-D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4868,0.2554,0.2579,,,,,,
-D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4867,0.2554,0.2579,,,,,,
-D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4867,0.2554,0.2579,,,,,,
-D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6474,0.1907,0.1619,,,,,,
-D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6473,0.1907,0.1620,,,,,,
-D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6473,0.1907,0.1620,,,,,,
-D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4489,0.2670,0.2841,,,,,,
-D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4488,0.2670,0.2843,,,,,,
-D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4487,0.2670,0.2844,,,,,,
-D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5158,0.2484,0.2358,,,,,,
-D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5158,0.2484,0.2358,,,,,,
-D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5158,0.2484,0.2358,,,,,,
-D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3967,0.2529,0.3503,,,,,,
-D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3969,0.2529,0.3502,,,,,,
-D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3970,0.2529,0.3501,,,,,,
-D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6051,0.2039,0.1910,,,,,,
-D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6049,0.2040,0.1912,,,,,,
-D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6046,0.2041,0.1913,,,,,,
-E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6505,0.2310,0.1185,,,,,,
-E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6494,0.2330,0.1176,,,,,,
-E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6494,0.2330,0.1176,,,,,,
-E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2555,0.2419,0.5026,,,,,,
-E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2543,0.2440,0.5017,,,,,,
-E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2543,0.2440,0.5017,,,,,,
-E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5436,0.2261,0.2303,,,,,,
-E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5425,0.2281,0.2294,,,,,,
-E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5425,0.2281,0.2294,,,,,,
-E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3833,0.2664,0.3503,,,,,,
-E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3829,0.2688,0.3483,,,,,,
-E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3831,0.2688,0.3481,,,,,,
-F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5309,0.2432,0.2259,,,,,,
-F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5308,0.2432,0.2260,,,,,,
-F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5307,0.2432,0.2261,,,,,,
-F1-2627-Toulouse-Troyes,F1,2627,2026-10-24,Toulouse,Troyes,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5362,0.2450,0.2188,,,,,,
-F1-2627-Toulouse-Troyes,F1,2627,2026-10-24,Toulouse,Troyes,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5361,0.2450,0.2189,,,,,,
-I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2973,0.2881,0.4147,,,,,,
-I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2973,0.2881,0.4146,,,,,,
-I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2973,0.2881,0.4146,,,,,,
-I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5764,0.2338,0.1898,,,,,,
-I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5764,0.2338,0.1898,,,,,,
-I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5763,0.2339,0.1898,,,,,,
-I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5410,0.2813,0.1777,,,,,,
-I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5410,0.2813,0.1777,,,,,,
-I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5409,0.2813,0.1778,,,,,,
-I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3518,0.3038,0.3444,,,,,,
-I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3518,0.3038,0.3444,,,,,,
-I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3518,0.3038,0.3444,,,,,,
-SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6711,0.1990,0.1299,,,,,,
-SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6702,0.1994,0.1304,,,,,,
-SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6701,0.1994,0.1304,,,,,,
-SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4455,0.2397,0.3149,,,,,,
-SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4462,0.2397,0.3141,,,,,,
-SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4463,0.2396,0.3140,,,,,,
-SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2980,0.2478,0.4542,,,,,,
-SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2979,0.2480,0.4541,,,,,,
-SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2980,0.2480,0.4540,,,,,,
-SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4598,0.2804,0.2598,,,,,,
-SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4596,0.2805,0.2599,,,,,,
-SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4595,0.2805,0.2600,,,,,,
-D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.1458,0.1694,0.6848,,,,,,
-D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.1458,0.1695,0.6848,,,,,,
-D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1458,0.1695,0.6847,,,,,,
-D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2935,0.2219,0.4846,,,,,,
-D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2936,0.2219,0.4846,,,,,,
-D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2936,0.2219,0.4845,,,,,,
-E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3632,0.2549,0.3819,,,,,,
-E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3619,0.2572,0.3809,,,,,,
-E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3619,0.2572,0.3809,,,,,,
-E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2318,0.2429,0.5253,,,,,,
-E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2314,0.2453,0.5233,,,,,,
-E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2316,0.2453,0.5231,,,,,,
-E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4963,0.2351,0.2687,,,,,,
-E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4951,0.2371,0.2678,,,,,,
-E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4951,0.2371,0.2678,,,,,,
-E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4502,0.2493,0.3005,,,,,,
-E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4490,0.2515,0.2995,,,,,,
-E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4490,0.2515,0.2995,,,,,,
-E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2879,0.2922,0.4199,,,,,,
-E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2865,0.2947,0.4187,,,,,,
-E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2865,0.2947,0.4188,,,,,,
-F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2954,0.2729,0.4317,,,,,,
-F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2955,0.2729,0.4317,,,,,,
-F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2955,0.2729,0.4317,,,,,,
-F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4396,0.2627,0.2976,,,,,,
-F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4395,0.2627,0.2977,,,,,,
-F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4394,0.2628,0.2978,,,,,,
-F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6336,0.2045,0.1619,,,,,,
-F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6336,0.2045,0.1619,,,,,,
-F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6335,0.2045,0.1620,,,,,,
-F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4049,0.2626,0.3325,,,,,,
-F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4049,0.2626,0.3325,,,,,,
-F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4049,0.2626,0.3326,,,,,,
-F1-2627-Paris_SG-Lyon,F1,2627,2026-10-25,Paris SG,Lyon,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6278,0.2000,0.1722,,,,,,
-F1-2627-Paris_SG-Lyon,F1,2627,2026-10-25,Paris SG,Lyon,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6278,0.2000,0.1723,,,,,,
-F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4518,0.2238,0.3244,,,,,,
-F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4518,0.2238,0.3244,,,,,,
-F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4518,0.2238,0.3244,,,,,,
-F1-2627-Toulouse-Troyes,F1,2627,2026-10-25,Toulouse,Troyes,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5359,0.2450,0.2191,,,,,,
-I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5964,0.2264,0.1773,,,,,,
-I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5962,0.2264,0.1774,,,,,,
-I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5960,0.2265,0.1775,,,,,,
-I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3819,0.2846,0.3335,,,,,,
-I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3818,0.2846,0.3336,,,,,,
-I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3817,0.2846,0.3337,,,,,,
-I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.7152,0.1734,0.1114,,,,,,
-I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.7151,0.1734,0.1115,,,,,,
-I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.7151,0.1734,0.1115,,,,,,
-I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.1630,0.2797,0.5573,,,,,,
-I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.1631,0.2797,0.5572,,,,,,
-I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1631,0.2797,0.5572,,,,,,
-I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2480,0.2687,0.4833,,,,,,
-I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2481,0.2687,0.4832,,,,,,
-I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2481,0.2687,0.4832,,,,,,
-SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4826,0.3148,0.2026,,,,,,
-SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4803,0.3137,0.2059,,,,,,
-SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4804,0.3137,0.2059,,,,,,
-SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5431,0.2103,0.2466,,,,,,
-SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5432,0.2104,0.2464,,,,,,
-SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5432,0.2104,0.2464,,,,,,
-SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4212,0.2535,0.3252,,,,,,
-SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4211,0.2537,0.3251,,,,,,
-SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4212,0.2537,0.3251,,,,,,
-SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5198,0.2321,0.2480,,,,,,
-SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5162,0.2318,0.2521,,,,,,
-SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5161,0.2318,0.2521,,,,,,
-F1-2627-Paris_SG-Lyon,F1,2627,2026-10-26,Paris SG,Lyon,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6277,0.2000,0.1723,,,,,,
-SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4369,0.2624,0.3007,,,,,,
-SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4369,0.2625,0.3005,,,,,,
-SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4369,0.2625,0.3006,,,,,,
+D1-2627-Stuttgart-M'gladbach,D1,2627,2026-10-23,Stuttgart,M'gladbach,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6494,0.1880,0.1626,A,2,3,0.7088,0.1645,0.1267
+D1-2627-Stuttgart-M'gladbach,D1,2627,2026-10-23,Stuttgart,M'gladbach,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6494,0.1880,0.1627,A,2,3,0.7088,0.1645,0.1267
+E0-2627-Ipswich-Nott'm_Forest,E0,2627,2026-10-23,Ipswich,Nott'm Forest,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3213,0.2575,0.4212,D,1,1,0.3011,0.2763,0.4226
+E0-2627-Ipswich-Nott'm_Forest,E0,2627,2026-10-23,Ipswich,Nott'm Forest,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3206,0.2599,0.4195,D,1,1,0.3011,0.2763,0.4226
+F1-2627-Brest-Nice,F1,2627,2026-10-23,Brest,Nice,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4537,0.2486,0.2977,A,1,2,0.4006,0.2737,0.3257
+F1-2627-Brest-Nice,F1,2627,2026-10-23,Brest,Nice,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4537,0.2486,0.2977,A,1,2,0.4006,0.2737,0.3257
+I1-2627-Torino-Monza,I1,2627,2026-10-23,Torino,Monza,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4337,0.2776,0.2886,H,3,2,0.4507,0.2746,0.2746
+I1-2627-Torino-Monza,I1,2627,2026-10-23,Torino,Monza,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4337,0.2776,0.2887,H,3,2,0.4507,0.2746,0.2746
+SP1-2627-Alaves-Malaga,SP1,2627,2026-10-23,Alaves,Malaga,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5005,0.2581,0.2414,D,1,1,0.5889,0.2493,0.1619
+SP1-2627-Alaves-Malaga,SP1,2627,2026-10-23,Alaves,Malaga,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4997,0.2584,0.2420,D,1,1,0.5889,0.2493,0.1619
+D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4868,0.2554,0.2579,D,1,1,0.5543,0.2271,0.2186
+D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4867,0.2554,0.2579,D,1,1,0.5543,0.2271,0.2186
+D1-2627-Augsburg-Union_Berlin,D1,2627,2026-10-24,Augsburg,Union Berlin,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4867,0.2554,0.2579,D,1,1,0.5543,0.2271,0.2186
+D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6474,0.1907,0.1619,H,1,0,0.6796,0.1773,0.1432
+D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6473,0.1907,0.1620,H,1,0,0.6796,0.1773,0.1432
+D1-2627-Dortmund-Ein_Frankfurt,D1,2627,2026-10-24,Dortmund,Ein Frankfurt,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6473,0.1907,0.1620,H,1,0,0.6796,0.1773,0.1432
+D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4489,0.2670,0.2841,D,0,0,0.4351,0.2618,0.3032
+D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4488,0.2670,0.2843,D,0,0,0.4351,0.2618,0.3032
+D1-2627-FC_Koln-Schalke_04,D1,2627,2026-10-24,FC Koln,Schalke 04,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4487,0.2670,0.2844,D,0,0,0.4351,0.2618,0.3032
+D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5158,0.2484,0.2358,A,2,3,0.5409,0.2301,0.2290
+D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5158,0.2484,0.2358,A,2,3,0.5409,0.2301,0.2290
+D1-2627-Mainz-Werder_Bremen,D1,2627,2026-10-24,Mainz,Werder Bremen,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5158,0.2484,0.2358,A,2,3,0.5409,0.2301,0.2290
+D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3967,0.2529,0.3503,H,1,0,0.4380,0.2552,0.3068
+D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3969,0.2529,0.3502,H,1,0,0.4380,0.2552,0.3068
+D1-2627-Paderborn-Hamburg,D1,2627,2026-10-24,Paderborn,Hamburg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3970,0.2529,0.3501,H,1,0,0.4380,0.2552,0.3068
+D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6051,0.2039,0.1910,H,4,0,0.6195,0.1930,0.1876
+D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6049,0.2040,0.1912,H,4,0,0.6195,0.1930,0.1876
+D1-2627-RB_Leipzig-Elversberg,D1,2627,2026-10-24,RB Leipzig,Elversberg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6046,0.2041,0.1913,H,4,0,0.6195,0.1930,0.1876
+E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6505,0.2310,0.1185,H,2,0,0.6974,0.1888,0.1138
+E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6494,0.2330,0.1176,H,2,0,0.6974,0.1888,0.1138
+E0-2627-Arsenal-Everton,E0,2627,2026-10-24,Arsenal,Everton,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6494,0.2330,0.1176,H,2,0,0.6974,0.1888,0.1138
+E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2555,0.2419,0.5026,H,2,1,0.2104,0.2090,0.5806
+E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2543,0.2440,0.5017,H,2,1,0.2104,0.2090,0.5806
+E0-2627-Aston_Villa-Man_City,E0,2627,2026-10-24,Aston Villa,Man City,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2543,0.2440,0.5017,H,2,1,0.2104,0.2090,0.5806
+E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5436,0.2261,0.2303,A,0,2,0.5063,0.2433,0.2504
+E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5425,0.2281,0.2294,A,0,2,0.5063,0.2433,0.2504
+E0-2627-Chelsea-Tottenham,E0,2627,2026-10-24,Chelsea,Tottenham,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5425,0.2281,0.2294,A,0,2,0.5063,0.2433,0.2504
+E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3833,0.2664,0.3503,A,0,1,0.2871,0.2631,0.4498
+E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3829,0.2688,0.3483,A,0,1,0.2871,0.2631,0.4498
+E0-2627-Coventry-Fulham,E0,2627,2026-10-24,Coventry,Fulham,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3831,0.2688,0.3481,A,0,1,0.2871,0.2631,0.4498
+F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5309,0.2432,0.2259,H,2,1,0.4079,0.2661,0.3260
+F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5308,0.2432,0.2260,H,2,1,0.4079,0.2661,0.3260
+F1-2627-Lens-Paris_FC,F1,2627,2026-10-24,Lens,Paris FC,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5307,0.2432,0.2261,H,2,1,0.4079,0.2661,0.3260
+F1-2627-Toulouse-Troyes,F1,2627,2026-10-24,Toulouse,Troyes,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5362,0.2450,0.2188,D,0,0,0.5997,0.2226,0.1777
+F1-2627-Toulouse-Troyes,F1,2627,2026-10-24,Toulouse,Troyes,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5361,0.2450,0.2189,D,0,0,0.5997,0.2226,0.1777
+I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2973,0.2881,0.4147,A,0,2,0.3210,0.3199,0.3590
+I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2973,0.2881,0.4146,A,0,2,0.3210,0.3199,0.3590
+I1-2627-Cagliari-Bologna,I1,2627,2026-10-24,Cagliari,Bologna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2973,0.2881,0.4146,A,0,2,0.3210,0.3199,0.3590
+I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5764,0.2338,0.1898,H,2,0,0.6444,0.1928,0.1628
+I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5764,0.2338,0.1898,H,2,0,0.6444,0.1928,0.1628
+I1-2627-Como-Sassuolo,I1,2627,2026-10-24,Como,Sassuolo,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5763,0.2339,0.1898,H,2,0,0.6444,0.1928,0.1628
+I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5410,0.2813,0.1777,H,2,1,0.6627,0.2115,0.1258
+I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5410,0.2813,0.1777,H,2,1,0.6627,0.2115,0.1258
+I1-2627-Lazio-Parma,I1,2627,2026-10-24,Lazio,Parma,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5409,0.2813,0.1778,H,2,1,0.6627,0.2115,0.1258
+I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3518,0.3038,0.3444,D,3,3,0.3582,0.2890,0.3528
+I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3518,0.3038,0.3444,D,3,3,0.3582,0.2890,0.3528
+I1-2627-Napoli-Roma,I1,2627,2026-10-24,Napoli,Roma,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3518,0.3038,0.3444,D,3,3,0.3582,0.2890,0.3528
+SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6711,0.1990,0.1299,H,1,0,0.7584,0.1522,0.0894
+SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6702,0.1994,0.1304,H,1,0,0.7584,0.1522,0.0894
+SP1-2627-Ath_Madrid-La_Coruna,SP1,2627,2026-10-24,Ath Madrid,La Coruna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6701,0.1994,0.1304,H,1,0,0.7584,0.1522,0.0894
+SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4455,0.2397,0.3149,H,2,1,0.4210,0.2549,0.3241
+SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4462,0.2397,0.3141,H,2,1,0.4210,0.2549,0.3241
+SP1-2627-Santander-Espanol,SP1,2627,2026-10-24,Santander,Espanol,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4463,0.2396,0.3140,H,2,1,0.4210,0.2549,0.3241
+SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2980,0.2478,0.4542,A,1,2,0.2809,0.2644,0.4547
+SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2979,0.2480,0.4541,A,1,2,0.2809,0.2644,0.4547
+SP1-2627-Valencia-Villarreal,SP1,2627,2026-10-24,Valencia,Villarreal,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2980,0.2480,0.4540,A,1,2,0.2809,0.2644,0.4547
+SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4598,0.2804,0.2598,A,0,3,0.5321,0.2478,0.2201
+SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4596,0.2805,0.2599,A,0,3,0.5321,0.2478,0.2201
+SP1-2627-Vallecano-Elche,SP1,2627,2026-10-24,Vallecano,Elche,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4595,0.2805,0.2600,A,0,3,0.5321,0.2478,0.2201
+D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.1458,0.1694,0.6848,A,1,3,0.1563,0.1752,0.6685
+D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.1458,0.1695,0.6848,A,1,3,0.1563,0.1752,0.6685
+D1-2627-Freiburg-Bayern_Munich,D1,2627,2026-10-25,Freiburg,Bayern Munich,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1458,0.1695,0.6847,A,1,3,0.1563,0.1752,0.6685
+D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2935,0.2219,0.4846,H,3,0,0.3039,0.2320,0.4641
+D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2936,0.2219,0.4846,H,3,0,0.3039,0.2320,0.4641
+D1-2627-Hoffenheim-Leverkusen,D1,2627,2026-10-25,Hoffenheim,Leverkusen,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2936,0.2219,0.4845,H,3,0,0.3039,0.2320,0.4641
+E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3632,0.2549,0.3819,A,0,2,0.3687,0.2710,0.3603
+E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3619,0.2572,0.3809,A,0,2,0.3687,0.2710,0.3603
+E0-2627-Crystal_Palace-Newcastle,E0,2627,2026-10-25,Crystal Palace,Newcastle,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3619,0.2572,0.3809,A,0,2,0.3687,0.2710,0.3603
+E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2318,0.2429,0.5253,D,1,1,0.1934,0.2333,0.5733
+E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2314,0.2453,0.5233,D,1,1,0.1934,0.2333,0.5733
+E0-2627-Hull-Brentford,E0,2627,2026-10-25,Hull,Brentford,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2316,0.2453,0.5231,D,1,1,0.1934,0.2333,0.5733
+E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4963,0.2351,0.2687,H,2,0,0.4805,0.2465,0.2730
+E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4951,0.2371,0.2678,H,2,0,0.4805,0.2465,0.2730
+E0-2627-Liverpool-Brighton,E0,2627,2026-10-25,Liverpool,Brighton,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4951,0.2371,0.2678,H,2,0,0.4805,0.2465,0.2730
+E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4502,0.2493,0.3005,A,0,3,0.3905,0.2748,0.3347
+E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4490,0.2515,0.2995,A,0,3,0.3905,0.2748,0.3347
+E0-2627-Man_United-Bournemouth,E0,2627,2026-10-25,Man United,Bournemouth,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4490,0.2515,0.2995,A,0,3,0.3905,0.2748,0.3347
+E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2879,0.2922,0.4199,D,0,0,0.3572,0.3023,0.3405
+E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2865,0.2947,0.4187,D,0,0,0.3572,0.3023,0.3405
+E0-2627-Sunderland-Leeds,E0,2627,2026-10-25,Sunderland,Leeds,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2865,0.2947,0.4188,D,0,0,0.3572,0.3023,0.3405
+F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2954,0.2729,0.4317,D,0,0,0.2989,0.2862,0.4148
+F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2955,0.2729,0.4317,D,0,0,0.2989,0.2862,0.4148
+F1-2627-Angers-Lorient,F1,2627,2026-10-25,Angers,Lorient,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2955,0.2729,0.4317,D,0,0,0.2989,0.2862,0.4148
+F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4396,0.2627,0.2976,D,1,1,0.4506,0.2623,0.2871
+F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4395,0.2627,0.2977,D,1,1,0.4506,0.2623,0.2871
+F1-2627-Auxerre-Le_Mans,F1,2627,2026-10-25,Auxerre,Le Mans,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4394,0.2628,0.2978,D,1,1,0.4506,0.2623,0.2871
+F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6336,0.2045,0.1619,H,4,3,0.6595,0.1929,0.1476
+F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6336,0.2045,0.1619,H,4,3,0.6595,0.1929,0.1476
+F1-2627-Marseille-Le_Havre,F1,2627,2026-10-25,Marseille,Le Havre,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6335,0.2045,0.1620,H,4,3,0.6595,0.1929,0.1476
+F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4049,0.2626,0.3325,D,1,1,0.4972,0.2655,0.2373
+F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4049,0.2626,0.3325,D,1,1,0.4972,0.2655,0.2373
+F1-2627-Monaco-Lille,F1,2627,2026-10-25,Monaco,Lille,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4049,0.2626,0.3326,D,1,1,0.4972,0.2655,0.2373
+F1-2627-Paris_SG-Lyon,F1,2627,2026-10-25,Paris SG,Lyon,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.6278,0.2000,0.1722,H,2,0,0.7141,0.1677,0.1181
+F1-2627-Paris_SG-Lyon,F1,2627,2026-10-25,Paris SG,Lyon,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6278,0.2000,0.1723,H,2,0,0.7141,0.1677,0.1181
+F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4518,0.2238,0.3244,H,3,0,0.5264,0.2356,0.2380
+F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4518,0.2238,0.3244,H,3,0,0.5264,0.2356,0.2380
+F1-2627-Rennes-Strasbourg,F1,2627,2026-10-25,Rennes,Strasbourg,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4518,0.2238,0.3244,H,3,0,0.5264,0.2356,0.2380
+F1-2627-Toulouse-Troyes,F1,2627,2026-10-25,Toulouse,Troyes,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5359,0.2450,0.2191,D,0,0,0.5997,0.2226,0.1777
+I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5964,0.2264,0.1773,D,4,4,0.4888,0.2279,0.2833
+I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5962,0.2264,0.1774,D,4,4,0.4888,0.2279,0.2833
+I1-2627-Atalanta-Frosinone,I1,2627,2026-10-25,Atalanta,Frosinone,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5960,0.2265,0.1775,D,4,4,0.4888,0.2279,0.2833
+I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.3819,0.2846,0.3335,H,1,0,0.4495,0.2785,0.2720
+I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.3818,0.2846,0.3336,H,1,0,0.4495,0.2785,0.2720
+I1-2627-Genoa-Venezia,I1,2627,2026-10-25,Genoa,Venezia,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3817,0.2846,0.3337,H,1,0,0.4495,0.2785,0.2720
+I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.7152,0.1734,0.1114,H,2,1,0.6866,0.1775,0.1359
+I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.7151,0.1734,0.1115,H,2,1,0.6866,0.1775,0.1359
+I1-2627-Inter-Fiorentina,I1,2627,2026-10-25,Inter,Fiorentina,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.7151,0.1734,0.1115,H,2,1,0.6866,0.1775,0.1359
+I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.1630,0.2797,0.5573,A,0,2,0.1423,0.2204,0.6373
+I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.1631,0.2797,0.5572,A,0,2,0.1423,0.2204,0.6373
+I1-2627-Lecce-Juventus,I1,2627,2026-10-25,Lecce,Juventus,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1631,0.2797,0.5572,A,0,2,0.1423,0.2204,0.6373
+I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.2480,0.2687,0.4833,A,0,2,0.2084,0.2595,0.5321
+I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.2481,0.2687,0.4832,A,0,2,0.2084,0.2595,0.5321
+I1-2627-Udinese-Milan,I1,2627,2026-10-25,Udinese,Milan,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.2481,0.2687,0.4832,A,0,2,0.2084,0.2595,0.5321
+SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4826,0.3148,0.2026,H,4,0,0.6135,0.2356,0.1509
+SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4803,0.3137,0.2059,H,4,0,0.6135,0.2356,0.1509
+SP1-2627-Ath_Bilbao-Getafe,SP1,2627,2026-10-25,Ath Bilbao,Getafe,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4804,0.3137,0.2059,H,4,0,0.6135,0.2356,0.1509
+SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5431,0.2103,0.2466,A,1,2,0.5954,0.1665,0.2381
+SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5432,0.2104,0.2464,A,1,2,0.5954,0.1665,0.2381
+SP1-2627-Barcelona-Real_Madrid,SP1,2627,2026-10-25,Barcelona,Real Madrid,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5432,0.2104,0.2464,A,1,2,0.5954,0.1665,0.2381
+SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4212,0.2535,0.3252,D,0,0,0.3594,0.2880,0.3527
+SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4211,0.2537,0.3251,D,0,0,0.3594,0.2880,0.3527
+SP1-2627-Celta-Betis,SP1,2627,2026-10-25,Celta,Betis,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4212,0.2537,0.3251,D,0,0,0.3594,0.2880,0.3527
+SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.5198,0.2321,0.2480,H,2,1,0.6215,0.1989,0.1796
+SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.5162,0.2318,0.2521,H,2,1,0.6215,0.1989,0.1796
+SP1-2627-Sociedad-Levante,SP1,2627,2026-10-25,Sociedad,Levante,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.5161,0.2318,0.2521,H,2,1,0.6215,0.1989,0.1796
+F1-2627-Paris_SG-Lyon,F1,2627,2026-10-26,Paris SG,Lyon,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6277,0.2000,0.1723,H,2,0,0.7141,0.1677,0.1181
+SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,146ac2b,c77a9f5,2026-10-20T19:12:01Z,0.4369,0.2624,0.3007,H,2,0,0.4905,0.2809,0.2286
+SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.4369,0.2625,0.3005,H,2,0,0.4905,0.2809,0.2286
+SP1-2627-Sevilla-Osasuna,SP1,2627,2026-10-26,Sevilla,Osasuna,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4369,0.2625,0.3006,H,2,0,0.4905,0.2809,0.2286
 I1-2627-Roma-Cagliari,I1,2627,2026-10-27,Roma,Cagliari,dixon-coles,146ac2b,138841f,2026-10-21T10:24:26Z,0.6740,0.2127,0.1133,,,,,,
 I1-2627-Roma-Cagliari,I1,2627,2026-10-27,Roma,Cagliari,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.6740,0.2127,0.1133,,,,,,
 I1-2627-Roma-Cagliari,I1,2627,2026-10-27,Roma,Cagliari,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.6740,0.2127,0.1133,,,,,,
@@ -206,3 +206,7 @@ SP1-2627-Ath_Bilbao-Sociedad,SP1,2627,2026-11-01,Ath Bilbao,Sociedad,dixon-coles
 SP1-2627-Elche-Valencia,SP1,2627,2026-11-01,Elche,Valencia,dixon-coles,7de214e,e1ab62e,2026-10-26T11:20:35Z,0.4392,0.2747,0.2862,,,,,,
 SP1-2627-Getafe-Sevilla,SP1,2627,2026-11-01,Getafe,Sevilla,dixon-coles,7de214e,e1ab62e,2026-10-26T11:20:35Z,0.3929,0.3190,0.2881,,,,,,
 SP1-2627-Santander-Real_Madrid,SP1,2627,2026-11-01,Santander,Real Madrid,dixon-coles,7de214e,e1ab62e,2026-10-26T11:20:35Z,0.1586,0.1750,0.6664,,,,,,
+E0-2627-Newcastle-Everton,E0,2627,2026-11-02,Newcastle,Everton,dixon-coles,7de214e,dcaab45,2026-10-27T10:44:50Z,0.4670,0.2660,0.2670,,,,,,
+I1-2627-Atalanta-Parma,I1,2627,2026-11-02,Atalanta,Parma,dixon-coles,7de214e,dcaab45,2026-10-27T10:44:50Z,0.6102,0.2395,0.1502,,,,,,
+I1-2627-Sassuolo-Fiorentina,I1,2627,2026-11-02,Sassuolo,Fiorentina,dixon-coles,7de214e,dcaab45,2026-10-27T10:44:50Z,0.3913,0.2644,0.3443,,,,,,
+SP1-2627-La_Coruna-Osasuna,SP1,2627,2026-11-02,La Coruna,Osasuna,dixon-coles,7de214e,dcaab45,2026-10-27T10:44:50Z,0.4311,0.2713,0.2976,,,,,,
