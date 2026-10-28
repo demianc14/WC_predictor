@@ -163,3 +163,17 @@ def test_metricas_en_vivo_usan_la_primera_prediccion():
     live = daily.live_metrics([b, a], NOW)
     assert live["all"]["n"] == 1 and live["n_predictions"] == 2
     assert live["all"]["model"]["brier"] == pytest.approx(0.4 ** 2 + 0.25 ** 2 + 0.25 ** 2)
+
+
+def test_metricas_por_version_usan_la_primera_prediccion_de_cada_version():
+    a = {**_pred(when="2026-10-21T05:30:00Z", p1="0.6000"), "result": "H", "hg": "1", "ag": "0",
+         "mk1": "", "mkx": "", "mk2": ""}
+    a2 = {**a, "predicted_at": "2026-10-23T05:30:00Z", "p1": "0.9000"}
+    b = {**a, "model_version": "v2", "predicted_at": "2026-10-22T05:30:00Z", "p1": "0.1000"}
+    pend = {**_pred(mid="E0-2627-C-D", version="v2", when="2026-10-22T05:30:00Z"), "result": ""}
+    live = daily.live_metrics([b, a2, pend, a], NOW)
+    v1, v2 = live["by_version"]
+    assert (v1["version"], v1["n"], v1["since"]) == ("v1", 1, "2026-10-21T05:30:00Z")
+    assert v1["model"]["brier"] == pytest.approx(0.4 ** 2 + 0.25 ** 2 + 0.25 ** 2)
+    assert (v2["version"], v2["n"]) == ("v2", 1)
+    assert v2["model"]["brier"] == pytest.approx(0.9 ** 2 + 0.25 ** 2 + 0.25 ** 2)
