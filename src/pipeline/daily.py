@@ -147,12 +147,20 @@ def live_metrics(rows: list[dict], now: datetime) -> dict:
     done = [r for r in first.values() if r["result"]]
     by_league = {div: _metrics([r for r in done if r["league"] == div])
                  for div in sorted({r["league"] for r in first.values()})}
+    # Cada versión con su propia primera predicción: muestras distintas, se comparan contra el
+    # mercado sobre su misma muestra, no entre ellas.
+    own: dict[str, dict[str, dict]] = {}
+    for r in sorted(rows, key=lambda r: r["predicted_at"]):
+        own.setdefault(r["model_version"], {}).setdefault(r["match_id"], r)
+    by_version = [{"version": v, "since": min(r["predicted_at"] for r in ms.values()),
+                   **_metrics([r for r in ms.values() if r["result"]])}
+                  for v, ms in own.items()]
     return {
         "updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "since": min((r["predicted_at"] for r in rows), default=None),
         "n_predictions": len(rows), "n_matches": len(first),
         "n_pending": sum(1 for r in first.values() if not r["result"]),
-        "all": _metrics(done), "by_league": by_league,
+        "all": _metrics(done), "by_league": by_league, "by_version": by_version,
     }
 
 

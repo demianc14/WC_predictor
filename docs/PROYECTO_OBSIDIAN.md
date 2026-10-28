@@ -51,7 +51,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web, snapshots, calibraciones
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 122 tests con pytest, sin red
+├── tests/                          ← 123 tests con pytest, sin red
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
@@ -336,7 +336,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 122 tests, sin red
+pytest            # 123 tests, sin red
 ruff check .
 mypy
 ```
@@ -492,8 +492,10 @@ Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`
 
 **Métricas en vivo:** se evalúa la **primera** predicción de cada partido, sobre los mismos partidos que la cuota de cierre. Es la única evaluación sin ninguna posibilidad de fuga. Las primeras predicciones son del 20-oct-2026 a las 19:12 UTC; al 21-oct había 52 predicciones y ningún partido evaluado todavía. **Con pocas semanas no es concluyente**: el backtest de §12.4 necesitó temporadas enteras para separar al modelo del mercado.
 
+**Por versión del modelo (27-oct-2026):** como `all` usa la primera predicción de cada partido, las filas de versiones posteriores quedaban guardadas pero sin medir: los 49 partidos evaluados al 27-oct eran todos de `146ac2b`. `live.json` suma `by_version`: cada versión con su propia primera predicción de cada partido y, sobre esos mismos partidos, la cuota de cierre. Al 27-oct: `146ac2b` n = 49 (RPS 0,201 contra 0,195 del mercado), `737583c` n = 48 (0,199 contra 0,192) y `7de214e` n = 43 (0,190 contra 0,181). Las tres pierden contra el mercado en su muestra. Las versiones se miden sobre partidos distintos, así que no se comparan entre sí. **OJO:** con 43-49 partidos no es concluyente.
+
 > [!example] Tests del ciclo
-> `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` y `test_metricas_en_vivo_usan_la_primera_prediccion`. Prueban justamente lo que haría falso al almacén si fallara.
+> `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` `test_metricas_en_vivo_usan_la_primera_prediccion` y `test_metricas_por_version_usan_la_primera_prediccion_de_cada_version`. Prueban justamente lo que haría falso al almacén si fallara.
 
 ### 14.2 CI y publicación
 

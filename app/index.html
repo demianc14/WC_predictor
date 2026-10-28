@@ -832,6 +832,8 @@ table.mkt{width:100%;margin-top:8px}
       <h3>En vivo: predicciones guardadas antes de cada partido</h3>
       <p class="note" id="liveNote"></p>
       <div class="tbl-scroll"><table id="liveTable"></table></div>
+      <p class="note" id="liveVerNote"></p>
+      <div class="tbl-scroll"><table id="liveVer"></table></div>
     </div>
   </div>
 </div></section>
@@ -2187,7 +2189,7 @@ function renderPL(){
 /* ── En vivo: lo que el ciclo diario predijo antes de cada partido ── */
 function renderLive(){
   const bar=document.getElementById("plLive");
-  if(!LIVE){bar.hidden=true;document.getElementById("liveNote").textContent="Todavía no corrió el ciclo diario.";document.getElementById("liveTable").innerHTML="";return;}
+  if(!LIVE){bar.hidden=true;document.getElementById("liveNote").textContent="Todavía no corrió el ciclo diario.";document.getElementById("liveTable").innerHTML="";document.getElementById("liveVerNote").textContent="";document.getElementById("liveVer").innerHTML="";return;}
   const t=LIVE.updated.slice(11,16), lg=LIVE.by_league[plCode]||{n:0}, f3=v=>v.toFixed(3);
   bar.hidden=false;
   bar.innerHTML=`<span class="dot"></span>Actualizado el ${fmtD(LIVE.updated.slice(0,10))} a las ${t} UTC · predicciones guardadas desde el ${LIVE.since?fmtD(LIVE.since.slice(0,10)):"—"} · <b>${lg.n}</b> partidos de ${PL.name} ya evaluados`;
@@ -2196,6 +2198,10 @@ function renderLive(){
   const cell=s=>s&&s.same_sample?`<td class="num">${s.same_sample.n}</td><td class="num"><b>${f3(s.same_sample.model.brier)}</b></td><td class="num">${f3(s.same_sample.market.brier)}</td><td class="num">${f3(s.same_sample.model.rps)}</td><td class="num">${f3(s.same_sample.market.rps)}</td>`:`<td class="num">0</td><td class="num muted" colspan="4">sin partidos con cuota de cierre todavía</td>`;
   document.getElementById("liveTable").innerHTML=`<thead><tr><th>Liga</th><th class="num">Evaluados</th><th class="num">Brier modelo</th><th class="num">Con cierre</th><th class="num">Brier modelo</th><th class="num">Brier mercado</th><th class="num">RPS modelo</th><th class="num">RPS mercado</th></tr></thead><tbody>${
     rows.map(([n,s])=>`<tr><td>${n}</td><td class="num">${s.n}</td><td class="num">${s.model?f3(s.model.brier):"—"}</td>${cell(s)}</tr>`).join("")}</tbody>`;
+  const vs=LIVE.by_version||[];
+  document.getElementById("liveVerNote").innerHTML=vs.length?`Por versión del modelo (hash de <code>src/clubs/</code>), todas las ligas: cada versión con su propia primera predicción de cada partido. Las muestras son distintas, así que cada versión se compara con el mercado sobre sus mismos partidos, no con las otras versiones.`:"";
+  document.getElementById("liveVer").innerHTML=vs.length?`<thead><tr><th>Versión</th><th>Desde</th><th class="num">Evaluados</th><th class="num">Brier modelo</th><th class="num">Con cierre</th><th class="num">Brier modelo</th><th class="num">Brier mercado</th><th class="num">RPS modelo</th><th class="num">RPS mercado</th></tr></thead><tbody>${
+    vs.map(s=>`<tr><td><code>${s.version}</code></td><td>${fmtD(s.since.slice(0,10))}</td><td class="num">${s.n}</td><td class="num">${s.model?f3(s.model.brier):"—"}</td>${cell(s)}</tr>`).join("")}</tbody>`:"";
 }
 
 /* ── Partido & cuotas de clubes ── */

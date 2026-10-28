@@ -129,7 +129,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 122 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 123 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -165,7 +165,7 @@ python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
 python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
-pytest                                 # 122 tests, sin red
+pytest                                 # 123 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```
