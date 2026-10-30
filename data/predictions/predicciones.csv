@@ -158,10 +158,10 @@ I1-2627-Parma-Udinese,I1,2627,2026-10-28,Parma,Udinese,dixon-coles,737583c,50a12
 I1-2627-Parma-Udinese,I1,2627,2026-10-28,Parma,Udinese,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3581,0.3085,0.3334,D,0,0,0.3283,0.3050,0.3667
 I1-2627-Venezia-Inter,I1,2627,2026-10-28,Venezia,Inter,dixon-coles,737583c,50a1287,2026-10-22T10:22:04Z,0.1555,0.1944,0.6501,A,0,2,0.1398,0.1761,0.6840
 I1-2627-Venezia-Inter,I1,2627,2026-10-28,Venezia,Inter,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1556,0.1945,0.6499,A,0,2,0.1398,0.1761,0.6840
-I1-2627-Fiorentina-Atalanta,I1,2627,2026-10-29,Fiorentina,Atalanta,dixon-coles,737583c,acdc7df,2026-10-23T10:18:24Z,0.3152,0.2753,0.4095,,,,,,
-I1-2627-Fiorentina-Atalanta,I1,2627,2026-10-29,Fiorentina,Atalanta,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3152,0.2753,0.4095,,,,,,
-I1-2627-Frosinone-Lecce,I1,2627,2026-10-29,Frosinone,Lecce,dixon-coles,737583c,acdc7df,2026-10-23T10:18:24Z,0.4985,0.2759,0.2256,,,,,,
-I1-2627-Frosinone-Lecce,I1,2627,2026-10-29,Frosinone,Lecce,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4985,0.2759,0.2256,,,,,,
+I1-2627-Fiorentina-Atalanta,I1,2627,2026-10-29,Fiorentina,Atalanta,dixon-coles,737583c,acdc7df,2026-10-23T10:18:24Z,0.3152,0.2753,0.4095,D,2,2,0.4072,0.2553,0.3374
+I1-2627-Fiorentina-Atalanta,I1,2627,2026-10-29,Fiorentina,Atalanta,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3152,0.2753,0.4095,D,2,2,0.4072,0.2553,0.3374
+I1-2627-Frosinone-Lecce,I1,2627,2026-10-29,Frosinone,Lecce,dixon-coles,737583c,acdc7df,2026-10-23T10:18:24Z,0.4985,0.2759,0.2256,H,5,1,0.5486,0.2263,0.2252
+I1-2627-Frosinone-Lecce,I1,2627,2026-10-29,Frosinone,Lecce,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.4985,0.2759,0.2256,H,5,1,0.5486,0.2263,0.2252
 D1-2627-Elversberg-Mainz,D1,2627,2026-10-30,Elversberg,Mainz,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3948,0.2544,0.3508,,,,,,
 F1-2627-Le_Havre-Paris_SG,F1,2627,2026-10-30,Le Havre,Paris SG,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.1243,0.1893,0.6864,,,,,,
 F1-2627-Lille-Lens,F1,2627,2026-10-30,Lille,Lens,dixon-coles,7de214e,0fc9bbc,2026-10-24T09:40:04Z,0.3979,0.2747,0.3274,,,,,,
