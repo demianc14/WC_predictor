@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T12:55:13Z",
+ "updated": "2026-11-04T03:18:13Z",
  "since": "2026-10-20T19:12:01Z",
  "n_predictions": 259,
  "n_matches": 155,
@@ -229,5 +229,14 @@
     }
    }
   }
- ]
+ ],
+ "ucl": {
+  "n_predictions": 9,
+  "n_matches": 9,
+  "n_pending": 9,
+  "versions": [
+   "7de214e+73ca37f"
+  ],
+  "n": 0
+ }
 }
