@@ -528,6 +528,15 @@ Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`
 > [!example] Tests del ciclo
 > `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` `test_metricas_en_vivo_usan_la_primera_prediccion` y `test_metricas_por_version_usan_la_primera_prediccion_de_cada_version`. Prueban justamente lo que haría falso al almacén si fallara.
 
+**Champions en el ciclo (4-nov-2026):** el ciclo baja además la temporada actual de las seis ligas extra y los feeds de Champions y Europa League 2026-27, con la misma regla de todo o nada. `src/europe/run.py` ajusta el modelo conjunto (§12.5) y escribe `ucl.json`, con:
+- el 1X2 de los partidos de los próximos 7 días;
+- un Monte Carlo de 10 000 corridas de la fase de liga: P(top 8, a octavos), P(9-24, playoff) y P(25-36, afuera). El desempate usa puntos, diferencia, goles y azar, una simplificación del reglamento;
+- el backtest.
+
+Las predicciones van al mismo almacén con `league = UCL`. La versión es `<src/clubs>+<src/europe>`, porque el modelo depende de los dos árboles. Solo entra la fase de liga: en las eliminatorias, la ida y la vuelta repetirían el par local-visita que usa `match_id`, y el cuadro depende de un sorteo. En `live.json`, la Champions va en `ucl`, contra la base (1/X/2 de las Champions anteriores), sobre la misma muestra y sin mercado. `all`, `by_league` y `by_version` siguen siendo las cinco ligas, así que el titular no cambió.
+
+**OJO, horario real:** el cron está a las 05:30 UTC, pero GitHub lo dispara entre las 10 y las 13 UTC (medido del 22-oct al 3-nov). Como un partido del mismo día solo se predice antes de las 10:00 UTC, cada partido se predice en el ciclo del día anterior. Hasta el 3-nov no se perdió ninguno.
+
 ### 14.2 CI y publicación
 
 - **`ci.yml`**, en cada push y PR, sobre Python 3.11 y 3.12: `ruff check .`, `mypy` (src/ y tools/, en cero errores) y `pytest`, más un job que construye las imágenes de Docker y corre la suite adentro.
@@ -597,11 +606,12 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
 - [x] `hgb` en Docker: la lentitud venía de que OpenMP abría un hilo por CPU visible. Con `OMP_NUM_THREADS=4`, `make docker-train` tarda 2 minutos y reproduce la corrida oficial `9bd592bc9bef` (diferencia máxima 7,1·10⁻¹⁵, §14.3)
 
+- [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
 - [x] Champions: Dixon-Coles conjunto entre ligas (cinco grandes, seis ligas extra y Europa desde 2019) y walk-forward contra la base, n = 376 (§12.5)
 
 ### 16.2 Pendiente
 
-- **Champions en vivo:** predicciones de la fase de liga en el almacén y en el ciclo diario, y Monte Carlo de la tabla de 36 (top 8, playoff, eliminado), antes de la J5 (24-25 nov).
+- **Champions en la web:** sección con los próximos partidos y la tabla simulada (`ucl.json` ya está en el ciclo, §14.1). Después, las eliminatorias, con un `match_id` que distinga la ida de la vuelta.
 - **Champions, calibración:** elegir en validación (2021-22 a 2023-24) una localía europea y la escala de ratings, por el empate sobrestimado (§12.5); cuotas de la Champions con fecha, si aparece una fuente; Austria y Noruega (otro formato de football-data) para LASK, Bodø/Glimt y Viking.
 
 - **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).

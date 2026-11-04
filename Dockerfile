@@ -28,11 +28,13 @@ FROM python:3.11-slim AS runtime
 # sin .git en la imagen: la versión del modelo y el commit entran al construir
 # (make docker-build los toma de git) y daily.py / train.py los leen de aquí
 ARG MODEL_VERSION=desconocida
+ARG UCL_VERSION=desconocida
 ARG GIT_COMMIT=desconocido
 ENV PATH=/opt/venv/bin:$PATH \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     WCP_MODEL_VERSION=$MODEL_VERSION \
+    WCP_UCL_VERSION=$UCL_VERSION \
     WCP_COMMIT=$GIT_COMMIT
 RUN useradd --create-home --uid 10001 app && mkdir /app && chown app:app /app
 WORKDIR /app

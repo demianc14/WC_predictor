@@ -76,3 +76,18 @@ def test_reporte_compara_modelo_y_base_sobre_la_misma_muestra():
     rep = backtest.report(rows)
     assert rep["model"]["n"] == rep["base"]["n"] == len(rows)
     assert set(rep["diff"]) == {"brier", "rps", "logloss"}
+
+
+def test_fase_de_liga_normaliza_nombres_y_deja_afuera_las_eliminatorias():
+    from src.europe import run
+    rows = [{**ROWS[0], "RoundNumber": 8}, {**ROWS[1], "RoundNumber": 9}]
+    cal = run.league_phase(rows)
+    assert [(f.home, f.away) for f in cal] == [("Inter", "Celtic")]
+
+
+def test_la_base_de_la_champions_solo_mira_temporadas_anteriores():
+    from src.europe import run
+    d = date(2025, 10, 1)
+    ms = [Match("UCL", "2526", d, "A", "B", 1, 0), Match("UCL", "2627", d, "A", "B", 0, 1),
+          Match("E0", "2526", d, "A", "B", 0, 0)]
+    assert run.base_rates(ms) == [0.5, 0.25, 0.25]                      # 1 ficticio de cada
