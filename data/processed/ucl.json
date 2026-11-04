@@ -33,6 +33,7 @@
  "teams": [
   {
    "t": "AEK",
+   "n": "AEK Athens",
    "league": "G1",
    "no_league": false,
    "n_eff": 47.4,
@@ -87,6 +88,7 @@
   },
   {
    "t": "Arsenal",
+   "n": "Arsenal",
    "league": "E0",
    "no_league": false,
    "n_eff": 68.4,
@@ -141,6 +143,7 @@
   },
   {
    "t": "Aston Villa",
+   "n": "Aston Villa",
    "league": "E0",
    "no_league": false,
    "n_eff": 65.5,
@@ -195,6 +198,7 @@
   },
   {
    "t": "Ath Madrid",
+   "n": "Atleti",
    "league": "SP1",
    "no_league": false,
    "n_eff": 69.7,
@@ -249,6 +253,7 @@
   },
   {
    "t": "Barcelona",
+   "n": "Barcelona",
    "league": "SP1",
    "no_league": false,
    "n_eff": 68.7,
@@ -303,6 +308,7 @@
   },
   {
    "t": "Bayern Munich",
+   "n": "Bayern München",
    "league": "D1",
    "no_league": false,
    "n_eff": 63.3,
@@ -357,6 +363,7 @@
   },
   {
    "t": "Betis",
+   "n": "Real Betis",
    "league": "SP1",
    "no_league": false,
    "n_eff": 63.7,
@@ -411,6 +418,7 @@
   },
   {
    "t": "Bodø/Glimt",
+   "n": "Bodø/Glimt",
    "league": null,
    "no_league": true,
    "n_eff": 14.6,
@@ -465,6 +473,7 @@
   },
   {
    "t": "Club Brugge",
+   "n": "Club Brugge",
    "league": "B1",
    "no_league": false,
    "n_eff": 64.8,
@@ -519,6 +528,7 @@
   },
   {
    "t": "Como",
+   "n": "Como",
    "league": "I1",
    "no_league": false,
    "n_eff": 54.4,
@@ -573,6 +583,7 @@
   },
   {
    "t": "Dortmund",
+   "n": "B. Dortmund",
    "league": "D1",
    "no_league": false,
    "n_eff": 60.4,
@@ -627,6 +638,7 @@
   },
   {
    "t": "Fenerbahce",
+   "n": "Fenerbahçe",
    "league": "T1",
    "no_league": false,
    "n_eff": 60.6,
@@ -681,6 +693,7 @@
   },
   {
    "t": "Feyenoord",
+   "n": "Feyenoord",
    "league": "N1",
    "no_league": false,
    "n_eff": 59.5,
@@ -735,6 +748,7 @@
   },
   {
    "t": "Galatasaray",
+   "n": "Galatasaray",
    "league": "T1",
    "no_league": false,
    "n_eff": 61.8,
@@ -789,6 +803,7 @@
   },
   {
    "t": "Inter",
+   "n": "Inter",
    "league": "I1",
    "no_league": false,
    "n_eff": 66.9,
@@ -843,6 +858,7 @@
   },
   {
    "t": "LASK",
+   "n": "LASK",
    "league": null,
    "no_league": true,
    "n_eff": 3.8,
@@ -897,6 +913,7 @@
   },
   {
    "t": "Lens",
+   "n": "Lens",
    "league": "F1",
    "no_league": false,
    "n_eff": 50.2,
@@ -951,6 +968,7 @@
   },
   {
    "t": "Lille",
+   "n": "Lille",
    "league": "F1",
    "no_league": false,
    "n_eff": 58.9,
@@ -1005,6 +1023,7 @@
   },
   {
    "t": "Liverpool",
+   "n": "Liverpool",
    "league": "E0",
    "no_league": false,
    "n_eff": 65.4,
@@ -1059,6 +1078,7 @@
   },
   {
    "t": "Man City",
+   "n": "Man City",
    "league": "E0",
    "no_league": false,
    "n_eff": 64.5,
@@ -1113,6 +1133,7 @@
   },
   {
    "t": "Man United",
+   "n": "Man Utd",
    "league": "E0",
    "no_league": false,
    "n_eff": 60.0,
@@ -1167,6 +1188,7 @@
   },
   {
    "t": "Napoli",
+   "n": "Napoli",
    "league": "I1",
    "no_league": false,
    "n_eff": 60.8,
@@ -1221,6 +1243,7 @@
   },
   {
    "t": "PSV Eindhoven",
+   "n": "PSV",
    "league": "N1",
    "no_league": false,
    "n_eff": 59.5,
@@ -1275,6 +1298,7 @@
   },
   {
    "t": "Paris SG",
+   "n": "Paris",
    "league": "F1",
    "no_league": false,
    "n_eff": 67.3,
@@ -1329,6 +1353,7 @@
   },
   {
    "t": "Porto",
+   "n": "Porto",
    "league": "P1",
    "no_league": false,
    "n_eff": 61.1,
@@ -1383,6 +1408,7 @@
   },
   {
    "t": "RB Leipzig",
+   "n": "Leipzig",
    "league": "D1",
    "no_league": false,
    "n_eff": 52.4,
@@ -1437,6 +1463,7 @@
   },
   {
    "t": "Real Madrid",
+   "n": "Real Madrid",
    "league": "SP1",
    "no_league": false,
    "n_eff": 70.8,
@@ -1491,6 +1518,7 @@
   },
   {
    "t": "Roma",
+   "n": "Roma",
    "league": "I1",
    "no_league": false,
    "n_eff": 66.8,
@@ -1545,6 +1573,7 @@
   },
   {
    "t": "Sabah",
+   "n": "Sabah",
    "league": null,
    "no_league": true,
    "n_eff": 2.8,
@@ -1599,6 +1628,7 @@
   },
   {
    "t": "Shakhtar",
+   "n": "Shakhtar",
    "league": null,
    "no_league": true,
    "n_eff": 7.1,
@@ -1653,6 +1683,7 @@
   },
   {
    "t": "Slavia Praha",
+   "n": "Slavia Praha",
    "league": null,
    "no_league": true,
    "n_eff": 10.4,
@@ -1707,6 +1738,7 @@
   },
   {
    "t": "Slovan Bratislava",
+   "n": "S. Bratislava",
    "league": null,
    "no_league": true,
    "n_eff": 5.0,
@@ -1761,6 +1793,7 @@
   },
   {
    "t": "Sp Lisbon",
+   "n": "Sporting CP",
    "league": "P1",
    "no_league": false,
    "n_eff": 61.5,
@@ -1815,6 +1848,7 @@
   },
   {
    "t": "Stuttgart",
+   "n": "Stuttgart",
    "league": "D1",
    "no_league": false,
    "n_eff": 56.8,
@@ -1869,6 +1903,7 @@
   },
   {
    "t": "Viking",
+   "n": "Viking",
    "league": null,
    "no_league": true,
    "n_eff": 2.8,
@@ -1923,6 +1958,7 @@
   },
   {
    "t": "Villarreal",
+   "n": "Villarreal",
    "league": "SP1",
    "no_league": false,
    "n_eff": 61.3,
@@ -2968,6 +3004,386 @@
    0.243,
    0.224,
    0.532
+  ]
+ ],
+ "results": [
+  [
+   "2026-09-08",
+   "Club Brugge",
+   "Aston Villa",
+   2,
+   3
+  ],
+  [
+   "2026-09-08",
+   "AEK",
+   "LASK",
+   1,
+   0
+  ],
+  [
+   "2026-09-08",
+   "Real Madrid",
+   "Inter",
+   2,
+   1
+  ],
+  [
+   "2026-09-08",
+   "Dortmund",
+   "Villarreal",
+   3,
+   2
+  ],
+  [
+   "2026-09-08",
+   "Porto",
+   "Man City",
+   0,
+   2
+  ],
+  [
+   "2026-09-08",
+   "Lille",
+   "Betis",
+   2,
+   3
+  ],
+  [
+   "2026-09-09",
+   "Barcelona",
+   "Feyenoord",
+   5,
+   1
+  ],
+  [
+   "2026-09-09",
+   "Stuttgart",
+   "Viking",
+   3,
+   1
+  ],
+  [
+   "2026-09-09",
+   "Paris SG",
+   "Slovan Bratislava",
+   6,
+   1
+  ],
+  [
+   "2026-09-09",
+   "Liverpool",
+   "Ath Madrid",
+   2,
+   1
+  ],
+  [
+   "2026-09-09",
+   "Sp Lisbon",
+   "Galatasaray",
+   3,
+   1
+  ],
+  [
+   "2026-09-09",
+   "Napoli",
+   "Arsenal",
+   0,
+   1
+  ],
+  [
+   "2026-09-10",
+   "PSV Eindhoven",
+   "Shakhtar",
+   1,
+   1
+  ],
+  [
+   "2026-09-10",
+   "Fenerbahce",
+   "Roma",
+   1,
+   1
+  ],
+  [
+   "2026-09-10",
+   "Bayern Munich",
+   "Bodø/Glimt",
+   5,
+   0
+  ],
+  [
+   "2026-09-10",
+   "Man United",
+   "Sabah",
+   4,
+   0
+  ],
+  [
+   "2026-09-10",
+   "Slavia Praha",
+   "Lens",
+   2,
+   3
+  ],
+  [
+   "2026-09-10",
+   "Como",
+   "RB Leipzig",
+   4,
+   1
+  ],
+  [
+   "2026-10-13",
+   "Lens",
+   "Sp Lisbon",
+   0,
+   2
+  ],
+  [
+   "2026-10-13",
+   "Sabah",
+   "Slavia Praha",
+   2,
+   0
+  ],
+  [
+   "2026-10-13",
+   "Inter",
+   "Club Brugge",
+   3,
+   4
+  ],
+  [
+   "2026-10-13",
+   "Arsenal",
+   "Lille",
+   3,
+   0
+  ],
+  [
+   "2026-10-13",
+   "Ath Madrid",
+   "Man United",
+   2,
+   0
+  ],
+  [
+   "2026-10-13",
+   "RB Leipzig",
+   "PSV Eindhoven",
+   1,
+   0
+  ],
+  [
+   "2026-10-13",
+   "Villarreal",
+   "Napoli",
+   3,
+   1
+  ],
+  [
+   "2026-10-13",
+   "Galatasaray",
+   "Barcelona",
+   1,
+   4
+  ],
+  [
+   "2026-10-13",
+   "Viking",
+   "Bayern Munich",
+   3,
+   3
+  ],
+  [
+   "2026-10-14",
+   "Feyenoord",
+   "Como",
+   3,
+   2
+  ],
+  [
+   "2026-10-14",
+   "LASK",
+   "Liverpool",
+   3,
+   6
+  ],
+  [
+   "2026-10-14",
+   "Man City",
+   "Paris SG",
+   2,
+   4
+  ],
+  [
+   "2026-10-14",
+   "Roma",
+   "Real Madrid",
+   3,
+   4
+  ],
+  [
+   "2026-10-14",
+   "Aston Villa",
+   "Fenerbahce",
+   6,
+   0
+  ],
+  [
+   "2026-10-14",
+   "Betis",
+   "Porto",
+   3,
+   2
+  ],
+  [
+   "2026-10-14",
+   "Bodø/Glimt",
+   "Dortmund",
+   1,
+   0
+  ],
+  [
+   "2026-10-14",
+   "Shakhtar",
+   "AEK",
+   3,
+   1
+  ],
+  [
+   "2026-10-14",
+   "Slovan Bratislava",
+   "Stuttgart",
+   0,
+   3
+  ],
+  [
+   "2026-10-20",
+   "Fenerbahce",
+   "Slavia Praha",
+   2,
+   2
+  ],
+  [
+   "2026-10-20",
+   "Sabah",
+   "Dortmund",
+   1,
+   2
+  ],
+  [
+   "2026-10-20",
+   "Paris SG",
+   "Barcelona",
+   4,
+   2
+  ],
+  [
+   "2026-10-20",
+   "Liverpool",
+   "Villarreal",
+   4,
+   3
+  ],
+  [
+   "2026-10-20",
+   "Man City",
+   "AEK",
+   5,
+   1
+  ],
+  [
+   "2026-10-20",
+   "Roma",
+   "Slovan Bratislava",
+   4,
+   0
+  ],
+  [
+   "2026-10-20",
+   "Porto",
+   "PSV Eindhoven",
+   0,
+   1
+  ],
+  [
+   "2026-10-20",
+   "Napoli",
+   "Bodø/Glimt",
+   4,
+   3
+  ],
+  [
+   "2026-10-20",
+   "Stuttgart",
+   "Ath Madrid",
+   1,
+   1
+  ],
+  [
+   "2026-10-21",
+   "Lille",
+   "Galatasaray",
+   2,
+   4
+  ],
+  [
+   "2026-10-21",
+   "Como",
+   "Man United",
+   4,
+   1
+  ],
+  [
+   "2026-10-21",
+   "Bayern Munich",
+   "Arsenal",
+   2,
+   2
+  ],
+  [
+   "2026-10-21",
+   "Real Madrid",
+   "RB Leipzig",
+   4,
+   1
+  ],
+  [
+   "2026-10-21",
+   "Inter",
+   "Shakhtar",
+   1,
+   0
+  ],
+  [
+   "2026-10-21",
+   "Sp Lisbon",
+   "LASK",
+   2,
+   3
+  ],
+  [
+   "2026-10-21",
+   "Aston Villa",
+   "Viking",
+   3,
+   1
+  ],
+  [
+   "2026-10-21",
+   "Club Brugge",
+   "Lens",
+   3,
+   0
+  ],
+  [
+   "2026-10-21",
+   "Betis",
+   "Feyenoord",
+   1,
+   0
   ]
  ],
  "backtest": {

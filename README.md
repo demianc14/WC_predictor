@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/demianc14/WC_predictor/actions/workflows/ci.yml)
 
-> El proyecto nació como predictor del **Mundial 2026** (grupos reales del sorteo del 5-dic-2025) y de ahí conserva el nombre. Terminado el torneo (🇪🇸 España campeona, 1-0 a Argentina el 19-jul), hoy predice dos cosas: **selecciones** en la temporada internacional 2026-27 y las **cinco grandes ligas** europeas (Premier League, LaLiga, Bundesliga, Serie A y Ligue 1), con un modelo supervisado comparado de forma honesta contra el mercado y un ciclo diario que publica cada predicción antes del partido y la mide después. El Mundial quedó como archivo.
+> El proyecto nació como predictor del **Mundial 2026** (grupos reales del sorteo del 5-dic-2025) y de ahí conserva el nombre. Terminado el torneo (🇪🇸 España campeona, 1-0 a Argentina el 19-jul), hoy predice dos cosas: **selecciones** en la temporada internacional 2026-27 las **cinco grandes ligas** europeas (Premier League, LaLiga, Bundesliga, Serie A y Ligue 1) y la **Champions League**, con un modelo supervisado comparado de forma honesta contra el mercado y un ciclo diario que publica cada predicción antes del partido y la mide después. El Mundial quedó como archivo.
 >
 > **Web:** https://demianc14.github.io/WC_predictor/ (se actualiza sola cada día)
 
@@ -14,6 +14,7 @@
 - **Breaking News Engine**: eventos canónicos elegibles desde menú + inyección manual
 - **Interfaz web** autocontenida (`app/index.html`). El menú tiene Inicio, Selecciones, Ligas y Archivo; cada sección se divide en subsecciones:
   - **Selecciones 2026-27**: próxima ventana (predicciones del 11 al 17-nov: Nations League, Concacaf, clasif. Copa África, amistosos), última ventana (resultados vs. lo que esperaba el modelo, quién subió y bajó), partido y cuotas a 90' entre cualquier par, ranking (fuerza, Δ ventana, ELO, forma de los últimos 5, valor de plantilla, edad, xG)
+  - **Champions**: próximos partidos con el 1X2 del modelo conjunto, tabla de la fase de liga con P(octavos), P(playoff) y P(afuera), y backtest contra la base
   - **Ligas · cinco grandes**: un selector de liga y, para cada una, tabla proyectada (10.000 temporadas simuladas), próxima jornada contra las cuotas, partido y cuotas entre cualquier par de clubes, ranking (xPts contra un rival promedio, ataque contra defensa) y backtest contra el mercado
   - **Archivo · Mundial 2026**: dos cuadros (cómo terminó y lo que esperaba el modelo, que acertó 26 de 31 partidos), probabilidad exacta de llegar a cada ronda y backtest
 
@@ -71,6 +72,22 @@ Brier y RPS 1X2, menor es mejor; en negrita, el mejor entre modelo y mercado:
 | Ligue 1 | 2026-27 (al 19-oct) | 63 | 0.591 | **0.579** | 0.647 | 0.206 | **0.200** | 0.232 |
 
 El modelo le gana con claridad a la base en todas las ligas, pero **pierde contra el mercado en las cinco en la temporada completa 2025-26**. En 2026-27 lo supera en la Premier y la Bundesliga, con 54 a 70 partidos: muy pocos para decir que sea mejor. Apostar cada discrepancia de más de 5% habría perdido entre 9% y 29% en 2025-26 según la liga, así que la web muestra dónde discrepa el modelo, no "valor".
+
+## Champions League 2026-27
+
+Cada liga tiene su propio Dixon-Coles, y sus ratings no se comparan entre sí. Para la Champions, `src/europe/` ajusta un solo modelo con el mismo `fit` sobre todas estas fuentes:
+- las cinco grandes ligas con sus segundas divisiones;
+- seis ligas más de football-data: Países Bajos, Portugal, Turquía, Bélgica, Grecia y Escocia;
+- todos los partidos de Champions y Europa League desde 2019. Estos cruces son los que ponen a todas las ligas en la misma escala.
+
+Con eso predice cada partido de la fase de liga y simula 10.000 veces la tabla de 36: top 8, playoff o afuera.
+
+```bash
+python -m src.europe.backtest   # walk-forward contra la base
+python -m src.europe.run        # → data/processed/ucl.json
+```
+
+En las Champions 2024-25 y 2025-26 (n = 376, misma muestra), el modelo tiene Brier 0.524, RPS 0.195 y log-loss 0.897. La base, que solo conoce la frecuencia de 1/X/2, tiene 0.610, 0.238 y 1.009. **No hay comparación con el mercado**, porque football-data no publica cuotas de la Champions. Además, el modelo sobrestima el empate (22% contra 16%). El detalle está en la [bitácora §12.5](docs/PROYECTO_OBSIDIAN.md).
 
 ## Modelo supervisado (1X2, clubes)
 

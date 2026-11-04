@@ -606,12 +606,13 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
 - [x] `hgb` en Docker: la lentitud venía de que OpenMP abría un hilo por CPU visible. Con `OMP_NUM_THREADS=4`, `make docker-train` tarda 2 minutos y reproduce la corrida oficial `9bd592bc9bef` (diferencia máxima 7,1·10⁻¹⁵, §14.3)
 
+- [x] Champions en la web: próximos partidos, tabla simulada de la fase de liga y backtest contra la base
 - [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
 - [x] Champions: Dixon-Coles conjunto entre ligas (cinco grandes, seis ligas extra y Europa desde 2019) y walk-forward contra la base, n = 376 (§12.5)
 
 ### 16.2 Pendiente
 
-- **Champions en la web:** sección con los próximos partidos y la tabla simulada (`ucl.json` ya está en el ciclo, §14.1). Después, las eliminatorias, con un `match_id` que distinga la ida de la vuelta.
+- **Champions, eliminatorias:** un `match_id` que distinga la ida de la vuelta, y el cuadro una vez sorteado.
 - **Champions, calibración:** elegir en validación (2021-22 a 2023-24) una localía europea y la escala de ratings, por el empate sobrestimado (§12.5); cuotas de la Champions con fecha, si aparece una fuente; Austria y Noruega (otro formato de football-data) para LASK, Bodø/Glimt y Viking.
 
 - **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).
