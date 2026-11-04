@@ -22,7 +22,7 @@ Contexto completo: `README.md` y `docs/PROYECTO_OBSIDIAN.md` (bitácora, §2.1 p
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 123 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 130 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -39,6 +39,7 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
 - `src/etl`, `src/simulation`, `src/agents`, `src/evaluation`: selecciones y Mundial (Parte I).
 - `src/clubs`: ligas (`leagues.py`), datos de football-data, calendario de fixturedownload,
   Dixon-Coles por liga, temporada, partido y cuotas (`h2h.py`), backtest contra el mercado.
+- `src/europe`: Dixon-Coles conjunto entre ligas para la Champions (ligas extra + Europa) y su backtest.
 - `src/ml`: dataset con huella, features anti-fuga, modelos, `metrics.py` (solo numpy), train, report.
 - `src/pipeline`: `daily.py` (todo o nada) y `store.py` (almacén solo-para-agregar).
 - `tools/`: export a la web y scripts puntuales. `app/index.html`: web autocontenida, en JS vanilla.
