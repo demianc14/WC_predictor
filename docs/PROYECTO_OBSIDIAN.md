@@ -398,6 +398,37 @@ La web y Python usan la misma fórmula: `python -m src.clubs.h2h` y la vista "Pa
 
 **Cómo leerlo:** el modelo le gana con claridad a la base en todas las ligas, pero **pierde contra el mercado en las cinco** en la temporada completa. Es lo esperable: el mercado de cierre incorpora lesiones, alineaciones y el dinero de miles de apostadores. Apostar cada discrepancia de más de 5% habría perdido entre 9% y 29% según la liga. Por eso la web muestra *dónde discrepa* el modelo, nunca "valor".
 
+### 12.5 Champions: un Dixon-Coles entre ligas (3-nov-2026)
+
+**Problema:** cada liga tiene su propio Dixon-Coles y sus ratings no se comparan entre sí, porque un 1,2 de ataque en la Premier no vale lo mismo que en la Eredivisie. Para predecir la Champions hace falta una sola escala.
+
+**Solución (`src/europe/`):** se usa el mismo `src.clubs.model.fit`, sin cambios, sobre un conjunto de partidos que conecta las ligas. Los ratings de Maher ya son globales: dos ligas quedan en la misma escala si las unen partidos entre sus clubes.
+- Las 10 divisiones de las cinco grandes ligas.
+- Seis ligas extra de football-data en el mismo formato: Países Bajos (`N1`), Portugal (`P1`), Turquía (`T1`), Bélgica (`B1`), Grecia (`G1`) y Escocia (`SC0`), desde 2021-22. Ahí juegan los clubes que más se cruzan con los nuestros (PSV, Porto, Sporting, Galatasaray, Brugge, AEK, Celtic, etc.).
+- Champions y Europa League desde 2019-20, con el mismo feed de §13.5, como partidos con div `UCL`/`UEL`. Son 2490 partidos europeos y 29 372 de liga.
+- Nombres: los alias de §13.5 más 21 nuevos. Algunos son clubes de las ligas extra (`PSV` → `PSV Eindhoven`); otros, el mismo club escrito de dos maneras en el feed (`Shakhtar` / `Shakhtar Donetsk`). Un nombre repetido en dos países frena la carga, porque serían dos clubes con un solo rating.
+- **Clubes sin liga en la fuente** (73 en total, 7 en la Champions 2026-27: Bodø/Glimt, Viking, LASK, Slavia Praha, Slovan Bratislava, Sabah y Shakhtar): entran solo con sus partidos europeos. Su `n_eff` es chico y la web lo va a marcar.
+
+**Backtest (`python -m src.europe.backtest`):** walk-forward semanal sobre las dos Champions con fase de liga de 36 ya cerradas. Cada lunes se reajusta con todo lo jugado antes (ligas y Europa) y se predicen los partidos de Champions de esa semana, incluidas las eliminatorias. **No hay mercado:** football-data no publica cuotas de la Champions, así que la comparación es contra la base (frecuencia de 1/X/2 de la Champions hasta esa semana), sobre la misma muestra. Diferencias con IC 95% por bootstrap pareado.
+
+| Muestra | n | Brier modelo | Brier base | RPS modelo | RPS base | log-loss modelo | log-loss base | ΔRPS modelo − base |
+|---|---|---|---|---|---|---|---|---|
+| 2024-25 y 2025-26 | 376 | **0.524** | 0.610 | **0.195** | 0.238 | **0.897** | 1.009 | −0.043 [−0.056, −0.030] |
+| 2024-25 | 189 | **0.508** | 0.603 | **0.192** | 0.240 | **0.871** | 0.997 | −0.049 [−0.068, −0.029] |
+| 2025-26 | 187 | **0.541** | 0.617 | **0.198** | 0.236 | **0.922** | 1.021 | −0.038 [−0.055, −0.019] |
+| Con un club sin liga | 106 | **0.425** | 0.603 | **0.157** | 0.242 | **0.759** | 0.996 | −0.086 [−0.118, −0.050] |
+| 2026-27 hasta el 21-oct | 52 | **0.515** | 0.576 | **0.198** | 0.235 | **0.888** | 0.957 | −0.036 [−0.072, +0.002] |
+
+Hay 2 partidos sin predecir: Pafos y Kairat Almaty debutaban sin ningún partido previo en la fuente (no están las previas).
+
+**Cómo leerlo:** el modelo le gana a la base con claridad en las dos temporadas cerradas. Los partidos con un club sin liga son los más fáciles, porque suelen ser desparejos: ahí la base, que reparte 1/X/2 igual para todos, queda peor. **OJO:** sin cuotas no se sabe cuánto le falta contra el mercado. En las ligas le falta (§12.4), y no hay razón para pensar que en la Champions no.
+
+**Calibración (medida, no corregida):** el modelo subestima al local (45,1% predicho contra 50,5% real) y sobrestima el empate (22,2% contra 15,7%, n = 376). Se probaron dos ajustes:
+- una localía propia de Europa, estimada con los partidos europeos de los dos años anteriores: RPS 0.1949 → 0.1944;
+- abrir la escala de los ratings (exponente 1,15 a 1,3) y ρ = 0: RPS hasta 0.1933, empate predicho 19,5%.
+
+Los dos mejoran poco y se eligieron mirando el test, así que **no se adoptaron**. Para adoptarlos habría que elegirlos en una validación aparte (2021-22 a 2023-24, con el formato viejo de grupos) y recién después medirlos en test.
+
 ---
 
 # Parte III · Modelo supervisado
@@ -537,13 +568,14 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
-5. **El número de hilos de OpenMP en Docker se fijó a mano** (§14.3): con un hilo por CPU visible, `hgb` es unas 40 veces más lento. Con 4 hilos, el entrenamiento completo tarda 2 minutos y reproduce la corrida oficial, pero el valor solo está medido en una máquina.
+5. **La Champions no tiene benchmark de mercado** (§12.5): football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate en la Champions (22% contra 16%), y 73 clubes europeos (7 de la Champions 2026-27) no tienen liga en la fuente.
+6. **El número de hilos de OpenMP en Docker se fijó a mano** (§14.3): con un hilo por CPU visible, `hgb` es unas 40 veces más lento. Con 4 hilos, el entrenamiento completo tarda 2 minutos y reproduce la corrida oficial, pero el valor solo está medido en una máquina.
 
 **Selecciones (Parte I):**
-6. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla se scrapean, y StatsBomb cubre 40 de las 48 selecciones, pero el resto del xG es manual.
-7. **Cobertura limitada a 48 selecciones:** los scrapers solo mapean los equipos del Mundial 2026; otros rivales se estiman desde su ELO.
-8. **El "Bayes" es una combinación lineal** inspirada en el marco bayesiano, no inferencia formal (§4.1).
-9. **El backtest del Mundial tiene poca muestra:** en 80 partidos limpios la ventaja sobre ELO no es significativa (§10.1).
+7. **El xG base sigue siendo curado.** ELO, historial y valor de plantilla se scrapean, y StatsBomb cubre 40 de las 48 selecciones, pero el resto del xG es manual.
+8. **Cobertura limitada a 48 selecciones:** los scrapers solo mapean los equipos del Mundial 2026; otros rivales se estiman desde su ELO.
+9. **El "Bayes" es una combinación lineal** inspirada en el marco bayesiano, no inferencia formal (§4.1).
+10. **El backtest del Mundial tiene poca muestra:** en 80 partidos limpios la ventaja sobre ELO no es significativa (§10.1).
 
 Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en una entrevista.
 
@@ -565,7 +597,12 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
 - [x] `hgb` en Docker: la lentitud venía de que OpenMP abría un hilo por CPU visible. Con `OMP_NUM_THREADS=4`, `make docker-train` tarda 2 minutos y reproduce la corrida oficial `9bd592bc9bef` (diferencia máxima 7,1·10⁻¹⁵, §14.3)
 
+- [x] Champions: Dixon-Coles conjunto entre ligas (cinco grandes, seis ligas extra y Europa desde 2019) y walk-forward contra la base, n = 376 (§12.5)
+
 ### 16.2 Pendiente
+
+- **Champions en vivo:** predicciones de la fase de liga en el almacén y en el ciclo diario, y Monte Carlo de la tabla de 36 (top 8, playoff, eliminado), antes de la J5 (24-25 nov).
+- **Champions, calibración:** elegir en validación (2021-22 a 2023-24) una localía europea y la escala de ratings, por el empate sobrestimado (§12.5); cuotas de la Champions con fecha, si aparece una fuente; Austria y Noruega (otro formato de football-data) para LASK, Bodø/Glimt y Viking.
 
 - **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).
 - **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
