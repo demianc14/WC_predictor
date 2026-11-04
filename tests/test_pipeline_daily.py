@@ -177,3 +177,44 @@ def test_metricas_por_version_usan_la_primera_prediccion_de_cada_version():
     assert v1["model"]["brier"] == pytest.approx(0.4 ** 2 + 0.25 ** 2 + 0.25 ** 2)
     assert (v2["version"], v2["n"]) == ("v2", 1)
     assert v2["model"]["brier"] == pytest.approx(0.9 ** 2 + 0.25 ** 2 + 0.25 ** 2)
+
+
+def _ucl(results=()):
+    return {"season": "2627", "base": [0.5, 0.2, 0.3], "results": list(results),
+            "next": [{"day": "2026-11-04", "home": "Arsenal", "away": "Slavia Praha",
+                      "model": [0.8, 0.12, 0.08]}]}
+
+
+def test_la_champions_entra_al_almacen_con_su_version_y_mide_aparte(tmp_path, monkeypatch):
+    def cyc(ucl, now):
+        monkeypatch.setattr(daily.data, "load_matches", lambda divs, seasons: [])
+        return daily.cycle(now, LG, fetcher=lambda: None, builder=lambda lg, today: _out(),
+                           version="v1", commit="abc", store_path=tmp_path / "p.csv",
+                           out_dir=tmp_path / "out", europe_builder=lambda today: ucl,
+                           europe_version="v1+e1")
+    assert cyc(_ucl(), NOW)["added"] == 2                        # E0 del 24-oct y la Champions
+    later = NOW.replace(month=11, day=5)
+    r = cyc(_ucl([["2026-11-04", "Arsenal", "Slavia Praha", 3, 0]]), later)
+    rows = store.load(tmp_path / "p.csv")
+    ucl = [x for x in rows if x["league"] == "UCL"]
+    assert len(ucl) == 1 and ucl[0]["model_version"] == "v1+e1" and ucl[0]["result"] == "H"
+    assert ucl[0]["match_id"] == "UCL-2627-Arsenal-Slavia_Praha" and r["filled"] == 1
+    live = r["live"]
+    assert live["all"]["n"] == 0 and "UCL" not in live["by_league"]   # no se mezcla con las ligas
+    assert all(v["version"] != "v1+e1" for v in live["by_version"])
+    assert live["ucl"]["n"] == 1 and live["ucl"]["base"]["n"] == 1     # misma muestra que la base
+    assert "same_sample" not in live["ucl"]                              # sin cuotas: sin mercado
+    assert (tmp_path / "out" / "ucl.json").exists()
+
+
+def test_los_feeds_europeos_se_bajan_a_su_subcarpeta(tmp_path):
+    srcs = daily.europe_sources()
+    assert {n for _, n, _ in srcs if n.endswith(".json")} == {
+        "europe/champions-league-2026.json", "europe/europa-league-2026.json"}
+
+    def bajar(url, target):
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text('[{"HomeTeam": "A"}]' if target.suffix == ".json" else "Div,X\nN1,1\n")
+    daily.fetch(srcs, cache_dir=tmp_path, download=bajar)
+    assert (tmp_path / "europe" / "champions-league-2026.json").exists()
+    assert (tmp_path / "N1_2627.csv").exists()

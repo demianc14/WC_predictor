@@ -30,6 +30,7 @@ serve:
 	$(PY) -m http.server 8000 --directory app
 
 BUILD_ARGS = --build-arg MODEL_VERSION=$$(git rev-parse --short HEAD:src/clubs) \
+	--build-arg UCL_VERSION=$$(git rev-parse --short HEAD:src/clubs)+$$(git rev-parse --short HEAD:src/europe) \
 	--build-arg GIT_COMMIT=$$(git rev-parse --short HEAD)
 
 # dos imágenes: $(IMAGE) (ciclo diario y web, liviana) y $(IMAGE):ml (entrenamiento y tests)

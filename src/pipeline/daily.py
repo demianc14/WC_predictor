@@ -3,18 +3,22 @@
     python -m src.pipeline.daily
 
 1. Descarga, una vez cada una, las fuentes vivas (temporada actual de las 10
-   divisiones, fixtures.csv y los 5 calendarios) a una carpeta temporal. Si
-   alguna falla o llega vacía, termina con código 2 y no toca nada.
+   divisiones y de las 6 ligas extra del modelo conjunto, fixtures.csv, los 5
+   calendarios y los feeds de Champions y Europa League) a una carpeta
+   temporal. Si alguna falla o llega vacía, termina con código 2 y no toca nada.
 2. Con todo descargado, recién entonces las mueve a la caché.
 3. En memoria: ajusta cada liga (Dixon-Coles, igual que la web), arma las
    predicciones de los partidos de los próximos días que aún no tienen una
    para la versión actual del modelo, completa los resultados ya jugados y
-   recalcula las métricas en vivo.
+   recalcula las métricas en vivo. La Champions (`src/europe/run.py`) entra al
+   mismo almacén con `league="UCL"` y su propia versión, pero sus métricas van
+   aparte (`ucl` en live.json): no tiene cuotas, se compara contra la base.
 4. Solo si todo lo anterior salió bien, escribe: JSON por liga, live.json, el
    almacén (que verifica que no se sobrescribe nada) y la web.
 
 Versión del modelo = hash git del árbol `src/clubs/`: cambia solo si cambia
-el código del modelo, no con cualquier commit.
+el código del modelo, no con cualquier commit. La de la Champions junta los
+árboles `src/clubs/` y `src/europe/`, porque depende de los dos.
 """
 from __future__ import annotations
 
@@ -33,6 +37,8 @@ import numpy as np
 from src.clubs import calendar, data, run
 from src.clubs.backtest import no_vig
 from src.clubs.leagues import LEAGUES, League
+from src.europe import data as eu
+from src.ml import europe
 from src.ml.metrics import summary
 from src.pipeline import store
 
@@ -41,6 +47,7 @@ CUTOFF_HOUR_UTC = 10        # un partido de hoy solo se predice si el ciclo corr
 OUT_DIR = Path("data/processed")
 LIVE = OUT_DIR / "live.json"
 RESULT = {"H": 0, "D": 1, "A": 2}
+UCL = "UCL"
 
 
 class SourceError(RuntimeError):
@@ -54,6 +61,15 @@ def sources(leagues: list[League]) -> list[tuple[str, str, str]]:
     out.append((data.FIXTURES_URL, "fixtures.csv", "csv"))
     out += [(calendar.FEED_URL.format(feed=lg.feed, year=calendar.SEASON_YEAR),
              f"calendar_{lg.feed}_{calendar.SEASON_YEAR}.json", "json") for lg in leagues]
+    return out
+
+
+def europe_sources() -> list[tuple[str, str, str]]:
+    """Lo vivo del modelo conjunto: ligas extra y los feeds europeos de esta temporada."""
+    s, y = data.CURRENT_SEASON, calendar.SEASON_YEAR
+    out = [(data.BASE_URL.format(season=s, div=d), f"{d}_{s}.csv", "csv") for d in eu.EXTRA_DIVS]
+    out += [(calendar.FEED_URL.format(feed=f, year=y),
+             europe.path(f, y).relative_to(data.CACHE_DIR).as_posix(), "json") for f in eu.COMPS]
     return out
 
 
@@ -81,6 +97,7 @@ def fetch(srcs: list[tuple[str, str, str]], cache_dir: Path = data.CACHE_DIR,
                 raise SourceError(f"{url}: {e}") from e
             _validate(tmp / name, kind)
         for _, name, _ in srcs:
+            (cache_dir / name).parent.mkdir(parents=True, exist_ok=True)
             os.replace(tmp / name, cache_dir / name)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -139,8 +156,26 @@ def _metrics(rows: list[dict]) -> dict:
     return {"n": len(rows), **out}
 
 
-def live_metrics(rows: list[dict], now: datetime) -> dict:
-    """Métricas de lo que se predijo ANTES de jugarse: la primera predicción de cada partido."""
+def _ucl_metrics(rows: list[dict], base: list[float] | None) -> dict:
+    """Champions: sin cuotas, contra la base (1/X/2 de temporadas anteriores), misma muestra."""
+    out = _metrics(rows)
+    if rows and base:
+        y = np.array([RESULT[r["result"]] for r in rows])
+        out["base"] = summary(y, np.tile(base, (len(rows), 1)))
+    return out
+
+
+def live_metrics(rows: list[dict], now: datetime, ucl_base: list[float] | None = None) -> dict:
+    """Métricas de lo que se predijo ANTES de jugarse: la primera predicción de cada partido.
+
+    `all`, `by_league` y `by_version` son las cinco ligas; la Champions va en `ucl`.
+    """
+    ucl = [r for r in rows if r["league"] == UCL]
+    rows = [r for r in rows if r["league"] != UCL]
+    ucl_first: dict[str, dict] = {}
+    for r in sorted(ucl, key=lambda r: r["predicted_at"]):
+        ucl_first.setdefault(r["match_id"], r)
+    ucl_done = [r for r in ucl_first.values() if r["result"]]
     first: dict[str, dict] = {}
     for r in sorted(rows, key=lambda r: r["predicted_at"]):
         first.setdefault(r["match_id"], r)
@@ -161,6 +196,10 @@ def live_metrics(rows: list[dict], now: datetime) -> dict:
         "n_predictions": len(rows), "n_matches": len(first),
         "n_pending": sum(1 for r in first.values() if not r["result"]),
         "all": _metrics(done), "by_league": by_league, "by_version": by_version,
+        "ucl": {"n_predictions": len(ucl), "n_matches": len(ucl_first),
+                "n_pending": len(ucl_first) - len(ucl_done),
+                "versions": sorted({r["model_version"] for r in ucl}),
+                **_ucl_metrics(ucl_done, ucl_base)},
     }
 
 
@@ -182,21 +221,47 @@ def model_version() -> tuple[str, str]:
                            "la imagen con `make docker-build`") from e
 
 
+def europe_version() -> str:
+    """Versión del modelo de la Champions: árboles `src/clubs/` + `src/europe/`."""
+    v = os.environ.get("WCP_UCL_VERSION")
+    if v and v != "desconocida":
+        return v
+    try:
+        return f"{_git('rev-parse', '--short', 'HEAD:src/clubs')}+" \
+               f"{_git('rev-parse', '--short', 'HEAD:src/europe')}"
+    except (OSError, subprocess.CalledProcessError) as e:
+        raise RuntimeError("Sin versión del modelo de la Champions") from e
+
+
+def europe_results(out: dict) -> list[data.Match]:
+    return [data.Match(UCL, out["season"], date.fromisoformat(d), h, a, hg, ag)
+            for d, h, a, hg, ag in out["results"]]
+
+
 def cycle(now: datetime, leagues: list[League], *, fetcher: Callable[[], None],
           builder: Callable[[League, date], dict], version: str, commit: str,
           store_path: Path = store.PATH, out_dir: Path = OUT_DIR,
-          export: Callable[[], None] | None = None) -> dict:
+          export: Callable[[], None] | None = None,
+          europe_builder: Callable[[date], dict] | None = None,
+          europe_version: str = "") -> dict:
     fetcher()                                                  # 1-2: todo o nada
     outs = {lg.code: builder(lg, now.date()) for lg in leagues}   # 3: en memoria
+    ucl = europe_builder(now.date()) if europe_builder else None
     played = data.load_matches([lg.code for lg in leagues], [data.CURRENT_SEASON])
+    new = predictions(outs, now, version, commit)
+    if ucl is not None:
+        new += predictions({UCL: ucl}, now, europe_version, commit)
+        played += europe_results(ucl)
     old = store.load(store_path)
-    rows, added = store.add_predictions(old, predictions(outs, now, version, commit))
+    rows, added = store.add_predictions(old, new)
     rows, filled = store.record_results(rows, results(played))
     store.check_append_only(old, rows)
-    live = live_metrics(rows, now)
+    live = live_metrics(rows, now, ucl["base"] if ucl else None)
     for code, out in outs.items():                             # 4: recién ahora se escribe
         store.write_atomic(out_dir / f"clubs_{code}.json",
                            json.dumps(out, ensure_ascii=False, indent=1))
+    if ucl is not None:
+        store.write_atomic(out_dir / "ucl.json", json.dumps(ucl, ensure_ascii=False, indent=1))
     store.write_atomic(out_dir / LIVE.name, json.dumps(live, ensure_ascii=False, indent=1))
     store.save(rows, store_path)
     if export:
@@ -208,18 +273,22 @@ def main() -> int:
     leagues = list(LEAGUES.values())
     now = datetime.now(timezone.utc)
     version, commit = model_version()
+    from src.europe import run as europe_run
     from tools import export_frontend
     try:
-        res = cycle(now, leagues, fetcher=lambda: fetch(sources(leagues)),
+        res = cycle(now, leagues, fetcher=lambda: fetch(sources(leagues) + europe_sources()),
                     builder=lambda lg, today: run.build(lg, today=today),
-                    version=version, commit=commit, export=export_frontend.main)
+                    version=version, commit=commit, export=export_frontend.main,
+                    europe_builder=lambda today: europe_run.build(today),
+                    europe_version=europe_version())
     except SourceError as e:
         print(f"❌ Fuente caída, no se modificó nada: {e}", file=sys.stderr)
         return 2
     live = res["live"]
     print(f"✅ {res['added']} predicciones nuevas (modelo {version}), {res['filled']} "
           f"resultados registrados; {live['all']['n']} partidos evaluados, "
-          f"{live['n_pending']} pendientes")
+          f"{live['n_pending']} pendientes; Champions: {live['ucl']['n']} evaluados, "
+          f"{live['ucl']['n_pending']} pendientes")
     return 0
 
 
