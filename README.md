@@ -220,6 +220,12 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 ## Limitaciones
 
+**Clubes y Champions:**
+- **El mercado le gana al modelo** en las cinco ligas (backtest 2025-26 y en vivo desde el 20-oct), y el supervisado no cambia eso. Por eso la web muestra dónde discrepa el modelo, nunca "valor".
+- **La Champions no tiene benchmark de mercado:** football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate (22% contra 16%), y 7 de los 36 clubes no tienen liga en la fuente.
+- **Las métricas en vivo tienen semanas, no temporadas:** todavía no permiten conclusiones.
+
+**Selecciones:**
 - **Cobertura de datos en vivo limitada a 48 selecciones**: los scrapers (ELO, historial, valor de plantilla) solo mapean los equipos del Mundial 2026 — el CSV curado sigue siendo el fallback y la base para cualquier otro cruce.
 - **"Bayes" es una combinación lineal**, no inferencia bayesiana formal — es una inspiración conceptual (prior actualizado por evidencia), útil y transparente, pero no el teorema aplicado con distribuciones.
 - El sesgo de independencia del Poisson en marcadores bajos ya está corregido (Dixon-Coles) con un ρ fijo de la literatura. Estimarlo sobre el Mundial 2026 no es concluyente; hace falta ajustarlo sobre el historial completo.
@@ -227,12 +233,13 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 ## Cómo escalar
 
-El proyecto está pensado para crecer sin tocar el motor de partido: más selecciones o torneos, ajustar ρ y el modelo de empates sobre el historial completo, refresco automático del ETL, persistencia de simulaciones, etc. Cada cambio se puede validar con el mismo `backtest`. Lo hecho y lo pendiente (lesiones y alineaciones como features, xG en el supervisado, más selecciones) está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
+El proyecto está pensado para crecer sin tocar el motor de partido, y cada cambio se valida con su walk-forward antes de entrar. La cola de trabajo, con contexto y criterio de cierre por tarea, está en [`docs/ROADMAP.md`](docs/ROADMAP.md). Lo que sigue es la calibración de la Champions, después las eliminatorias simuladas hasta el campeón y el horario real del ciclo diario. El historial está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
 
 ## Documentación completa
 
 Toda la explicación conceptual está en [`docs/PROYECTO_OBSIDIAN.md`](docs/PROYECTO_OBSIDIAN.md), lista para importar a Obsidian: principios de diseño, el motor de selecciones y el Mundial (Parte I), clubes (II), modelo supervisado (III), operación con ciclo diario, CI y Docker (IV), limitaciones y roadmap.
 
 Otros documentos:
+- [`docs/ROADMAP.md`](docs/ROADMAP.md): la cola de trabajo, con contexto, pasos y criterio de cierre por tarea.
 - [`docs/RESULTADOS_ML.md`](docs/RESULTADOS_ML.md): reporte del modelo supervisado, generado por el código.
 - `docs/PROMPT_AGENTE_FASE1.md` … `FASE5.md`: el brief de cada fase del roadmap de las cinco ligas.
