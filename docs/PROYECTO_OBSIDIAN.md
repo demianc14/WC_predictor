@@ -573,7 +573,7 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 ## 15. Limitaciones honestas (para tu defensa)
 
 **Clubes y modelo supervisado:**
-1. **El modelo pierde contra el mercado** en las cinco ligas (§12.4), y el supervisado no lo cambia (§13.3). Para cerrar la brecha haría falta información que el mercado sí ve: lesiones y alineaciones. El calendario europeo ya se probó y no alcanzó (§13.5); las copas nacionales siguen sin fuente.
+1. **El modelo pierde contra el mercado** en las cinco ligas (§12.4), y el supervisado no lo cambia (§13.3). Una parte de la brecha es información que el mercado ve y el modelo no (lesiones y alineaciones), que quedó fuera del alcance. El calendario europeo ya se probó y no alcanzó (§13.5); las copas nacionales siguen sin fuente.
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
@@ -605,23 +605,20 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Champions y Europa League en el descanso, medido en validación y test (§13.5)
 - [x] La caché de features también depende del código que las calcula (no solo de los datos); en Docker las features tardan 24 s, así que no hace falta otra caché (§14)
 - [x] `hgb` en Docker: la lentitud venía de que OpenMP abría un hilo por CPU visible. Con `OMP_NUM_THREADS=4`, `make docker-train` tarda 2 minutos y reproduce la corrida oficial `9bd592bc9bef` (diferencia máxima 7,1·10⁻¹⁵, §14.3)
-
-- [x] Champions en la web: próximos partidos, tabla simulada de la fase de liga y backtest contra la base
-- [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
+- [x] Métricas en vivo por versión del modelo (§14.1)
 - [x] Champions: Dixon-Coles conjunto entre ligas (cinco grandes, seis ligas extra y Europa desde 2019) y walk-forward contra la base, n = 376 (§12.5)
+- [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
+- [x] Champions en la web: próximos partidos, tabla simulada de la fase de liga y backtest contra la base
 
 ### 16.2 Pendiente
 
-- **Champions, eliminatorias:** un `match_id` que distinga la ida de la vuelta, y el cuadro una vez sorteado.
-- **Champions, calibración:** elegir en validación (2021-22 a 2023-24) una localía europea y la escala de ratings, por el empate sobrestimado (§12.5); cuotas de la Champions con fecha, si aparece una fuente; Austria y Noruega (otro formato de football-data) para LASK, Bodø/Glimt y Viking.
+La cola de trabajo, con contexto, pasos y criterio de cierre de cada tarea, está en [`docs/ROADMAP.md`](ROADMAP.md). En orden:
 
-- **Información que el mercado ve y el modelo no:** lesiones y alineaciones como features con fecha, tanto en clubes como en el contexto del 30% de selecciones (hoy se elige a mano).
-- **xG como feature** del supervisado cuando 2026-27 tenga suficiente muestra; mientras tanto, el Dixon-Coles ya lo usa.
-- **Copas nacionales y Conference** en el descanso, si aparece una fuente con fecha (Europa ya entró en la fase 6 y no mejoró, §13.5).
-- **Métricas en vivo:** volver a leerlas cuando haya temporadas enteras, no semanas.
-- **Selecciones:** ampliar los mapeos más allá de las 48 y estimar ρ y el modelo de empates sobre el historial completo.
-- **Otros torneos:** un `tournament.py` con el cuadro de la Euro o la Copa América reutiliza `match_engine.py` sin cambios.
-- **Infraestructura**, solo si hace falta: una base de datos (el brief pide aprobación antes de agregar Postgres o Supabase) o una API. Hoy el CSV versionado es más auditable que una base de datos.
+1. **Calibración de la Champions:** localía europea y escala de los ratings, elegidas en validación (2021-22 a 2023-24), por el empate sobrestimado (§12.5).
+2. **Eliminatorias de la Champions:** simularlas desde la tabla hasta P(campeón), con un `match_id` que distinga la ida de la vuelta.
+3. **Horario real del ciclo diario:** el cron de las 05:30 UTC corre de hecho entre las 10 y las 13 (§14.1).
+
+Después, sin orden fijo: xG como feature del supervisado, Austria y Noruega, cuotas de la Champions, copas nacionales y Conference, selecciones (más de 48, ρ sobre el historial), otros torneos, releer las métricas en vivo con temporadas enteras e infraestructura solo si hace falta.
 
 ---
 
