@@ -1,6 +1,6 @@
 # Prompt Fase 5: Docker y reproducibilidad
 
-Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: Fases 1 a 4 mergeadas. Principios en `docs/PROMPT_AGENTE_FASE1.md`, sección "Principios".
+Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: Fases 1 a 4 mergeadas. Principios en `docs/briefs/FASE1.md`, sección "Principios".
 
 ---
 

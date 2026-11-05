@@ -6,7 +6,7 @@ Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. R
 
 ## Contexto
 
-Lee `README.md` (sección "Clubes: piloto con la Premier League") y todo `src/clubs/` (`data.py`, `model.py`, `season.py`, `backtest.py`, `premier.py`). Hoy el piloto está acoplado a la Premier League (E0) y la Championship (E1, se ajusta junto para que los ascendidos lleguen con historia). Los principios de trabajo están en `docs/PROMPT_AGENTE_FASE1.md`, sección "Principios". Aplican igual aquí.
+Lee `README.md` (sección "Clubes: piloto con la Premier League") y todo `src/clubs/` (`data.py`, `model.py`, `season.py`, `backtest.py`, `premier.py`). Hoy el piloto está acoplado a la Premier League (E0) y la Championship (E1, se ajusta junto para que los ascendidos lleguen con historia). Los principios de trabajo están en `docs/briefs/FASE1.md`, sección "Principios". Aplican igual aquí.
 
 ## Objetivo
 

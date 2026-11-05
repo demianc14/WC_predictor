@@ -13,7 +13,7 @@ el tamaño del stack.
   la primera `[ ]`.
 - **Contexto:** `README.md` y `docs/PROYECTO_OBSIDIAN.md` (bitácora: §2.1 principios,
   §12.5 Champions, §15 limitaciones, §16 historial del roadmap). Los briefs de las fases 1 a
-  5 están en `docs/PROMPT_AGENTE_FASE*.md`.
+  5 están en `docs/briefs/FASE*.md`.
 
 ## Principios no negociables
 
@@ -47,10 +47,22 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
 - `src/etl`, `src/simulation`, `src/agents`, `src/evaluation`: selecciones y Mundial (Parte I).
 - `src/clubs`: ligas (`leagues.py`), datos de football-data, calendario de fixturedownload,
   Dixon-Coles por liga, temporada, partido y cuotas (`h2h.py`), backtest contra el mercado.
-- `src/europe`: Dixon-Coles conjunto entre ligas para la Champions (ligas extra + Europa) y su backtest.
+- `src/europe`: Dixon-Coles conjunto entre ligas para la Champions (ligas extra + Europa),
+  backtest y fase de liga (`run.py`). Reutiliza los feeds de `src/ml/europe.py`, que solo
+  aporta los días con partido europeo como feature del supervisado.
 - `src/ml`: dataset con huella, features anti-fuga, modelos, `metrics.py` (solo numpy), train, report.
 - `src/pipeline`: `daily.py` (todo o nada) y `store.py` (almacén solo-para-agregar).
-- `tools/`: export a la web y scripts puntuales. `app/index.html`: web autocontenida, en JS vanilla.
+- `tools/`: `export_frontend.py` y `capturas.py` están en uso; el resto son scripts puntuales del
+  Mundial (snapshot, calibración de K, export de resultados y goleadores).
+- `app/index.html`: web autocontenida, en JS vanilla.
+- `data/`:
+  - `raw/`: entradas curadas a mano de selecciones, no se tocan;
+  - `snapshots/`: entradas congeladas para los backtests;
+  - `cache/`: fuentes descargadas, versionadas;
+  - `processed/`: generado;
+  - `predictions/`: el almacén;
+  - `ml/runs/`: corridas oficiales.
+- `docs/`: bitácora, `ROADMAP.md`, `RESULTADOS_ML.md` y `ml/` (generados), `briefs/` e `img/`.
 - `.github/workflows`: `ci.yml` (ruff, mypy, pytest 3.11/3.12, docker), `daily.yml`
   (cron a las 05:30 UTC que corre de hecho entre las 10 y las 13; el bot commitea en main) y
   `pages.yml`.

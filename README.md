@@ -166,7 +166,7 @@ Los goles se modelan con un **motor Maher + Dixon-Coles** (`src/simulation/match
 
 El único punto de contacto con un LLM es el narrador (`src/agents/narrator.py`), y es deliberadamente opcional: por defecto genera crónicas con plantillas f-string, y solo si existe `ANTHROPIC_API_KEY` y se pasa `--llm` usa Claude para crónicas generativas. Es un patrón de **degradación elegante** — todo el sistema (ETL, motor de partido, torneo, Monte Carlo) funciona sin el LLM, que aquí es una mejora cosmética, no una dependencia. Por eso el proyecto se llama "Predictor" y no "Simulador LLM": la predicción es 100% estadística.
 
-Los clubes (`src/clubs/`) reutilizan la matriz Dixon-Coles, pero estiman sus parámetros por liga con los partidos de football-data. El modelo supervisado (`src/ml/`) usa esas mismas probabilidades como una feature más y se evalúa con walk-forward contra el Dixon-Coles y el mercado. El ciclo diario (`src/pipeline/`) solo orquesta: descarga todo o nada, predice, registra en un almacén solo-para-agregar y exporta la web. El detalle está en las Partes II a IV de la [bitácora](docs/PROYECTO_OBSIDIAN.md#parte-ii--clubes-las-cinco-grandes-ligas).
+Los clubes (`src/clubs/`) reutilizan la matriz Dixon-Coles, pero estiman sus parámetros por liga con los partidos de football-data. La Champions (`src/europe/`) usa el mismo ajuste sobre todas las ligas juntas más los partidos europeos. El modelo supervisado (`src/ml/`) usa esas mismas probabilidades como una feature más y se evalúa con walk-forward contra el Dixon-Coles y el mercado. El ciclo diario (`src/pipeline/`) solo orquesta: descarga todo o nada, predice, registra en un almacén solo-para-agregar y exporta la web. El detalle está en las Partes II a IV de la [bitácora](docs/PROYECTO_OBSIDIAN.md#parte-ii--clubes-las-cinco-grandes-ligas).
 
 ## Quickstart
 
@@ -242,4 +242,4 @@ Toda la explicación conceptual está en [`docs/PROYECTO_OBSIDIAN.md`](docs/PROY
 Otros documentos:
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): la cola de trabajo, con contexto, pasos y criterio de cierre por tarea.
 - [`docs/RESULTADOS_ML.md`](docs/RESULTADOS_ML.md): reporte del modelo supervisado, generado por el código.
-- `docs/PROMPT_AGENTE_FASE1.md` … `FASE5.md`: el brief de cada fase del roadmap de las cinco ligas.
+- `docs/briefs/FASE1.md` … `FASE5.md`: el brief de cada fase del roadmap de las cinco ligas.

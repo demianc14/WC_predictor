@@ -9,7 +9,7 @@
 > [!note] Nota histórica: tres etapas
 > 1. **Mundial 2026 (jun-jul 2026).** El proyecto nació como "World Cup LLM Simulator" y se renombró a **World Cup Predictor**, porque el LLM (`src/agents/narrator.py`, §9) es un narrador opcional, no parte del motor. El nombre se conservó.
 > 2. **Selecciones 2026-27 (sep 2026).** Terminado el torneo (España campeona), el modelo siguió con las ventanas FIFA. El Mundial quedó como archivo y su backtest sigue en §10.1.
-> 3. **Cinco grandes ligas (oct 2026).** Premier League, LaLiga, Bundesliga, Serie A y Ligue 1, en cinco fases con brief escrito (`docs/PROMPT_AGENTE_FASE1.md` … `FASE5.md`): CI, ligas y calendarios, modelo supervisado, ejecución diaria y Docker.
+> 3. **Cinco grandes ligas (oct 2026).** Premier League, LaLiga, Bundesliga, Serie A y Ligue 1, en cinco fases con brief escrito (`docs/briefs/FASE1.md` … `FASE5.md`): CI, ligas y calendarios, modelo supervisado, ejecución diaria y Docker.
 >
 > Esta bitácora se organiza igual: **Parte I** es el motor original de selecciones (§3-§11), **Parte II** los clubes (§12), **Parte III** el modelo supervisado (§13) y **Parte IV** la operación (§14).
 
@@ -35,8 +35,8 @@ WC_predictor/
 │   ├── raw/                        ← datos curados a mano (selecciones), INTOCABLES
 │   ├── snapshots/                  ← fuerzas congeladas antes de cada ventana (backtests)
 │   ├── cache/                      ← fuentes descargadas, versionadas a propósito (~18 MB)
-│   │   └── clubs/                  ← CSVs de football-data y calendarios de fixturedownload
-│   ├── processed/                  ← salidas: strengths_2026.json, clubs_<div>.json, live.json
+│   │   └── clubs/                  ← CSVs de football-data, calendarios y europe/ (feeds UCL/UEL)
+│   ├── processed/                  ← salidas generadas: strengths_2026.json, clubs_<div>.json, ucl.json, live.json
 │   ├── predictions/predicciones.csv← almacén de predicciones, solo para agregar (§14.1)
 │   └── ml/runs/<fecha>_<huella>/   ← artefactos del modelo supervisado
 ├── src/
@@ -46,15 +46,18 @@ WC_predictor/
 │   ├── evaluation/                 ← ELO reconstruido y backtest del Mundial
 │   ├── betting/odds.py             ← cuota justa, EV y Kelly
 │   ├── clubs/                      ← las cinco ligas: datos, calendario, modelo, temporada, h2h, backtest
+│   ├── europe/                     ← Champions: Dixon-Coles conjunto entre ligas, backtest y fase de liga (§12.5)
 │   ├── ml/                         ← modelo supervisado: dataset, features, modelos, métricas, train, report
 │   ├── pipeline/                   ← ciclo diario y almacén de predicciones
 │   └── cli.py                      ← interfaz de línea de comandos
-├── tools/                          ← export a la web, snapshots, calibraciones
+├── tools/                          ← export a la web y capturas; el resto son scripts puntuales del Mundial
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 123 tests con pytest, sin red
+├── tests/                          ← 134 tests con pytest, sin red; fixtures en tests/fixtures/
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
-└── docs/                           ← esta bitácora, los briefs de cada fase y RESULTADOS_ML.md
+└── docs/                           ← esta bitácora, ROADMAP.md (cola de tareas), RESULTADOS_ML.md y ml/
+    ├── briefs/FASE1-5.md           ← el brief de cada fase de las cinco ligas
+    └── img/                        ← capturas del README (python -m tools.capturas)
 ```
 
 > [!tip] Principio de diseño: separación de capas
