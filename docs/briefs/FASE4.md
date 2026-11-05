@@ -1,6 +1,6 @@
 # Prompt Fase 4: automatización diaria (GitHub Actions)
 
-Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: Fases 1 a 3 mergeadas. Principios en `docs/PROMPT_AGENTE_FASE1.md`, sección "Principios".
+Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: Fases 1 a 3 mergeadas. Principios en `docs/briefs/FASE1.md`, sección "Principios".
 
 ---
 

@@ -1,6 +1,6 @@
 # Prompt Fase 3: modelo supervisado (1X2)
 
-Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: la Fase 2 está mergeada (las 5 ligas funcionan y hay backtest por liga). Los principios están en `docs/PROMPT_AGENTE_FASE1.md`, sección "Principios".
+Pega esto en una sesión de Claude Code abierta en la raíz de `WC_predictor`. Requisito: la Fase 2 está mergeada (las 5 ligas funcionan y hay backtest por liga). Los principios están en `docs/briefs/FASE1.md`, sección "Principios".
 
 ---
 
