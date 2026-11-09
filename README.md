@@ -80,7 +80,7 @@ Cada liga tiene su propio Dixon-Coles, y sus ratings no se comparan entre sí. P
 - seis ligas más de football-data: Países Bajos, Portugal, Turquía, Bélgica, Grecia y Escocia;
 - todos los partidos de Champions y Europa League desde 2019. Estos cruces son los que ponen a todas las ligas en la misma escala.
 
-Con eso predice cada partido de la fase de liga y simula 10.000 veces la tabla de 36: top 8, playoff o afuera.
+Con eso predice cada partido de la fase de liga y simula 10.000 veces el resto de la temporada: la tabla de 36 (top 8, playoff o afuera) y después el cuadro de eliminatorias del reglamento 2026/27, hasta la probabilidad de cada club de ser campeón. La web muestra el cuadro como quedaría si la fase de liga terminara hoy, o según la proyección del modelo.
 
 ```bash
 python -m src.europe.backtest   # walk-forward contra la base

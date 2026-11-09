@@ -1,4 +1,4 @@
-"""Champions 2026-27: próximos partidos 1X2 y Monte Carlo de la fase de liga.
+"""Champions 2026-27: próximos partidos 1X2 y Monte Carlo de la fase de liga y del cuadro.
 
     python -m src.europe.run            # escribe data/processed/ucl.json
 
@@ -9,8 +9,10 @@ tabla: del 1 al 8 pasan a octavos, del 9 al 24 juegan el playoff y del 25 al
 una simplificación del reglamento de la UEFA, que después mira goles de
 visita, victorias y la fuerza de los rivales.
 
-Solo la fase de liga: las eliminatorias dependen de un sorteo, y una ida y
-vuelta repite el cruce local-visita, que el almacén usa como identificador.
+Cada corrida sigue con las eliminatorias del cuadro oficial (`knockout.py`), así
+que también salen P(octavos), P(cuartos), P(semis), P(final) y P(campeón). Al
+almacén solo van los partidos de la fase de liga: una ida y vuelta repite el
+cruce local-visita, que el almacén usa como identificador.
 """
 from __future__ import annotations
 
@@ -24,8 +26,8 @@ from src.clubs.backtest import _outcome
 from src.clubs.data import Match
 from src.clubs.model import XI, fit
 from src.clubs.run import _pred
-from src.clubs.season import current_table, simulate
-from src.europe import backtest
+from src.clubs.season import current_table
+from src.europe import backtest, knockout
 from src.europe import data as eu
 from src.ml import europe
 
@@ -73,7 +75,7 @@ def build(today: date | None = None, sims: int = 10000, with_backtest: bool = Tr
               for f in cal if f.played and f.day < today]
     pending = [f for f in cal if not (f.played and f.day < today)]
     table = current_table(played, teams)
-    proj = simulate(r, played, teams, n=sims, fixtures=[(f.home, f.away) for f in pending])
+    proj = knockout.simulate(r, played, teams, [(f.home, f.away) for f in pending], n=sims)
     alone = eu.without_league(ms)
     league_of = {t: m.div for m in ms if m.div not in eu.COMPS.values() and m.season == SEASON
                  for t in (m.home, m.away)}
@@ -113,10 +115,10 @@ def main() -> None:
     args = ap.parse_args()
     out = build(sims=args.n)
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
-    top = sorted(out["teams"], key=lambda t: -t["octavos"])[:5]
+    top = sorted(out["teams"], key=lambda t: -t["ko"]["champion"])[:5]
     print(f"✅ Champions: {out['played']} jugados, {out['remaining']} por jugar, "
           f"{len(out['next'])} en los próximos {NEXT_DAYS} días")
-    print("   Top 8:", ", ".join(f"{t['t']} {t['octavos']:.0%}" for t in top))
+    print("   Campeón:", ", ".join(f"{t['t']} {t['ko']['champion']:.0%}" for t in top))
 
 
 if __name__ == "__main__":
