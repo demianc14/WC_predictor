@@ -3,7 +3,8 @@
 Predictor de fútbol con tres partes:
 - selecciones (temporada 2026-27, con el Mundial 2026 como archivo);
 - las cinco grandes ligas (E0, SP1, D1, I1, F1), con un modelo supervisado;
-- la Champions League (fase de liga, con un Dixon-Coles conjunto entre ligas).
+- la Champions League (Dixon-Coles conjunto entre ligas: partidos de la fase de liga y cuadro
+  de eliminatorias simulado hasta el campeón).
 
 Un ciclo diario publica predicciones auditables en https://demianc14.github.io/WC_predictor/.
 Es pieza de portafolio: importan la verificabilidad y la honestidad de las métricas más que
@@ -29,7 +30,7 @@ el tamaño del stack.
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 134 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 137 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -69,6 +70,7 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
 
 ## Reglas de trabajo
 
+- Textos de la web y la documentación en español neutro, con tú (nada de voseo).
 - Una rama y un PR por tarea, con commits chicos. Email de git en este repo: `demiandidier3@gmail.com`.
 - **Nunca reescribir `data/predictions/predicciones.csv`**: solo se agregan filas y se completan
   resultados. `store.save` lo verifica, y no hay que esquivarlo.

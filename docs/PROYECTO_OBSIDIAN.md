@@ -430,7 +430,15 @@ Hay 2 partidos sin predecir: Pafos y Kairat Almaty debutaban sin ningún partido
 - una localía propia de Europa, estimada con los partidos europeos de los dos años anteriores: RPS 0.1949 → 0.1944;
 - abrir la escala de los ratings (exponente 1,15 a 1,3) y ρ = 0: RPS hasta 0.1933, empate predicho 19,5%.
 
-Los dos mejoran poco y se eligieron mirando el test, así que **no se adoptaron**. Para adoptarlos habría que elegirlos en una validación aparte (2021-22 a 2023-24, con el formato viejo de grupos) y recién después medirlos en test.
+Los dos mejoran poco y se eligieron mirando el test, así que **no se adoptaron**.
+
+**Eliminatorias (9-nov-2026, `src/europe/knockout.py`):** cada una de las 10 000 corridas sigue después de la fase de liga con el cuadro del reglamento 2026/27 (Art. 19-22 y Anexo B, leídos en documents.uefa.com):
+- **Playoff (9 a 24):** 9/10 contra 23/24, 11/12 contra 21/22, 13/14 contra 19/20 y 15/16 contra 17/18. Quién juega con quién dentro de cada par sale del sorteo.
+- **Octavos:** cada par 1/2, 3/4, 5/6 y 7/8 se reparte por sorteo, uno a cada lado del cuadro. 5/6 recibe al ganador de 11/12–21/22, 3/4 al de 13/14–19/20, 7/8 al de 9/10–23/24 y 1/2 al de 15/16–17/18.
+- **Cuartos y semis:** cuadro fijo, (5/6 · 3/4) y (7/8 · 1/2). Quien elimina a un cabeza de serie hereda su lugar, y el mejor ubicado juega la vuelta de local.
+- **Final:** a partido único en cancha neutral; sin localía, el λ del local se divide por la localía.
+
+Simplificaciones: una prórroga es un tercio de partido (de local quien juega la vuelta), y los penales van al 50%, porque el modelo no sabe nada de penales. Hasta que se sortee el cuadro real, el sorteo se simula en cada corrida. Las probabilidades suman 16, 8, 4, 2 y 1 por ronda (es un test). Al 9-nov (J4 jugada), el modelo da Arsenal 24%, Bayern 16% y PSG 12% como campeón. **OJO:** el reglamento no menciona el gol de visitante en las eliminatorias, así que no se usa. Los partidos de eliminatorias todavía no van al almacén (ROADMAP, T2). Para adoptarlos habría que elegirlos en una validación aparte (2021-22 a 2023-24, con el formato viejo de grupos) y recién después medirlos en test.
 
 ---
 
@@ -612,13 +620,14 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Champions: Dixon-Coles conjunto entre ligas (cinco grandes, seis ligas extra y Europa desde 2019) y walk-forward contra la base, n = 376 (§12.5)
 - [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
 - [x] Champions en la web: próximos partidos, tabla simulada de la fase de liga y backtest contra la base
+- [x] Champions: cuadro de eliminatorias simulado hasta P(campeón) con el reglamento 2026/27 (§12.5)
 
 ### 16.2 Pendiente
 
 La cola de trabajo, con contexto, pasos y criterio de cierre de cada tarea, está en [`docs/ROADMAP.md`](ROADMAP.md). En orden:
 
 1. **Calibración de la Champions:** localía europea y escala de los ratings, elegidas en validación (2021-22 a 2023-24), por el empate sobrestimado (§12.5).
-2. **Eliminatorias de la Champions:** simularlas desde la tabla hasta P(campeón), con un `match_id` que distinga la ida de la vuelta.
+2. **Eliminatorias de la Champions en el almacén:** un `match_id` que distinga la ida de la vuelta, para guardar esos partidos. La simulación hasta P(campeón) ya está (§12.5).
 3. **Horario real del ciclo diario:** el cron de las 05:30 UTC corre de hecho entre las 10 y las 13 (§14.1).
 
 Después, sin orden fijo: xG como feature del supervisado, Austria y Noruega, cuotas de la Champions, copas nacionales y Conference, selecciones (más de 48, ρ sobre el historial), otros torneos, releer las métricas en vivo con temporadas enteras e infraestructura solo si hace falta.

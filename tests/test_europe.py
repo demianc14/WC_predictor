@@ -91,3 +91,43 @@ def test_la_base_de_la_champions_solo_mira_temporadas_anteriores():
     ms = [Match("UCL", "2526", d, "A", "B", 1, 0), Match("UCL", "2627", d, "A", "B", 0, 1),
           Match("E0", "2526", d, "A", "B", 0, 0)]
     assert run.base_rates(ms) == [0.5, 0.25, 0.25]                      # 1 ficticio de cada
+
+
+def _toy_ratings(n=36):
+    from src.clubs.model import Ratings
+    teams = [f"T{i:02d}" for i in range(1, n + 1)]
+    att = {t: 2.0 - i * 0.04 for i, t in enumerate(teams)}           # T01 el mejor
+    return teams, Ratings(teams, att, {t: 1 / a for t, a in att.items()}, 1.3, 1.2, -0.05)
+
+
+def test_el_cuadro_usa_cada_puesto_del_1_al_24_una_vez():
+    from src.europe import knockout
+    puestos = sorted(p for fila in knockout.SIDE for par in fila for p in par)
+    assert puestos == list(range(1, 25))
+
+
+def test_cada_ronda_tiene_los_clubes_justos_y_un_campeon():
+    import numpy as np
+
+    from src.europe import knockout
+    teams, r = _toy_ratings()
+    br = knockout.Bracket(r, np.random.default_rng(1))
+    for _ in range(50):
+        reached = br.run(teams)
+        assert len(reached) == 16 and set(teams[24:]).isdisjoint(reached)   # 25-36 afuera
+        assert all(reached[t] >= 0 for t in teams[:8])                     # top 8 directo a octavos
+        assert [sum(v >= k for v in reached.values()) for k in range(5)] == [16, 8, 4, 2, 1]
+
+
+def test_la_llave_hereda_el_mejor_lugar_y_simulate_suma_uno_por_ronda():
+    import numpy as np
+
+    from src.europe import knockout
+    teams, r = _toy_ratings()
+    br = knockout.Bracket(r, np.random.default_rng(2))
+    assert br.tie(("T20", 20), ("T05", 5))[1] == 5                       # gane quien gane
+    fixtures = [(teams[i], teams[(i + 7) % 36]) for i in range(36)]
+    out = knockout.simulate(r, [], teams, fixtures, n=300)
+    for k, total in zip(knockout.ROUNDS, (16, 8, 4, 2, 1)):
+        assert abs(sum(o["ko"][k] for o in out.values()) - total) < 36 * 5e-5   # redondeo
+    assert out["T01"]["ko"]["champion"] > out["T30"]["ko"]["champion"]

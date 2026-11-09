@@ -47,32 +47,25 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 
 ---
 
-### [ ] T2. Eliminatorias de la Champions simuladas desde la tabla
+### [ ] T2. Eliminatorias de la Champions en el almacén y el ciclo diario
 
-**Por qué.** Hoy solo se simula la fase de liga: P(octavos), P(playoff) y P(afuera) en `ucl.json`. La idea es llegar hasta P(campeón), como el simulador del Mundial (`src/simulation/tournament.py`), pero partiendo de la tabla simulada.
+**Ya hecho (9-nov, `src/europe/knockout.py`):**
+- La simulación del cuadro completo, según el reglamento 2026/27 (Art. 19-22 y Anexo B), hasta P(campeón).
+- El cuadro "si terminara hoy" y el proyectado, en la web.
+- Las reglas y las simplificaciones están en la bitácora §12.5.
+
+**Lo que falta:** predecir y guardar los partidos de eliminatorias cuando el feed los publique (el playoff es en febrero de 2027).
 
 **Pasos.**
-1. **Verificar el formato 2026-27 con una fuente oficial de la UEFA** antes de escribir código:
-   - cómo se arma el cuadro desde las posiciones de la fase de liga (pares de puestos sembrados y sorteo dentro de cada par);
-   - ida y vuelta;
-   - prórroga y penales;
-   - sede de la final.
+1. Hoy `store.match_id(div, season, home, away)` chocaría entre la ida y la vuelta. Hay que extenderlo de forma compatible, por ejemplo con la ronda solo para las eliminatorias, sin cambiar los ids de la fase de liga ya guardados. Sumar un test de solo-para-agregar.
+2. En `src/europe/run.py`, incluir en `next` los partidos de las rondas mayores que 8 del feed, con su ronda. En `src/pipeline/daily.py`, guardarlos y completar sus resultados.
+3. Una vez sorteado el cuadro real, simular desde el cuadro sorteado en lugar de sortearlo en cada corrida.
 
-   Lo que no se pueda verificar va marcado **OJO** y no se inventa.
-2. En `src/europe/run.py`, extender el Monte Carlo. Cada corrida simula el resto de la fase de liga y después:
-   - el playoff (9-24);
-   - octavos, cuartos y semis, a ida y vuelta;
-   - la final, a partido único en cancha neutral.
+**Archivos.** `src/pipeline/store.py`, `src/pipeline/daily.py`, `src/europe/run.py` y `src/europe/knockout.py`, tests y la bitácora §14.1.
 
-   El motor es el Dixon-Coles conjunto (`Ratings.probs` y la matriz de marcadores), no `match_engine`. Una llave empatada en el global se resuelve con una regla simple y documentada, por ejemplo prórroga como 1/3 de partido y penales 50/50.
-3. Agregar a `ucl.json`, por club: P(playoff ganado), P(cuartos), P(semis), P(final) y P(campeón). Sumar las columnas a la web (`app/index.html`, sección Champions) y regenerar con `python -m tools.export_frontend`, sin editar a mano el bloque `const UCL=`.
-4. **Almacén:** hoy `store.match_id(div, season, home, away)` chocaría en ida y vuelta. Extenderlo de forma compatible (por ejemplo, con la ronda solo para las eliminatorias), sin cambiar los ids de la fase de liga ya guardados. Sumar un test de solo-para-agregar. Después, el ciclo diario predice también los partidos de eliminatorias cuando el feed los publique.
+**OJO:** verificar cómo nombra el feed las rondas de eliminatorias (`RoundNumber`) cuando aparezcan. Ahora no hay ninguna.
 
-**Archivos.** `src/europe/run.py`, `src/pipeline/store.py`, `src/pipeline/daily.py`, `app/index.html`, `tools/export_frontend.py`, tests y la bitácora (§12.5 y §14.1).
-
-**OJO:** el cuadro real depende de un sorteo que todavía no se hizo, así que hasta entonces se simula también el sorteo. Que las probabilidades sumen 1 por ronda es un test.
-
-**Cierre.** P(campeón) en la web, tests de las sumas por ronda y del `match_id` compatible, y el reglamento citado en la bitácora. Prioridad después de T1: el playoff es en febrero de 2027.
+**Cierre.** Partidos de eliminatorias guardados antes de jugarse, con un `match_id` compatible y un test.
 
 ---
 
@@ -99,6 +92,7 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 
 ## Hecho recientemente
 
+- [x] Champions: cuadro de eliminatorias simulado hasta P(campeón), en la web, ticker con los partidos más atractivos y textos en español neutro (9-nov).
 - [x] Champions: Dixon-Coles conjunto y backtest (#16), ciclo diario y tabla simulada (#17), y la sección en la web (#18). Bitácora §12.5 y §14.1.
 - [x] Métricas en vivo por versión del modelo (#15).
 - [x] `hgb` en Docker con `OMP_NUM_THREADS=4` (#14).
