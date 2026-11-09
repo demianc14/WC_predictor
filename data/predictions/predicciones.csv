@@ -219,51 +219,51 @@ UCL-2627-Porto-Napoli,UCL,2627,2026-11-04,Porto,Napoli,dixon-coles,7de214e+73ca3
 UCL-2627-RB_Leipzig-Man_City,UCL,2627,2026-11-04,RB Leipzig,Man City,dixon-coles,7de214e+73ca37f,7a6217d,2026-11-04T03:18:13Z,0.2440,0.2228,0.5331,A,2,3,,,
 UCL-2627-Slavia_Praha-Arsenal,UCL,2627,2026-11-04,Slavia Praha,Arsenal,dixon-coles,7de214e+73ca37f,7a6217d,2026-11-04T03:18:13Z,0.0597,0.1438,0.7965,A,1,2,,,
 UCL-2627-Viking-Sabah,UCL,2627,2026-11-04,Viking,Sabah,dixon-coles,7de214e+73ca37f,7a6217d,2026-11-04T03:18:13Z,0.5698,0.2174,0.2128,H,4,1,,,
-D1-2627-Hamburg-M'gladbach,D1,2627,2026-11-06,Hamburg,M'gladbach,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4565,0.2467,0.2969,,,,,,
-E0-2627-Everton-Coventry,E0,2627,2026-11-06,Everton,Coventry,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4569,0.2758,0.2673,,,,,,
-F1-2627-Toulouse-Strasbourg,F1,2627,2026-11-06,Toulouse,Strasbourg,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4218,0.2529,0.3253,,,,,,
-I1-2627-Venezia-Udinese,I1,2627,2026-11-06,Venezia,Udinese,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4655,0.2640,0.2705,,,,,,
-SP1-2627-Sevilla-Alaves,SP1,2627,2026-11-06,Sevilla,Alaves,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4343,0.2732,0.2925,,,,,,
-D1-2627-Dortmund-Elversberg,D1,2627,2026-11-07,Dortmund,Elversberg,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6784,0.1872,0.1345,,,,,,
-D1-2627-Mainz-Bayern_Munich,D1,2627,2026-11-07,Mainz,Bayern Munich,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.1507,0.1756,0.6737,,,,,,
-D1-2627-Paderborn-Ein_Frankfurt,D1,2627,2026-11-07,Paderborn,Ein Frankfurt,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3581,0.2379,0.4040,,,,,,
-D1-2627-RB_Leipzig-Augsburg,D1,2627,2026-11-07,RB Leipzig,Augsburg,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6399,0.1958,0.1644,,,,,,
-D1-2627-Stuttgart-Werder_Bremen,D1,2627,2026-11-07,Stuttgart,Werder Bremen,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6230,0.1991,0.1780,,,,,,
-E0-2627-Arsenal-Hull,E0,2627,2026-11-07,Arsenal,Hull,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.8024,0.1426,0.0550,,,,,,
-E0-2627-Fulham-Newcastle,E0,2627,2026-11-07,Fulham,Newcastle,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3873,0.2633,0.3494,,,,,,
-E0-2627-Leeds-Tottenham,E0,2627,2026-11-07,Leeds,Tottenham,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4900,0.2586,0.2515,,,,,,
-E0-2627-Nott'm_Forest-Man_City,E0,2627,2026-11-07,Nott'm Forest,Man City,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.2408,0.2527,0.5064,,,,,,
-F1-2627-Auxerre-Paris_FC,F1,2627,2026-11-07,Auxerre,Paris FC,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3726,0.2733,0.3541,,,,,,
-F1-2627-Paris_SG-Troyes,F1,2627,2026-11-07,Paris SG,Troyes,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.7749,0.1465,0.0786,,,,,,
-I1-2627-Cagliari-Frosinone,I1,2627,2026-11-07,Cagliari,Frosinone,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3775,0.2636,0.3589,,,,,,
-I1-2627-Parma-Bologna,I1,2627,2026-11-07,Parma,Bologna,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.2589,0.2994,0.4417,,,,,,
-I1-2627-Roma-Sassuolo,I1,2627,2026-11-07,Roma,Sassuolo,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6572,0.2023,0.1405,,,,,,
-I1-2627-Torino-Lecce,I1,2627,2026-11-07,Torino,Lecce,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4876,0.2866,0.2258,,,,,,
-SP1-2627-Espanol-La_Coruna,SP1,2627,2026-11-07,Espanol,La Coruna,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4335,0.2809,0.2856,,,,,,
-SP1-2627-Malaga-Santander,SP1,2627,2026-11-07,Malaga,Santander,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4637,0.2257,0.3106,,,,,,
-SP1-2627-Osasuna-Ath_Bilbao,SP1,2627,2026-11-07,Osasuna,Ath Bilbao,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3721,0.2789,0.3490,,,,,,
-SP1-2627-Valencia-Real_Madrid,SP1,2627,2026-11-07,Valencia,Real Madrid,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.1808,0.2285,0.5907,,,,,,
-D1-2627-FC_Koln-Leverkusen,D1,2627,2026-11-08,FC Koln,Leverkusen,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2347,0.2320,0.5333,,,,,,
-D1-2627-Freiburg-Union_Berlin,D1,2627,2026-11-08,Freiburg,Union Berlin,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5481,0.2461,0.2058,,,,,,
-D1-2627-Hoffenheim-Schalke_04,D1,2627,2026-11-08,Hoffenheim,Schalke 04,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5864,0.2216,0.1919,,,,,,
-E0-2627-Brighton-Brentford,E0,2627,2026-11-08,Brighton,Brentford,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4826,0.2449,0.2726,,,,,,
-E0-2627-Crystal_Palace-Liverpool,E0,2627,2026-11-08,Crystal Palace,Liverpool,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2565,0.2478,0.4956,,,,,,
-E0-2627-Ipswich-Bournemouth,E0,2627,2026-11-08,Ipswich,Bournemouth,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2910,0.2450,0.4640,,,,,,
-E0-2627-Man_United-Aston_Villa,E0,2627,2026-11-08,Man United,Aston Villa,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4360,0.2513,0.3127,,,,,,
-E0-2627-Sunderland-Chelsea,E0,2627,2026-11-08,Sunderland,Chelsea,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2785,0.2717,0.4498,,,,,,
-F1-2627-Angers-Nice,F1,2627,2026-11-08,Angers,Nice,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3110,0.2809,0.4082,,,,,,
-F1-2627-Brest-Lyon,F1,2627,2026-11-08,Brest,Lyon,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3317,0.2486,0.4196,,,,,,
-F1-2627-Le_Havre-Lorient,F1,2627,2026-11-08,Le Havre,Lorient,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3168,0.2713,0.4119,,,,,,
-F1-2627-Le_Mans-Monaco,F1,2627,2026-11-08,Le Mans,Monaco,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2939,0.2474,0.4587,,,,,,
-F1-2627-Lens-Marseille,F1,2627,2026-11-08,Lens,Marseille,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4771,0.2330,0.2899,,,,,,
-F1-2627-Rennes-Lille,F1,2627,2026-11-08,Rennes,Lille,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3603,0.2546,0.3851,,,,,,
-I1-2627-Fiorentina-Juventus,I1,2627,2026-11-08,Fiorentina,Juventus,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2690,0.2919,0.4391,,,,,,
-I1-2627-Genoa-Milan,I1,2627,2026-11-08,Genoa,Milan,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2529,0.2846,0.4625,,,,,,
-I1-2627-Inter-Como,I1,2627,2026-11-08,Inter,Como,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5664,0.2342,0.1994,,,,,,
-I1-2627-Monza-Atalanta,I1,2627,2026-11-08,Monza,Atalanta,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2408,0.2534,0.5058,,,,,,
-I1-2627-Napoli-Lazio,I1,2627,2026-11-08,Napoli,Lazio,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4697,0.2842,0.2461,,,,,,
-SP1-2627-Ath_Madrid-Barcelona,SP1,2627,2026-11-08,Ath Madrid,Barcelona,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3261,0.2306,0.4433,,,,,,
-SP1-2627-Celta-Levante,SP1,2627,2026-11-08,Celta,Levante,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5184,0.2443,0.2373,,,,,,
-SP1-2627-Elche-Betis,SP1,2627,2026-11-08,Elche,Betis,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3579,0.2600,0.3821,,,,,,
-SP1-2627-Sociedad-Vallecano,SP1,2627,2026-11-08,Sociedad,Vallecano,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4760,0.2593,0.2648,,,,,,
-SP1-2627-Villarreal-Getafe,SP1,2627,2026-11-08,Villarreal,Getafe,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.6028,0.2416,0.1556,,,,,,
+D1-2627-Hamburg-M'gladbach,D1,2627,2026-11-06,Hamburg,M'gladbach,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4565,0.2467,0.2969,H,3,1,0.4024,0.2706,0.3270
+E0-2627-Everton-Coventry,E0,2627,2026-11-06,Everton,Coventry,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4569,0.2758,0.2673,H,3,1,0.5689,0.2355,0.1955
+F1-2627-Toulouse-Strasbourg,F1,2627,2026-11-06,Toulouse,Strasbourg,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4218,0.2529,0.3253,H,3,1,0.4328,0.2623,0.3049
+I1-2627-Venezia-Udinese,I1,2627,2026-11-06,Venezia,Udinese,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4655,0.2640,0.2705,H,2,1,0.3963,0.2850,0.3187
+SP1-2627-Sevilla-Alaves,SP1,2627,2026-11-06,Sevilla,Alaves,dixon-coles,7de214e,55d74e9,2026-10-31T11:00:53Z,0.4343,0.2732,0.2925,D,0,0,0.4833,0.2891,0.2276
+D1-2627-Dortmund-Elversberg,D1,2627,2026-11-07,Dortmund,Elversberg,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6784,0.1872,0.1345,H,2,1,0.7089,0.1681,0.1231
+D1-2627-Mainz-Bayern_Munich,D1,2627,2026-11-07,Mainz,Bayern Munich,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.1507,0.1756,0.6737,A,1,2,0.1077,0.1429,0.7495
+D1-2627-Paderborn-Ein_Frankfurt,D1,2627,2026-11-07,Paderborn,Ein Frankfurt,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3581,0.2379,0.4040,D,2,2,0.3154,0.2521,0.4325
+D1-2627-RB_Leipzig-Augsburg,D1,2627,2026-11-07,RB Leipzig,Augsburg,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6399,0.1958,0.1644,H,5,2,0.6686,0.1733,0.1582
+D1-2627-Stuttgart-Werder_Bremen,D1,2627,2026-11-07,Stuttgart,Werder Bremen,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6230,0.1991,0.1780,H,1,0,0.5206,0.2233,0.2561
+E0-2627-Arsenal-Hull,E0,2627,2026-11-07,Arsenal,Hull,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.8024,0.1426,0.0550,H,1,0,0.8286,0.1181,0.0533
+E0-2627-Fulham-Newcastle,E0,2627,2026-11-07,Fulham,Newcastle,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3873,0.2633,0.3494,D,1,1,0.4868,0.2479,0.2653
+E0-2627-Leeds-Tottenham,E0,2627,2026-11-07,Leeds,Tottenham,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4900,0.2586,0.2515,H,1,0,0.3418,0.2823,0.3760
+E0-2627-Nott'm_Forest-Man_City,E0,2627,2026-11-07,Nott'm Forest,Man City,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.2408,0.2527,0.5064,H,3,1,0.1879,0.2300,0.5821
+F1-2627-Auxerre-Paris_FC,F1,2627,2026-11-07,Auxerre,Paris FC,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3726,0.2733,0.3541,A,0,1,0.1796,0.2297,0.5907
+F1-2627-Paris_SG-Troyes,F1,2627,2026-11-07,Paris SG,Troyes,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.7749,0.1465,0.0786,H,1,0,0.8456,0.1017,0.0527
+I1-2627-Cagliari-Frosinone,I1,2627,2026-11-07,Cagliari,Frosinone,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3775,0.2636,0.3589,H,1,0,0.3060,0.2474,0.4467
+I1-2627-Parma-Bologna,I1,2627,2026-11-07,Parma,Bologna,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.2589,0.2994,0.4417,A,1,2,0.1757,0.2648,0.5594
+I1-2627-Roma-Sassuolo,I1,2627,2026-11-07,Roma,Sassuolo,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.6572,0.2023,0.1405,H,3,0,0.7283,0.1624,0.1093
+I1-2627-Torino-Lecce,I1,2627,2026-11-07,Torino,Lecce,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4876,0.2866,0.2258,D,1,1,0.5384,0.2624,0.1992
+SP1-2627-Espanol-La_Coruna,SP1,2627,2026-11-07,Espanol,La Coruna,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4335,0.2809,0.2856,D,0,0,0.3823,0.2876,0.3300
+SP1-2627-Malaga-Santander,SP1,2627,2026-11-07,Malaga,Santander,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.4637,0.2257,0.3106,A,1,2,0.4231,0.2614,0.3156
+SP1-2627-Osasuna-Ath_Bilbao,SP1,2627,2026-11-07,Osasuna,Ath Bilbao,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.3721,0.2789,0.3490,D,1,1,0.2442,0.2822,0.4736
+SP1-2627-Valencia-Real_Madrid,SP1,2627,2026-11-07,Valencia,Real Madrid,dixon-coles,7de214e,920742f,2026-11-01T11:56:20Z,0.1808,0.2285,0.5907,A,0,3,0.0871,0.1455,0.7675
+D1-2627-FC_Koln-Leverkusen,D1,2627,2026-11-08,FC Koln,Leverkusen,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2347,0.2320,0.5333,A,1,2,0.1977,0.2224,0.5799
+D1-2627-Freiburg-Union_Berlin,D1,2627,2026-11-08,Freiburg,Union Berlin,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5481,0.2461,0.2058,H,2,0,0.6513,0.2067,0.1420
+D1-2627-Hoffenheim-Schalke_04,D1,2627,2026-11-08,Hoffenheim,Schalke 04,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5864,0.2216,0.1919,H,2,1,0.6212,0.2084,0.1704
+E0-2627-Brighton-Brentford,E0,2627,2026-11-08,Brighton,Brentford,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4826,0.2449,0.2726,H,2,0,0.5242,0.2451,0.2307
+E0-2627-Crystal_Palace-Liverpool,E0,2627,2026-11-08,Crystal Palace,Liverpool,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2565,0.2478,0.4956,A,1,3,0.1732,0.2081,0.6187
+E0-2627-Ipswich-Bournemouth,E0,2627,2026-11-08,Ipswich,Bournemouth,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2910,0.2450,0.4640,A,1,2,0.2743,0.2529,0.4728
+E0-2627-Man_United-Aston_Villa,E0,2627,2026-11-08,Man United,Aston Villa,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4360,0.2513,0.3127,D,4,4,0.4776,0.2382,0.2842
+E0-2627-Sunderland-Chelsea,E0,2627,2026-11-08,Sunderland,Chelsea,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2785,0.2717,0.4498,H,1,0,0.3129,0.2736,0.4135
+F1-2627-Angers-Nice,F1,2627,2026-11-08,Angers,Nice,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3110,0.2809,0.4082,A,0,2,0.2395,0.2517,0.5088
+F1-2627-Brest-Lyon,F1,2627,2026-11-08,Brest,Lyon,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3317,0.2486,0.4196,H,2,0,0.3488,0.2744,0.3768
+F1-2627-Le_Havre-Lorient,F1,2627,2026-11-08,Le Havre,Lorient,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3168,0.2713,0.4119,A,0,2,0.3158,0.2887,0.3955
+F1-2627-Le_Mans-Monaco,F1,2627,2026-11-08,Le Mans,Monaco,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2939,0.2474,0.4587,D,1,1,0.1786,0.2378,0.5835
+F1-2627-Lens-Marseille,F1,2627,2026-11-08,Lens,Marseille,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4771,0.2330,0.2899,A,1,2,0.4290,0.2588,0.3121
+F1-2627-Rennes-Lille,F1,2627,2026-11-08,Rennes,Lille,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3603,0.2546,0.3851,A,1,2,0.4056,0.2869,0.3075
+I1-2627-Fiorentina-Juventus,I1,2627,2026-11-08,Fiorentina,Juventus,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2690,0.2919,0.4391,D,2,2,0.2926,0.2771,0.4302
+I1-2627-Genoa-Milan,I1,2627,2026-11-08,Genoa,Milan,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2529,0.2846,0.4625,A,1,2,0.2445,0.2777,0.4778
+I1-2627-Inter-Como,I1,2627,2026-11-08,Inter,Como,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5664,0.2342,0.1994,H,2,0,0.4520,0.2417,0.3063
+I1-2627-Monza-Atalanta,I1,2627,2026-11-08,Monza,Atalanta,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.2408,0.2534,0.5058,A,0,1,0.2566,0.2465,0.4969
+I1-2627-Napoli-Lazio,I1,2627,2026-11-08,Napoli,Lazio,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4697,0.2842,0.2461,D,1,1,0.4532,0.2568,0.2900
+SP1-2627-Ath_Madrid-Barcelona,SP1,2627,2026-11-08,Ath Madrid,Barcelona,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3261,0.2306,0.4433,A,1,2,0.2734,0.2194,0.5072
+SP1-2627-Celta-Levante,SP1,2627,2026-11-08,Celta,Levante,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.5184,0.2443,0.2373,D,0,0,0.5206,0.2603,0.2191
+SP1-2627-Elche-Betis,SP1,2627,2026-11-08,Elche,Betis,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.3579,0.2600,0.3821,A,0,2,0.2381,0.2322,0.5297
+SP1-2627-Sociedad-Vallecano,SP1,2627,2026-11-08,Sociedad,Vallecano,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.4760,0.2593,0.2648,H,1,0,0.5123,0.2442,0.2436
+SP1-2627-Villarreal-Getafe,SP1,2627,2026-11-08,Villarreal,Getafe,dixon-coles,7de214e,8c2aed3,2026-11-02T13:42:28Z,0.6028,0.2416,0.1556,H,2,0,0.6162,0.2224,0.1614
