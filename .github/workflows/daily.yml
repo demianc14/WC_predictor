@@ -3,9 +3,17 @@ name: Daily
 # Ciclo diario: datos nuevos, resultados, predicciones antes de cada partido,
 # métricas en vivo y web. Si una fuente cae, el paso falla, no se commitea
 # nada y GitHub avisa por correo.
+#
+# GitHub no garantiza la hora del cron: el de las 05:30 UTC arrancó entre las
+# 09:39 y las 14:08 (23 corridas, 21-oct a 12-nov-2026; bitácora §14.1), casi
+# siempre después de las 10:00 UTC, que es el corte para predecir un partido
+# del mismo día. Por eso hay un respaldo temprano: con el peor atraso medido
+# (8 h 38 min) arrancaría a las 08:55. La segunda corrida del día no duplica
+# nada: el almacén es solo-para-agregar.
 on:
   schedule:
-    - cron: "30 5 * * *"          # 05:30 UTC, antes de cualquier partido europeo
+    - cron: "17 0 * * *"          # 00:17 UTC, respaldo temprano
+    - cron: "30 5 * * *"          # 05:30 UTC, el de siempre
   workflow_dispatch:
 
 concurrency:
