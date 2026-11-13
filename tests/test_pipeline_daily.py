@@ -218,3 +218,27 @@ def test_los_feeds_europeos_se_bajan_a_su_subcarpeta(tmp_path):
     daily.fetch(srcs, cache_dir=tmp_path, download=bajar)
     assert (tmp_path / "europe" / "champions-league-2026.json").exists()
     assert (tmp_path / "N1_2627.csv").exists()
+
+
+def test_una_segunda_corrida_el_mismo_dia_no_duplica_nada(tmp_path, monkeypatch):
+    """Dos crons al día (respaldo temprano + el de siempre): la segunda corrida no agrega ni
+    cambia filas, aunque el modelo dé otros números; y la temprana es la que alcanza el partido
+    de hoy."""
+    def out(p):
+        return {"next": [{"day": "2026-10-21", "home": "A", "away": "B", "model": p},
+                         {"day": "2026-10-24", "home": "C", "away": "D", "model": p}]}
+    temprano, tarde = NOW.replace(hour=0, minute=17), NOW.replace(hour=13, minute=8)
+    r1 = _cycle(tmp_path, monkeypatch, builder=lambda lg, today: out([0.5, 0.3, 0.2]),
+                now=temprano)
+    assert r1["added"] == 2                              # incluye el partido de hoy
+    antes = (tmp_path / "p.csv").read_bytes()
+    r2 = _cycle(tmp_path, monkeypatch, builder=lambda lg, today: out([0.1, 0.1, 0.8]), now=tarde)
+    assert r2["added"] == 0 and r2["filled"] == 0
+    assert (tmp_path / "p.csv").read_bytes() == antes    # ni duplicados ni reescrituras
+    rows = store.load(tmp_path / "p.csv")
+    assert len(rows) == len({store.key(r) for r in rows}) == 2
+    assert {r["predicted_at"] for r in rows} == {"2026-10-21T00:17:00Z"}
+    solo = tmp_path / "solo"                             # sin respaldo: la tardía pierde el de hoy
+    solo.mkdir()
+    assert _cycle(solo, monkeypatch, builder=lambda lg, today: out([0.5, 0.3, 0.2]),
+                  now=tarde)["added"] == 1
