@@ -119,7 +119,7 @@ El Dixon-Coles de este test se reajusta con los 3 años previos; el de la tabla 
 
 ## Ciclo diario y métricas en vivo
 
-Cada día a las 05:30 UTC, GitHub Actions (`.github/workflows/daily.yml`) corre `python -m src.pipeline.daily` y, si algo cambió, el bot lo commitea:
+Cada día, GitHub Actions (`.github/workflows/daily.yml`) corre `python -m src.pipeline.daily` (dos crons, a las 00:17 y a las 05:30 UTC; GitHub los dispara con horas de atraso, medido en la bitácora §14.1) y, si algo cambió, el bot lo commitea:
 
 1. **Descarga** una vez cada fuente viva: la temporada actual de las 10 divisiones, `fixtures.csv` y los 5 calendarios. Todo pasa por una carpeta temporal y se valida. Si una sola falla o llega vacía, el ciclo termina con código 2, no modifica nada y GitHub avisa por correo del workflow fallido.
 2. **Ajusta** cada liga (el mismo Dixon-Coles de la web) y **predice** los partidos de los próximos días que todavía no tienen predicción para la versión actual del modelo. La versión es el hash git del árbol `src/clubs/`: cambia solo cuando cambia el código del modelo.
@@ -146,7 +146,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 123 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 138 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -182,7 +182,7 @@ python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
 python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
-pytest                                 # 123 tests, sin red
+pytest                                 # 138 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```

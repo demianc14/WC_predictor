@@ -52,7 +52,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web y capturas; el resto son scripts puntuales del Mundial
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 134 tests con pytest, sin red; fixtures en tests/fixtures/
+├── tests/                          ← 138 tests con pytest, sin red; fixtures en tests/fixtures/
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, ROADMAP.md (cola de tareas), RESULTADOS_ML.md y ml/
@@ -339,7 +339,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 123 tests, sin red
+pytest            # 138 tests, sin red
 ruff check .
 mypy
 ```
@@ -521,7 +521,7 @@ Cada corrida escribe `data/ml/runs/<fecha>_<huella>/` con las predicciones, las 
 
 ### 14.1 Ciclo diario y almacén de predicciones
 
-Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`daily.yml`) corre `python -m src.pipeline.daily`:
+Cada día, GitHub Actions (`daily.yml`, con crons a las 00:17 y a las 05:30 UTC; el horario real está al final de esta sección) corre `python -m src.pipeline.daily`:
 
 1. **Descarga todo o nada.** Baja la temporada actual de las 10 divisiones, `fixtures.csv` y los 5 calendarios a una carpeta temporal y valida cada archivo (una página de error HTML no pasa por CSV). Si una sola fuente falla, termina con código 2 sin tocar nada, y GitHub avisa por correo.
 2. **Ajusta y predice en memoria.** Predice los partidos de los próximos días que todavía no tienen predicción para la versión actual del modelo. Un partido de hoy solo se predice si el ciclo corre antes de las 10:00 UTC.
@@ -537,7 +537,7 @@ Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`
 **Por versión del modelo (27-oct-2026):** como `all` usa la primera predicción de cada partido, las filas de versiones posteriores quedaban guardadas pero sin medir: los 49 partidos evaluados al 27-oct eran todos de `146ac2b`. `live.json` suma `by_version`: cada versión con su propia primera predicción de cada partido y, sobre esos mismos partidos, la cuota de cierre. Al 27-oct: `146ac2b` n = 49 (RPS 0,201 contra 0,195 del mercado), `737583c` n = 48 (0,199 contra 0,192) y `7de214e` n = 43 (0,190 contra 0,181). Las tres pierden contra el mercado en su muestra. Las versiones se miden sobre partidos distintos, así que no se comparan entre sí. **OJO:** con 43-49 partidos no es concluyente.
 
 > [!example] Tests del ciclo
-> `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` `test_metricas_en_vivo_usan_la_primera_prediccion` y `test_metricas_por_version_usan_la_primera_prediccion_de_cada_version`. Prueban justamente lo que haría falso al almacén si fallara.
+> `test_fetch_es_todo_o_nada`, `test_un_fallo_a_mitad_no_deja_nada_escrito`, `test_check_append_only_rechaza_cualquier_reescritura` `test_metricas_en_vivo_usan_la_primera_prediccion`, `test_metricas_por_version_usan_la_primera_prediccion_de_cada_version` y `test_una_segunda_corrida_el_mismo_dia_no_duplica_nada`. Prueban justamente lo que haría falso al almacén si fallara.
 
 **Champions en el ciclo (4-nov-2026):** el ciclo baja además la temporada actual de las seis ligas extra y los feeds de Champions y Europa League 2026-27, con la misma regla de todo o nada. `src/europe/run.py` ajusta el modelo conjunto (§12.5) y escribe `ucl.json`, con:
 - el 1X2 de los partidos de los próximos 7 días;
@@ -546,7 +546,17 @@ Cada día a las 05:30 UTC, antes de cualquier partido europeo, GitHub Actions (`
 
 Las predicciones van al mismo almacén con `league = UCL`. La versión es `<src/clubs>+<src/europe>`, porque el modelo depende de los dos árboles. Solo entra la fase de liga: en las eliminatorias, la ida y la vuelta repetirían el par local-visita que usa `match_id`, y el cuadro depende de un sorteo. En `live.json`, la Champions va en `ucl`, contra la base (1/X/2 de las Champions anteriores), sobre la misma muestra y sin mercado. `all`, `by_league` y `by_version` siguen siendo las cinco ligas, así que el titular no cambió.
 
-**OJO, horario real:** el cron está a las 05:30 UTC, pero GitHub lo dispara entre las 10 y las 13 UTC (medido del 22-oct al 3-nov). Como un partido del mismo día solo se predice antes de las 10:00 UTC, cada partido se predice en el ciclo del día anterior. Hasta el 3-nov no se perdió ninguno.
+**Horario real (medido el 12-nov-2026):** GitHub no garantiza la hora del cron. Hora de arranque de las corridas programadas del cron de las 05:30 UTC:
+
+| Período | n | Más temprana | Mediana | Más tardía | Antes de las 10:00 UTC |
+|---|---|---|---|---|---|
+| 21-oct a 3-nov | 14 | 09:39 | 11:20 | 13:42 | 2 |
+| 4-nov a 12-nov | 9 | 11:50 | 13:08 | 14:08 | 0 |
+| Total | 23 | 09:39 | 11:50 | 14:08 | 2 |
+
+Comando: `gh run list --workflow daily.yml --limit 60 --json event,createdAt -q '.[] | select(.event=="schedule") | .createdAt'`. El atraso va de 4 h 09 min a 8 h 38 min y creció en la segunda mitad. Como un partido del mismo día solo se predice antes de las 10:00 UTC (`CUTOFF_HOUR_UTC`), en 21 de las 23 corridas cada partido quedó predicho en el ciclo del día anterior. **No se perdió ninguno:** los 154 partidos de liga jugados desde el 22-oct y los 9 de Champions desde el 4-nov tienen predicción en el almacén (cruce de `data.load_matches` y `ucl.json` contra `predicciones.csv`). El riesgo es un partido reprogramado para el mismo día.
+
+**Cron de respaldo (12-nov-2026):** `daily.yml` suma un segundo cron a las 00:17 UTC y conserva el de las 05:30. Con el peor atraso medido arrancaría a las 08:55, antes del corte. La segunda corrida del día no agrega ni cambia filas del almacén (`test_una_segunda_corrida_el_mismo_dia_no_duplica_nada`); sí puede dejar un segundo commit del bot, porque `live.json` lleva la hora de actualización. **OJO:** el horario real del respaldo todavía no está medido, y no se sabe si el atraso de GitHub se mantiene a otra hora. Hay que releerlo con el mismo comando después de una semana (desde el 20-nov).
 
 ### 14.2 CI y publicación
 
@@ -628,7 +638,7 @@ La cola de trabajo, con contexto, pasos y criterio de cierre de cada tarea, est�
 
 1. **Calibración de la Champions:** localía europea y escala de los ratings, elegidas en validación (2021-22 a 2023-24), por el empate sobrestimado (§12.5).
 2. **Eliminatorias de la Champions en el almacén:** un `match_id` que distinga la ida de la vuelta, para guardar esos partidos. La simulación hasta P(campeón) ya está (§12.5).
-3. **Horario real del ciclo diario:** el cron de las 05:30 UTC corre de hecho entre las 10 y las 13 (§14.1).
+3. **Horario real del ciclo diario:** el cron de las 05:30 UTC arranca de hecho entre las 09:39 y las 14:08; desde el 12-nov hay un respaldo a las 00:17 UTC, cuyo horario real falta medir (§14.1).
 
 Después, sin orden fijo: xG como feature del supervisado, Austria y Noruega, cuotas de la Champions, copas nacionales y Conference, selecciones (más de 48, ρ sobre el historial), otros torneos, releer las métricas en vivo con temporadas enteras e infraestructura solo si hace falta.
 

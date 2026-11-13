@@ -71,11 +71,13 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 
 ### [ ] T3. Horario real del ciclo diario
 
-**Por qué.** `daily.yml` tiene el cron a las 05:30 UTC, pero GitHub lo dispara entre las 10 y las 13 UTC (medido del 22-oct al 3-nov). Como un partido del mismo día solo se predice antes de las 10:00 UTC (`CUTOFF_HOUR_UTC`), hoy cada partido se predice en el ciclo del día anterior. Todavía no se perdió ninguno, pero un partido reprogramado para el mismo día se perdería.
+**Por qué.** `daily.yml` tiene el cron a las 05:30 UTC, pero GitHub lo dispara entre las 09:39 y las 14:08 UTC (23 corridas, del 21-oct al 12-nov). Como un partido del mismo día solo se predice antes de las 10:00 UTC (`CUTOFF_HOUR_UTC`), hoy cada partido se predice en el ciclo del día anterior. Todavía no se perdió ninguno, pero un partido reprogramado para el mismo día se perdería.
 
 **Pasos.** Probar un segundo cron de respaldo más temprano o mover el actual. El almacén ya es idempotente: una segunda corrida no duplica nada (comprobarlo con el test que ya existe). Medir durante una semana a qué hora corre en realidad.
 
 **Cierre.** El horario medido en la bitácora §14.1 y en `CLAUDE.md`.
+
+**Avance (12-nov).** Hecho: horario del cron de las 05:30 medido (23 corridas, arranca entre las 09:39 y las 14:08 UTC; ningún partido perdido), cron de respaldo a las 00:17 UTC y `test_una_segunda_corrida_el_mismo_dia_no_duplica_nada`. **Falta para marcarla `[x]`:** medir el horario real del respaldo con una semana de corridas (desde el 20-nov, comando en §14.1) y dejar la cifra en §14.1 y en `CLAUDE.md`. Si el respaldo tampoco arranca antes de las 10:00 UTC, adelantarlo o quitarlo.
 
 ---
 
