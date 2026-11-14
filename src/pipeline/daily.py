@@ -114,11 +114,12 @@ def predictions(outs: dict[str, dict], now: datetime, version: str, commit: str)
     for div, out in outs.items():
         for n in out["next"]:
             day = date.fromisoformat(n["day"])
-            if not predictable(day, now):
+            if not predictable(day, now) or n.get("stored") is False:   # vueltas y final
                 continue
             p1, px, p2 = n["model"]
             rows.append({
-                "match_id": store.match_id(div, data.CURRENT_SEASON, n["home"], n["away"]),
+                "match_id": store.match_id(div, data.CURRENT_SEASON, n["home"], n["away"],
+                                           n.get("ko_round")),
                 "league": div, "season": data.CURRENT_SEASON, "match_date": n["day"],
                 "home": n["home"], "away": n["away"], "model": MODEL,
                 "model_version": version, "commit": commit,
@@ -199,7 +200,12 @@ def live_metrics(rows: list[dict], now: datetime, ucl_base: list[float] | None =
         "ucl": {"n_predictions": len(ucl), "n_matches": len(ucl_first),
                 "n_pending": len(ucl_first) - len(ucl_done),
                 "versions": sorted({r["model_version"] for r in ucl}),
-                **_ucl_metrics(ucl_done, ucl_base)},
+                **_ucl_metrics(ucl_done, ucl_base),
+                # idas de eliminatorias aparte: otra fase, otra muestra
+                "by_stage": {s: _ucl_metrics([r for r in ucl_done if
+                                              (store.ko_round(r["match_id"]) is None) == liga],
+                                             ucl_base)
+                             for s, liga in (("liga", True), ("eliminatorias", False))}},
     }
 
 
@@ -238,6 +244,16 @@ def europe_results(out: dict) -> list[data.Match]:
             for d, h, a, hg, ag in out["results"]]
 
 
+def europe_ko_results(out: dict) -> dict[str, dict]:
+    """Idas de eliminatorias jugadas, por su id con ronda (sin cuotas)."""
+    res = {}
+    for rnd, d, h, a, hg, ag in out.get("ko_results", []):
+        m = data.Match(UCL, out["season"], date.fromisoformat(d), h, a, hg, ag)
+        (r,) = results([m]).values()
+        res[store.match_id(UCL, out["season"], h, a, rnd)] = r
+    return res
+
+
 def cycle(now: datetime, leagues: list[League], *, fetcher: Callable[[], None],
           builder: Callable[[League, date], dict], version: str, commit: str,
           store_path: Path = store.PATH, out_dir: Path = OUT_DIR,
@@ -249,12 +265,14 @@ def cycle(now: datetime, leagues: list[League], *, fetcher: Callable[[], None],
     ucl = europe_builder(now.date()) if europe_builder else None
     played = data.load_matches([lg.code for lg in leagues], [data.CURRENT_SEASON])
     new = predictions(outs, now, version, commit)
+    ko: dict[str, dict] = {}
     if ucl is not None:
         new += predictions({UCL: ucl}, now, europe_version, commit)
         played += europe_results(ucl)
+        ko = europe_ko_results(ucl)
     old = store.load(store_path)
     rows, added = store.add_predictions(old, new)
-    rows, filled = store.record_results(rows, results(played))
+    rows, filled = store.record_results(rows, {**results(played), **ko})
     store.check_append_only(old, rows)
     live = live_metrics(rows, now, ucl["base"] if ucl else None)
     for code, out in outs.items():                             # 4: recién ahora se escribe

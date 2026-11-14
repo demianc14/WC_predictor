@@ -14,6 +14,7 @@ from __future__ import annotations
 import csv
 import io
 import os
+import re
 import tempfile
 from pathlib import Path
 
@@ -29,9 +30,21 @@ class StoreError(RuntimeError):
     pass
 
 
-def match_id(div: str, season: str, home: str, away: str) -> str:
-    """Estable aunque el partido se reprograme: en una liga cada cruce local-visita es único."""
-    return f"{div}-{season}-{home}-{away}".replace(" ", "_")
+def match_id(div: str, season: str, home: str, away: str, ko_round: int | None = None) -> str:
+    """Estable aunque el partido se reprograme: en una liga cada cruce local-visita es único.
+
+    Una eliminatoria de la Champions puede repetir un cruce de la fase de liga, así que
+    lleva su ronda (`UCL-2627-R9-…`). Sin ronda, el id es el de siempre: los ya guardados
+    no cambian.
+    """
+    rnd = f"R{ko_round}-" if ko_round is not None else ""
+    return f"{div}-{season}-{rnd}{home}-{away}".replace(" ", "_")
+
+
+def ko_round(mid: str) -> int | None:
+    """La ronda de eliminatorias de un id, o None si es de liga."""
+    m = re.match(r"^[^-]+-[^-]+-R(\d+)-", mid)
+    return int(m.group(1)) if m else None
 
 
 def key(row: dict) -> tuple[str, str]:

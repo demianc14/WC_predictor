@@ -30,7 +30,7 @@ el tamaño del stack.
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 144 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 158 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -97,10 +97,12 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
   las 05:30 casi siempre arranca más tarde, así que cada partido se predice en el ciclo del día
   anterior. El respaldo de las 00:17 (12-nov) busca cubrir eso; **OJO:** su horario real falta
   medirlo (desde el 20-nov, con el comando de §14.1). Dos corridas el mismo día no duplican nada.
-- Champions: en el almacén va con `league=UCL` y solo la fase de liga, porque en las
-  eliminatorias `store.match_id` chocaría entre la ida y la vuelta. Sus métricas van en
-  `live.json` → `ucl`, fuera de `all`, `by_league` y `by_version`. No hay cuotas: se compara
-  contra la base.
+- Champions: en el almacén va con `league=UCL`: la fase de liga y las idas de eliminatorias
+  (rondas 9, 11, 13 y 15 del feed), estas con la ronda en el id (`UCL-2627-R9-…`), porque un
+  cruce de eliminatorias puede repetir uno de la fase de liga. Las vueltas y la final no se
+  guardan: el feed no separa la prórroga. Una ronda incompleta o con un club sin rating se salta
+  entera (`ucl.json` → `ko`). Sus métricas van en `live.json` → `ucl` (con `by_stage`), fuera
+  de `all`, `by_league` y `by_version`. No hay cuotas: se compara contra la base.
 - Con PRs apilados, no mergear el PR base con `--delete-branch`, porque GitHub cierra el hijo.
 - En Docker no hay `.git`: la versión del modelo entra por build args (`make docker-build`).
 - `hgb` en Docker necesita `OMP_NUM_THREADS` fijo (4 en la imagen `:ml`; `make docker-train OMP=n`):
