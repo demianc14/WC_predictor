@@ -8,49 +8,13 @@ Este es el tablero de trabajo. La bitácora (`docs/PROYECTO_OBSIDIAN.md`) es el 
 3. Las cifras salen de un comando. Lo que no se midió se marca **OJO** y no se inventa.
 4. Cerrar con lo hecho, lo verificado (con el comando) y lo pendiente. Marcar la tarea `[x]` acá y dejar la cifra en la bitácora.
 
-Estado al 5-nov-2026:
-- **Champions:** en vivo desde el 4-nov (PRs #16, #17 y #18), con 9 partidos evaluados. Es muy poca muestra para leer algo.
+Estado al 14-nov-2026:
+- **Champions:** en vivo desde el 4-nov (PRs #16, #17 y #18), con 9 partidos evaluados. Es muy poca muestra para leer algo. La calibración del empate (T1) se midió y no se adoptó.
 - **Ligas:** 107 partidos evaluados. El mercado le gana al modelo (RPS 0,209 contra 0,204, misma muestra).
 
 ---
 
 ## Cola
-
-### [ ] T1. Calibración de la Champions
-
-**Por qué.** El Dixon-Coles conjunto (`src/europe/`, bitácora §12.5) le gana a la base en la UCL, pero está mal calibrado. Walk-forward sobre la UCL 2024-25 y 2025-26, n = 376, `python -m src.europe.backtest`:
-
-| | Predicho | Real |
-|---|---|---|
-| Empate | 22,2% | 15,7% |
-| Victoria local | 45,1% | 50,5% |
-
-RPS actual: 0.1949 (la base tiene 0.2380).
-
-**Qué se sabe.** Hay dos ajustes ya probados, pero **se eligieron mirando el test**, así que son una pista y no un resultado:
-- localía europea: λ_local × k_h / k_a, donde k_h y k_a son los goles reales sobre los esperados en los partidos europeos de los 2 años anteriores. RPS 0.1949 → 0.1944;
-- abrir la escala de los ratings, con (ataque·defensa)^γ y γ entre 1,15 y 1,3, y ρ = 0. RPS hasta 0.1933, empate predicho 19,5%.
-
-**Pasos.**
-1. Agregar a `src/europe/backtest.py` un walk-forward de **validación**: UCL 2021-22 a 2023-24 (formato de grupos), con los mismos datos y el mismo reajuste semanal.
-2. Elegir en validación los candidatos de la grilla: k_h/k_a sí o no, γ en {1; 1,1; 1,2; 1,3} y ρ ajustado o 0. El criterio es log-loss o RPS, decidido antes de mirar.
-3. Medir **una sola vez** la variante elegida en el test 2024-25 y 2025-26. Reportar Brier, RPS y log-loss con n, contra el modelo actual y contra la base, sobre la misma muestra. Para la diferencia con el modelo actual, usar el IC por bootstrap pareado (`src.ml.metrics.bootstrap`).
-4. Si mejora en test, aplicarla en `src/europe/run.py`, sobre las λ y sin tocar el ajuste. Si no mejora, no se adopta y se documenta igual.
-
-**Regla de decisión (14-nov, fijada antes de tocar el test; `backtest.adopt`).**
-- Candidato único: un factor c que multiplica P(empate) y renormaliza, elegido por log-loss en validación (UCL 2021-22 a 2023-24). La grilla γ × k_h/k_a × ρ queda descartada: tiene 16 candidatos para 372 partidos, y esas variantes ya se miraron en el test.
-- c se congela en un commit separado, antes de correr el test. El test se corre una sola vez.
-- **Se adopta solo si** el log-loss del test mejora más de 0,012 (el IC 95% esperado con n ≈ 376) **y** el IC pareado por bootstrap del test excluye el cero. Si no, no se adopta y se documenta igual.
-
-**Archivos.** `src/europe/backtest.py`, `src/europe/run.py`, `tests/test_europe.py` (los tests verifican que la validación no use fechas del test) y la bitácora §12.5.
-
-**OJO:**
-- **No tocar `src/clubs/`**: cambia la versión del modelo de ligas, y el bot volvería a predecir todo.
-- Cambiar `src/europe/` sí cambia la versión de la UCL (`<src/clubs>+<src/europe>`). Eso está bien, pero hay que decirlo en el PR.
-
-**Cierre.** Tabla de validación y de test en §12.5 y en el PR, más la decisión tomada. Conviene tenerlo antes de la J5 (24-25 nov), así las predicciones de esa jornada ya salen con la versión nueva.
-
----
 
 ### [ ] T2. Eliminatorias de la Champions en el almacén y el ciclo diario
 
@@ -100,6 +64,17 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 - **Infraestructura,** solo si hace falta (base de datos o API). Hoy el CSV versionado es más auditable.
 
 ## Hecho recientemente
+
+- [x] **T1. Calibración de la Champions (14-nov): medida, no se adopta.** Detalle y tablas en la bitácora §12.5.
+  - **Qué quedó.** En `src/europe/backtest.py`: la regla de decisión (`adopt`, commit propio antes del test), la validación (UCL 2021-22 a 2023-24) y el test de una sola vez, con c = 0,90 congelado. Tests de no solapamiento de temporadas y fechas, de que c solo se elige con validación y de que el test no corre dos veces. `src/europe/run.py` no cambia.
+  - **Resultado.** Test, n = 376: Δlog-loss −0.0059 [−0.0098, −0.0020]. El IC excluye el cero, pero la mejora no supera 0,012, así que no se adopta. En validación (n = 372), −0.0009 [−0.0052, +0.0035].
+  - **Cómo se verificó:** `python -m src.europe.backtest --fase validacion` (→ `docs/ucl/validacion.json`), `python -m src.europe.backtest --fase test` (→ `docs/ucl/test.json`, commit 53a36a8), `pytest`, `ruff check . && mypy`.
+  - **Versión de la UCL.** Cambió `src/europe/` (solo `backtest.py`), así que cambia `<src/clubs>+<src/europe>`. Las probabilidades son las mismas, pero el bot va a guardar filas nuevas con la versión nueva para los partidos de los próximos 7 días. Las filas ya publicadas no se tocan, y las métricas en vivo de la UCL usan la primera predicción de cada partido.
+  - **Qué sigue:** volver a medir el empate con la Champions 2026-27 completa (formato de 36), sin reabrir este test.
+  - **Qué decides tú:**
+    1. Si el umbral de 0,012 se revisa para una tarea futura. Para c = 0,90 el IC real fue ±0,004, y cambiarlo para este test sería ajustarlo al resultado.
+    2. Si se agenda la medición prospectiva sobre la 2026-27, con c congelado de antemano.
+    3. Cuándo mergear: antes del 17-nov, la J5 ya sale con la versión nueva.
 
 - [x] Champions: cuadro de eliminatorias simulado hasta P(campeón), en la web, ticker con los partidos más atractivos y textos en español neutro (9-nov).
 - [x] Champions: Dixon-Coles conjunto y backtest (#16), ciclo diario y tabla simulada (#17), y la sección en la web (#18). Bitácora §12.5 y §14.1.

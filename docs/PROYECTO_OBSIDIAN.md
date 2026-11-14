@@ -52,7 +52,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web y capturas; el resto son scripts puntuales del Mundial
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 138 tests con pytest, sin red; fixtures en tests/fixtures/
+├── tests/                          ← 144 tests con pytest, sin red; fixtures en tests/fixtures/
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, ROADMAP.md (cola de tareas), RESULTADOS_ML.md y ml/
@@ -339,7 +339,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 138 tests, sin red
+pytest            # 144 tests, sin red
 ruff check .
 mypy
 ```
@@ -426,11 +426,31 @@ Hay 2 partidos sin predecir: Pafos y Kairat Almaty debutaban sin ningún partido
 
 **Cómo leerlo:** el modelo le gana a la base con claridad en las dos temporadas cerradas. Los partidos con un club sin liga son los más fáciles, porque suelen ser desparejos: ahí la base, que reparte 1/X/2 igual para todos, queda peor. **OJO:** sin cuotas no se sabe cuánto le falta contra el mercado. En las ligas le falta (§12.4), y no hay razón para pensar que en la Champions no.
 
-**Calibración (medida, no corregida):** el modelo subestima al local (45,1% predicho contra 50,5% real) y sobrestima el empate (22,2% contra 15,7%, n = 376). Se probaron dos ajustes:
-- una localía propia de Europa, estimada con los partidos europeos de los dos años anteriores: RPS 0.1949 → 0.1944;
-- abrir la escala de los ratings (exponente 1,15 a 1,3) y ρ = 0: RPS hasta 0.1933, empate predicho 19,5%.
+**Calibración del empate (T1, 14-nov-2026): medida en validación y en test, no se adopta.** El modelo sobrestima el empate en el test (22,2% predicho contra 15,7% real, n = 376). Los dos ajustes que se probaron el 3-nov (localía europea y escala de los ratings) se eligieron mirando el test, así que quedaron descartados como candidatos. El procedimiento, en commits separados y en este orden:
+1. **Regla escrita antes de tocar el test** (`backtest.adopt`): se adopta solo si el log-loss del test mejora más de 0,012 **y** el IC pareado por bootstrap excluye el cero.
+2. **Un solo candidato:** P(X) × c y se renormaliza (1 y 2 conservan su proporción). c se elige por log-loss en validación, en la grilla 0,60 a 1,30 con paso 0,02.
+3. **Validación:** UCL 2021-22 a 2023-24 (formato de grupos), con el mismo walk-forward semanal. c = 0,90, congelado en el código antes del test. Un test verifica que validación y test no comparten temporadas ni fechas.
+4. **Test, corrido una sola vez:** el comando se niega a correr si `docs/ucl/test.json` ya existe, si c no coincide con la validación o si el árbol tiene cambios sin commitear.
 
-Los dos mejoran poco y se eligieron mirando el test, así que **no se adoptaron**.
+| Muestra | n | | Brier | RPS | log-loss | X predicho / real |
+|---|---|---|---|---|---|---|
+| Validación 2021-22 a 2023-24 | 372 | actual | 0.5410 | 0.1870 | 0.9166 | 23,0% / 21,2% |
+| | | c = 0,90 | 0.5399 | 0.1867 | 0.9157 | |
+| | | base | 0.6385 | 0.2353 | 1.0559 | |
+| Test 2024-25 y 2025-26 | 376 | actual | 0.5244 | 0.1949 | 0.8965 | 22,2% / 15,7% |
+| | | c = 0,90 | **0.5209** | **0.1941** | **0.8906** | 20,5% |
+| | | base | 0.6098 | 0.2380 | 1.0089 | |
+
+Diferencias c = 0,90 − actual, IC 95% por bootstrap pareado:
+- validación: Δlog-loss −0.0009 [−0.0052, +0.0035], ΔRPS −0.0003 [−0.0008, +0.0002]; no se distingue de cero;
+- test: Δlog-loss −0.0059 [−0.0098, −0.0020], ΔRPS −0.0008 [−0.0012, −0.0003], ΔBrier −0.0035 [−0.0057, −0.0014].
+
+**Decisión: no se adopta.** En el test, el IC excluye el cero, pero la mejora (0,0059) no llega al umbral de 0,012. `src/europe/run.py` no cambia. Fuentes: `python -m src.europe.backtest --fase validacion` → `docs/ucl/validacion.json` y `python -m src.europe.backtest --fase test` → `docs/ucl/test.json` (commit 53a36a8, tres partidos sin predecir en validación y dos en test, por clubes que debutaban sin partidos previos).
+
+**Cómo leerlo:**
+- El umbral de 0,012 salió de una estimación hecha a mano (la dispersión de una corrección más fuerte, c = 0,75). Para c = 0,90 el IC pareado real resultó más angosto (±0,004), así que la regla exigía más que la significancia. Cambiarla ahora, después de ver el test, sería ajustarla al resultado.
+- c = 0,90 corrige poco: lleva el empate predicho de 22,2% a 20,5%, todavía lejos del 15,7%. En validación el sesgo es chico (23,0% contra 21,2%), así que el resto de la diferencia no se puede corregir con estos datos.
+- **Hipótesis abierta, no un hecho:** el 15,7% de empates del test puede venir del formato nuevo de 36 clubes o ser ruido (IC binomial de 95% aproximado: 12% a 19%). Para separarlas hace falta más Champions con el formato nuevo, a partir de la 2026-27.
 
 **Eliminatorias (9-nov-2026, `src/europe/knockout.py`):** cada una de las 10 000 corridas sigue después de la fase de liga con el cuadro del reglamento 2026/27 (Art. 19-22 y Anexo B, leídos en documents.uefa.com):
 - **Playoff (9 a 24):** 9/10 contra 23/24, 11/12 contra 21/22, 13/14 contra 19/20 y 15/16 contra 17/18. Quién juega con quién dentro de cada par sale del sorteo.
@@ -598,7 +618,7 @@ Dentro del contenedor no hay `.git`: `make docker-build` graba en la imagen la v
 2. **Las métricas en vivo recién empiezan** (§14.1): con pocas semanas no permiten conclusiones.
 3. **El xG de clubes solo existe desde 2026-27**, así que no entra al supervisado.
 4. **2020-21 se jugó mayormente sin público**: su ventaja de local es atípica y está en el entrenamiento.
-5. **La Champions no tiene benchmark de mercado** (§12.5): football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate en la Champions (22% contra 16%), y 73 clubes europeos (7 de la Champions 2026-27) no tienen liga en la fuente.
+5. **La Champions no tiene benchmark de mercado** (§12.5): football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate en la Champions (22% contra 16%). Una corrección elegida en validación mejora el log-loss del test en 0,0059, por debajo del umbral fijado de antemano, así que no se adoptó (§12.5). Y 73 clubes europeos (7 de la Champions 2026-27) no tienen liga en la fuente.
 6. **El número de hilos de OpenMP en Docker se fijó a mano** (§14.3): con un hilo por CPU visible, `hgb` es unas 40 veces más lento. Con 4 hilos, el entrenamiento completo tarda 2 minutos y reproduce la corrida oficial, pero el valor solo está medido en una máquina.
 
 **Selecciones (Parte I):**
@@ -618,6 +638,7 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Dixon-Coles con ρ (§5.2); ρ, μ, localía y decaimiento temporal estimados por máxima verosimilitud sobre muestra grande en clubes (§12.2)
 - [x] Fuentes en vivo para selecciones: ELO de eloratings.net, historial desde 1872, valor de plantilla y xG de StatsBomb, con degradación elegante
 - [x] Calibración formal contra los 104 partidos del Mundial, con bootstrap contra ELO (§10.1)
+- [x] Champions: calibración del empate validada en 2021-22 a 2023-24 y medida una vez en el test; no se adopta (T1, 14-nov-2026, §12.5)
 - [x] Clubes con football-data: las cinco grandes ligas y sus calendarios (§12)
 - [x] Cuotas de casas de apuestas como benchmark, nunca como feature (§12.4, §13.1)
 - [x] Modelo entrenado (logística y gradient boosting) en vez de pesos a mano, comparado con IC (§13)
