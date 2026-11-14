@@ -60,8 +60,8 @@ def test_el_feed_2025_26_trae_las_eliminatorias_completas_y_normalizadas():
 
 
 def test_una_ronda_incompleta_o_con_un_club_sin_rating_no_entra_y_se_avisa():
-    sin_uno = [m for m in KO if not (m["RoundNumber"] == 11 and m["MatchNumber"]
-                                     == min(x["MatchNumber"] for x in KO if x["RoundNumber"] == 11))]
+    primero = min(x["MatchNumber"] for x in KO if x["RoundNumber"] == 11)
+    sin_uno = [m for m in KO if m["MatchNumber"] != primero]
     fx, skipped = run.knockout_phase(sin_uno, RATED)
     assert 11 not in {f.round for f in fx} and len(fx) == 45 - 8
     assert len(skipped) == 1 and skipped[0].startswith("ronda 11")
