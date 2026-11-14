@@ -37,6 +37,11 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 3. Medir **una sola vez** la variante elegida en el test 2024-25 y 2025-26. Reportar Brier, RPS y log-loss con n, contra el modelo actual y contra la base, sobre la misma muestra. Para la diferencia con el modelo actual, usar el IC por bootstrap pareado (`src.ml.metrics.bootstrap`).
 4. Si mejora en test, aplicarla en `src/europe/run.py`, sobre las λ y sin tocar el ajuste. Si no mejora, no se adopta y se documenta igual.
 
+**Regla de decisión (14-nov, fijada antes de tocar el test; `backtest.adopt`).**
+- Candidato único: un factor c que multiplica P(empate) y renormaliza, elegido por log-loss en validación (UCL 2021-22 a 2023-24). La grilla γ × k_h/k_a × ρ queda descartada: tiene 16 candidatos para 372 partidos, y esas variantes ya se miraron en el test.
+- c se congela en un commit separado, antes de correr el test. El test se corre una sola vez.
+- **Se adopta solo si** el log-loss del test mejora más de 0,012 (el IC 95% esperado con n ≈ 376) **y** el IC pareado por bootstrap del test excluye el cero. Si no, no se adopta y se documenta igual.
+
 **Archivos.** `src/europe/backtest.py`, `src/europe/run.py`, `tests/test_europe.py` (los tests verifican que la validación no use fechas del test) y la bitácora §12.5.
 
 **OJO:**
@@ -48,6 +53,8 @@ RPS actual: 0.1949 (la base tiene 0.2380).
 ---
 
 ### [ ] T2. Eliminatorias de la Champions en el almacén y el ciclo diario
+
+**Pendiente: espera al feed.** No se empieza hasta que fixturedownload publique los partidos del playoff (febrero de 2027) y se pueda ver cómo nombra las rondas.
 
 **Ya hecho (9-nov, `src/europe/knockout.py`):**
 - La simulación del cuadro completo, según el reglamento 2026/27 (Art. 19-22 y Anexo B), hasta P(campeón).

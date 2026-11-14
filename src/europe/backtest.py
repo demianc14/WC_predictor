@@ -24,6 +24,17 @@ from src.ml.metrics import bootstrap, per_match, summary
 
 TEST = ("2425", "2526")        # las dos temporadas con fase de liga de 36 ya cerradas
 
+# Regla de decisión de la calibración (T1), escrita antes de mirar el test: se adopta solo si
+# el log-loss del test mejora más que el IC 95% esperado con n ≈ 376 (±0,012) y si el IC
+# pareado por bootstrap del test excluye el cero. Si no, no se adopta y se documenta.
+ADOPT_LOGLOSS = 0.012
+
+
+def adopt(diff_logloss: tuple[float, float, float]) -> bool:
+    """`diff_logloss` = (Δ, lo, hi) de calibrado − actual en test; negativo es mejor."""
+    d, _, hi = diff_logloss
+    return d < -ADOPT_LOGLOSS and hi < 0
+
 
 def walk_forward(matches: list[Match], seasons: tuple[str, ...], comp: str = "UCL",
                  skipped: list[Match] | None = None) -> list[dict]:

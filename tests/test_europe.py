@@ -78,6 +78,13 @@ def test_reporte_compara_modelo_y_base_sobre_la_misma_muestra():
     assert set(rep["diff"]) == {"brier", "rps", "logloss"}
 
 
+def test_la_regla_pide_mejora_mayor_que_el_umbral_y_un_ic_que_excluya_cero():
+    assert backtest.adopt((-0.013, -0.020, -0.006))
+    assert not backtest.adopt((-0.011, -0.020, -0.002))     # no supera ±0,012
+    assert not backtest.adopt((-0.013, -0.030, +0.001))     # el IC toca el cero
+    assert not backtest.adopt((+0.013, +0.006, +0.020))     # empeora
+
+
 def test_fase_de_liga_normaliza_nombres_y_deja_afuera_las_eliminatorias():
     from src.europe import run
     rows = [{**ROWS[0], "RoundNumber": 8}, {**ROWS[1], "RoundNumber": 9}]
