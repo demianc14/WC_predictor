@@ -25,9 +25,10 @@ RATED = {eu.name(m[k]) for m in KO for k in ("HomeTeam", "AwayTeam")}
 # --- match_id ---------------------------------------------------------------------------
 
 def test_los_ids_de_la_fase_de_liga_ya_guardados_no_cambian():
-    with store.PATH.open(encoding="utf-8", newline="") as f:
-        ucl = [r for r in csv.DictReader(f) if r["league"] == "UCL"]
-    assert ucl                                                   # hay filas para comparar
+    # Copia de las filas UCL del almacén al 14-nov (data/ no entra a la imagen Docker).
+    with (FIX.parent / "ucl_ids_almacen.csv").open(encoding="utf-8", newline="") as f:
+        ucl = list(csv.DictReader(f))
+    assert len(ucl) == 9                                         # hay filas para comparar
     for r in ucl:
         assert store.match_id("UCL", r["season"], r["home"], r["away"]) == r["match_id"]
         assert store.ko_round(r["match_id"]) is None
@@ -43,8 +44,7 @@ def test_el_id_de_eliminatorias_no_choca_con_la_fase_de_liga_ni_entre_rondas():
 
 def test_en_el_feed_real_los_cruces_de_eliminatorias_repiten_cruces_de_la_fase_de_liga():
     # Por eso hace falta la ronda en el id (medido sobre 2025-26: 7 cruces repetidos).
-    from src.ml import europe
-    liga = json.loads(europe.path("champions-league", 2025).read_text(encoding="utf-8"))
+    liga = json.loads((FIX.parent / "ucl_fase_liga_2025.json").read_text(encoding="utf-8"))
     pares = {(m["HomeTeam"], m["AwayTeam"]) for m in liga if m["RoundNumber"] <= 8}
     ko = [(m["HomeTeam"], m["AwayTeam"]) for m in KO]
     assert sum(p in pares for p in ko) == 7 and len(set(ko)) == len(ko)
