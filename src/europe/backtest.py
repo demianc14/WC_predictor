@@ -35,7 +35,7 @@ VALIDATION = ("2122", "2223", "2324")   # formato de grupos, todo antes del test
 # Calibración del empate: P(X) × c y se renormaliza. c se elige por log-loss en validación
 # y se congela acá, en un commit propio, antes de correr el test.
 DRAW_GRID = tuple(round(0.60 + 0.02 * i, 2) for i in range(36))      # 0,60 a 1,30
-DRAW_C: float | None = None
+DRAW_C: float | None = 0.9          # docs/ucl/validacion.json, 14-nov-2026
 OUT_DIR = Path("docs/ucl")
 
 # Regla de decisión de la calibración (T1), escrita antes de mirar el test: se adopta solo si
