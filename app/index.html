@@ -2463,9 +2463,9 @@ function renderUCL(){
     ["+"+Math.round(100*(UCL.params.home-1))+"%","goles de más por jugar de local"],
     [UCL.teams.filter(t=>t.no_league).length,"clubes sin liga en la fuente"],
   ].map(([x,l])=>`<div class="wstat"><b>${x}</b><span>${l}</span></div>`).join("");
-  document.getElementById("uclNextNote").innerHTML=`Los próximos 7 días. Cada uno queda guardado en <a href="https://github.com/demianc14/WC_predictor/blob/main/data/predictions/predicciones.csv">el archivo público de predicciones</a> antes de jugarse.`;
+  document.getElementById("uclNextNote").innerHTML=`Los próximos 7 días. Cada uno queda guardado en <a href="https://github.com/demianc14/WC_predictor/blob/main/data/predictions/predicciones.csv">el archivo público de predicciones</a> antes de jugarse, salvo las vueltas y la final de las eliminatorias: pueden ir a prórroga y la fuente no separa los 90 minutos, así que se muestran sin guardarse.`;
   document.getElementById("uclNext").innerHTML=UCL.next.length?`<thead><tr><th>Fecha</th><th class="num">Local</th><th>Visitante</th><th>Modelo 1-X-2</th><th class="num">Más probable</th></tr></thead><tbody>${
-    UCL.next.map(f=>`<tr><td class="muted">${fmtDow(f.day)}</td><td class="num">${nm[f.home]}${weak(byT[f.home])}</td><td>${nm[f.away]}${weak(byT[f.away])}</td>
+    UCL.next.map(f=>`<tr><td class="muted">${fmtDow(f.day)}</td><td class="num">${nm[f.home]}${weak(byT[f.home])}</td><td>${nm[f.away]}${weak(byT[f.away])}${f.stored===false?` <span class="muted">· ${f.neutral?"final, cancha neutral":"vuelta"}, no se guarda</span>`:""}</td>
       <td>${pctBar(f.model)}<span class="wpct">${f.model.map(p=>Math.round(100*p)).join(" · ")}</span></td>
       <td class="num"><span class="wsc">${f.top[0]}–${f.top[1]}</span></td></tr>`).join("")}</tbody>`
     :`<tbody><tr><td class="muted">No hay partidos de Champions en los próximos 7 días.</td></tr></tbody>`;
