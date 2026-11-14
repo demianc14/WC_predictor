@@ -78,6 +78,64 @@ def test_reporte_compara_modelo_y_base_sobre_la_misma_muestra():
     assert set(rep["diff"]) == {"brier", "rps", "logloss"}
 
 
+def test_la_regla_pide_mejora_mayor_que_el_umbral_y_un_ic_que_excluya_cero():
+    assert backtest.adopt((-0.013, -0.020, -0.006))
+    assert not backtest.adopt((-0.011, -0.020, -0.002))     # no supera ±0,012
+    assert not backtest.adopt((-0.013, -0.030, +0.001))     # el IC toca el cero
+    assert not backtest.adopt((+0.013, +0.006, +0.020))     # empeora
+
+
+def _rows(season: str, day: date, n: int = 6) -> list[dict]:
+    return [{"season": season, "day": (day + timedelta(days=i)).isoformat(), "o": i % 3,
+             "model": [0.45, 0.25, 0.30], "base": [0.45, 0.25, 0.30]} for i in range(n)]
+
+
+def test_validacion_y_test_no_se_solapan_en_temporadas_ni_fechas():
+    assert set(backtest.VALIDATION).isdisjoint(backtest.TEST)
+    assert max(backtest.VALIDATION) < min(backtest.TEST)
+    val, test = _rows("2324", date(2024, 5, 1)), _rows("2425", date(2024, 9, 17))
+    backtest.check_disjoint(val, test)
+    with pytest.raises(ValueError, match="fechas"):
+        backtest.check_disjoint(_rows("2324", date(2024, 9, 20)), test)
+    with pytest.raises(ValueError, match="temporadas"):
+        backtest.check_disjoint(_rows("2425", date(2024, 5, 1)), test)
+
+
+def test_la_validacion_real_termina_antes_del_primer_partido_del_test():
+    antes = [Match(m.div, "2324", m.day, m.home, m.away, m.hg, m.ag)
+             for m in _season(date(2023, 8, 7))]
+    ms = sorted(antes + _season(date(2024, 8, 5)), key=lambda m: m.day)
+    val = backtest.walk_forward(ms, backtest.VALIDATION)
+    test = backtest.walk_forward(ms, backtest.TEST)
+    assert val and test and {r["season"] for r in val} == {"2324"}
+    backtest.check_disjoint(val, test)
+
+
+def test_c_se_elige_solo_con_validacion():
+    with pytest.raises(ValueError, match="validación"):
+        backtest.choose_c(_rows("2324", date(2024, 5, 1)) + _rows("2425", date(2024, 9, 17)))
+    assert backtest.choose_c(_rows("2324", date(2024, 5, 1))) in backtest.DRAW_GRID
+
+
+def test_calibrar_solo_mueve_el_empate_y_suma_uno():
+    import numpy as np
+    q = backtest.calibrate(np.array([[0.45, 0.25, 0.30]]), 0.8)
+    assert abs(q.sum() - 1) < 1e-12 and q[0, 1] < 0.25
+    assert abs(q[0, 0] / q[0, 2] - 0.45 / 0.30) < 1e-12        # 1 y 2 en la misma proporción
+
+
+def test_el_test_no_corre_sin_c_congelado_ni_dos_veces(tmp_path, monkeypatch):
+    monkeypatch.setattr(backtest, "OUT_DIR", tmp_path)
+    with pytest.raises(RuntimeError, match="congelado"):
+        backtest.run_test([], c=None)
+    with pytest.raises(RuntimeError, match="no coincide"):
+        backtest.run_test([], c=0.9)
+    (tmp_path / "validacion.json").write_text(json.dumps({"chosen_c": 0.9}))
+    (tmp_path / "test.json").write_text("{}")
+    with pytest.raises(RuntimeError, match="una sola vez"):
+        backtest.run_test([], c=0.9)
+
+
 def test_fase_de_liga_normaliza_nombres_y_deja_afuera_las_eliminatorias():
     from src.europe import run
     rows = [{**ROWS[0], "RoundNumber": 8}, {**ROWS[1], "RoundNumber": 9}]

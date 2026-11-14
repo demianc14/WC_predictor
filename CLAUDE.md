@@ -30,7 +30,7 @@ el tamaño del stack.
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 138 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 144 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -77,6 +77,7 @@ make docker-build docker-test             # imágenes wc-predictor (app) y wc-pr
   resultados. `store.save` lo verifica, y no hay que esquivarlo.
 - No editar a mano lo generado:
   - `docs/RESULTADOS_ML.md` y `docs/ml/`;
+  - `docs/ucl/` (`python -m src.europe.backtest --fase …`; el test de la calibración ya se corrió y no se repite);
   - `data/processed/*.json`;
   - los bloques de datos de `app/index.html` (`const CLUBS=`, `const LIVE=`, `const UCL=`, …),
     que salen de `tools/export_frontend.py`.

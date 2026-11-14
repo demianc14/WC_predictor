@@ -83,11 +83,14 @@ Cada liga tiene su propio Dixon-Coles, y sus ratings no se comparan entre sí. P
 Con eso predice cada partido de la fase de liga y simula 10.000 veces el resto de la temporada: la tabla de 36 (top 8, playoff o afuera) y después el cuadro de eliminatorias del reglamento 2026/27, hasta la probabilidad de cada club de ser campeón. La web muestra el cuadro como quedaría si la fase de liga terminara hoy, o según la proyección del modelo.
 
 ```bash
-python -m src.europe.backtest   # walk-forward contra la base
-python -m src.europe.run        # → data/processed/ucl.json
+python -m src.europe.backtest                  # walk-forward contra la base
+python -m src.europe.backtest --fase test      # calibración del empate → docs/ucl/test.json
+python -m src.europe.run                       # → data/processed/ucl.json
 ```
 
-En las Champions 2024-25 y 2025-26 (n = 376, misma muestra), el modelo tiene Brier 0.524, RPS 0.195 y log-loss 0.897. La base, que solo conoce la frecuencia de 1/X/2, tiene 0.610, 0.238 y 1.009. **No hay comparación con el mercado**, porque football-data no publica cuotas de la Champions. Además, el modelo sobrestima el empate (22% contra 16%). El detalle está en la [bitácora §12.5](docs/PROYECTO_OBSIDIAN.md).
+En las Champions 2024-25 y 2025-26 (n = 376, misma muestra; `docs/ucl/test.json`), el modelo tiene Brier 0.524, RPS 0.195 y log-loss 0.897. La base, que solo conoce la frecuencia de 1/X/2, tiene 0.610, 0.238 y 1.009. **No hay comparación con el mercado**, porque football-data no publica cuotas de la Champions.
+
+El modelo sobrestima el empate: predice 22,2% y hubo 15,7%. Se probó corregirlo con un factor elegido en validación (Champions 2021-22 a 2023-24, `docs/ucl/validacion.json`) y medido una sola vez en el test. La regla, escrita antes de mirar, pedía una mejora de log-loss mayor que 0,012 con un IC que excluyera el cero. La corrección mejora 0,0059 (IC 95% −0.0098 a −0.0020), así que **no se adopta**. Si el 15,7% viene del formato de 36 clubes o es ruido sigue siendo una hipótesis abierta. El detalle está en la [bitácora §12.5](docs/PROYECTO_OBSIDIAN.md).
 
 ## Modelo supervisado (1X2, clubes)
 
@@ -146,7 +149,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 138 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 144 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -182,7 +185,7 @@ python -m src.cli backtest             # ¿qué tan bien predijo el Mundial real
 python -m src.etl.xg_ratings           # ranking xG de StatsBomb (desde la caché)
 python -m tools.export_frontend        # reinyecta fuerzas y última ventana en app/index.html
 python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
-pytest                                 # 138 tests, sin red
+pytest                                 # 144 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```
@@ -222,7 +225,7 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 **Clubes y Champions:**
 - **El mercado le gana al modelo** en las cinco ligas (backtest 2025-26 y en vivo desde el 20-oct), y el supervisado no cambia eso. Por eso la web muestra dónde discrepa el modelo, nunca "valor".
-- **La Champions no tiene benchmark de mercado:** football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate (22% contra 16%), y 7 de los 36 clubes no tienen liga en la fuente.
+- **La Champions no tiene benchmark de mercado:** football-data no publica sus cuotas, así que solo se compara contra la base. Además, el modelo conjunto sobrestima el empate (22% contra 16%): una corrección medida en test no llegó al umbral fijado de antemano. Y 7 de los 36 clubes no tienen liga en la fuente.
 - **Las métricas en vivo tienen semanas, no temporadas:** todavía no permiten conclusiones.
 
 **Selecciones:**
@@ -233,7 +236,7 @@ El modelo supera al azar con claridad y al ELO en la estimación puntual. Pero e
 
 ## Cómo escalar
 
-El proyecto está pensado para crecer sin tocar el motor de partido, y cada cambio se valida con su walk-forward antes de entrar. La cola de trabajo, con contexto y criterio de cierre por tarea, está en [`docs/ROADMAP.md`](docs/ROADMAP.md). Lo que sigue es la calibración de la Champions, después las eliminatorias simuladas hasta el campeón y el horario real del ciclo diario. El historial está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
+El proyecto está pensado para crecer sin tocar el motor de partido, y cada cambio se valida con su walk-forward antes de entrar. La cola de trabajo, con contexto y criterio de cierre por tarea, está en [`docs/ROADMAP.md`](docs/ROADMAP.md). Lo que sigue es guardar las eliminatorias de la Champions cuando el feed las publique y terminar de medir el horario del ciclo diario. El historial está en [`docs/PROYECTO_OBSIDIAN.md` §16](docs/PROYECTO_OBSIDIAN.md#16-roadmap).
 
 ## Documentación completa
 
