@@ -9,7 +9,7 @@ Este es el tablero de trabajo. La bitácora (`docs/PROYECTO_OBSIDIAN.md`) es el 
 4. Cerrar con lo hecho, lo verificado (con el comando) y lo pendiente. Marcar la tarea `[x]` acá y dejar la cifra en la bitácora.
 
 Estado al 14-nov-2026:
-- **Champions:** en vivo desde el 4-nov (PRs #16, #17 y #18), con 9 partidos evaluados. Es muy poca muestra para leer algo. La calibración del empate (T1) se midió y no se adoptó.
+- **Champions:** en vivo desde el 4-nov (PRs #16, #17 y #18), con 9 partidos evaluados. Es muy poca muestra para leer algo. La calibración del empate (T1) se midió y no se adoptó. Las idas de eliminatorias ya tienen código (T2) y se guardarán desde el playoff de febrero.
 - **Ligas:** 107 partidos evaluados. El mercado le gana al modelo (RPS 0,209 contra 0,204, misma muestra).
 
 ---
@@ -18,25 +18,20 @@ Estado al 14-nov-2026:
 
 ### [ ] T2. Eliminatorias de la Champions en el almacén y el ciclo diario
 
-**Pendiente: espera al feed.** No se empieza hasta que fixturedownload publique los partidos del playoff (febrero de 2027) y se pueda ver cómo nombra las rondas.
+**Ya no espera al feed.** El 14-nov se midió en los feeds de 2024-25 y 2025-26 (en caché) cómo nombra fixturedownload las eliminatorias, y el código quedó listo. Se activa solo cuando el feed 2026 traiga las rondas mayores que 8.
 
-**Ya hecho (9-nov, `src/europe/knockout.py`):**
-- La simulación del cuadro completo, según el reglamento 2026/27 (Art. 19-22 y Anexo B), hasta P(campeón).
-- El cuadro "si terminara hoy" y el proyectado, en la web.
-- Las reglas y las simplificaciones están en la bitácora §12.5.
+**Avance (14-nov, PR de T2).** Hecho:
+- `store.match_id(..., ko_round)`: la ronda va en el id solo en las eliminatorias (`UCL-2627-R9-…`), y los ids ya guardados no cambian (test contra todas las filas UCL del almacén). El choque real era con la fase de liga, no entre la ida y la vuelta: 6 cruces repetidos en 2024-25 y 7 en 2025-26.
+- `src/europe/run.py`: lee las rondas 9 a 17 (playoff 9/10, octavos 11/12, cuartos 13/14, semis 15/16, final 17) y las valida por ronda. Una ronda incompleta o con un club sin rating se salta entera y se avisa en `ucl.json` → `ko`.
+- **Solo las idas (9, 11, 13 y 15) van al almacén**, porque el feed no separa la prórroga. Las vueltas y la final salen en la web marcadas "no se guarda", y la final se predice en cancha neutral.
+- `src/pipeline/daily.py`: guarda las idas, completa sus resultados y suma `ucl.by_stage` en `live.json`.
+- Tests en `tests/test_ucl_eliminatorias.py`. Detalle y cifras en la bitácora §14.1.
 
-**Lo que falta:** predecir y guardar los partidos de eliminatorias cuando el feed los publique (el playoff es en febrero de 2027).
+**Falta para marcarla `[x]`:**
+1. Comprobar en producción que las idas del playoff (feb-2027) quedan guardadas antes de jugarse: `grep -c "^UCL-2627-R9-" data/predictions/predicciones.csv` tiene que dar 8. Revisar antes `ko.state` en `data/processed/ucl.json`.
+2. Una vez sorteado el cuadro real (fines de enero de 2027), simular desde el cuadro sorteado en lugar de sortearlo en cada corrida (`src/europe/knockout.py`).
 
-**Pasos.**
-1. Hoy `store.match_id(div, season, home, away)` chocaría entre la ida y la vuelta. Hay que extenderlo de forma compatible, por ejemplo con la ronda solo para las eliminatorias, sin cambiar los ids de la fase de liga ya guardados. Sumar un test de solo-para-agregar.
-2. En `src/europe/run.py`, incluir en `next` los partidos de las rondas mayores que 8 del feed, con su ronda. En `src/pipeline/daily.py`, guardarlos y completar sus resultados.
-3. Una vez sorteado el cuadro real, simular desde el cuadro sorteado en lugar de sortearlo en cada corrida.
-
-**Archivos.** `src/pipeline/store.py`, `src/pipeline/daily.py`, `src/europe/run.py` y `src/europe/knockout.py`, tests y la bitácora §14.1.
-
-**OJO:** verificar cómo nombra el feed las rondas de eliminatorias (`RoundNumber`) cuando aparezcan. Ahora no hay ninguna.
-
-**Cierre.** Partidos de eliminatorias guardados antes de jugarse, con un `match_id` compatible y un test.
+**OJO:** no se sabe si fixturedownload publica las rondas antes del sorteo con nombres provisionales. Si lo hace, el fail fast las salta hasta que lleguen los clubes reales.
 
 ---
 

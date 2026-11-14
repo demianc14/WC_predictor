@@ -52,7 +52,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web y capturas; el resto son scripts puntuales del Mundial
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 144 tests con pytest, sin red; fixtures en tests/fixtures/
+├── tests/                          ← 158 tests con pytest, sin red; fixtures en tests/fixtures/
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, ROADMAP.md (cola de tareas), RESULTADOS_ML.md y ml/
@@ -339,7 +339,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 144 tests, sin red
+pytest            # 158 tests, sin red
 ruff check .
 mypy
 ```
@@ -458,7 +458,7 @@ Diferencias c = 0,90 − actual, IC 95% por bootstrap pareado:
 - **Cuartos y semis:** cuadro fijo, (5/6 · 3/4) y (7/8 · 1/2). Quien elimina a un cabeza de serie hereda su lugar, y el mejor ubicado juega la vuelta de local.
 - **Final:** a partido único en cancha neutral; sin localía, el λ del local se divide por la localía.
 
-Simplificaciones: una prórroga es un tercio de partido (de local quien juega la vuelta), y los penales van al 50%, porque el modelo no sabe nada de penales. Hasta que se sortee el cuadro real, el sorteo se simula en cada corrida. Las probabilidades suman 16, 8, 4, 2 y 1 por ronda (es un test). Al 9-nov (J4 jugada), el modelo da Arsenal 24%, Bayern 16% y PSG 12% como campeón. **OJO:** el reglamento no menciona el gol de visitante en las eliminatorias, así que no se usa. Los partidos de eliminatorias todavía no van al almacén (ROADMAP, T2). Para adoptarlos habría que elegirlos en una validación aparte (2021-22 a 2023-24, con el formato viejo de grupos) y recién después medirlos en test.
+Simplificaciones: una prórroga es un tercio de partido (de local quien juega la vuelta), y los penales van al 50%, porque el modelo no sabe nada de penales. Hasta que se sortee el cuadro real, el sorteo se simula en cada corrida. Las probabilidades suman 16, 8, 4, 2 y 1 por ronda (es un test). Al 9-nov (J4 jugada), el modelo da Arsenal 24%, Bayern 16% y PSG 12% como campeón. **OJO:** el reglamento no menciona el gol de visitante en las eliminatorias, así que no se usa. Desde el 14-nov, las idas de eliminatorias van al almacén (T2, §14.1). Para adoptarlos habría que elegirlos en una validación aparte (2021-22 a 2023-24, con el formato viejo de grupos) y recién después medirlos en test.
 
 ---
 
@@ -564,7 +564,16 @@ Cada día, GitHub Actions (`daily.yml`, con crons a las 00:17 y a las 05:30 UTC;
 - un Monte Carlo de 10 000 corridas de la fase de liga: P(top 8, a octavos), P(9-24, playoff) y P(25-36, afuera). El desempate usa puntos, diferencia, goles y azar, una simplificación del reglamento;
 - el backtest.
 
-Las predicciones van al mismo almacén con `league = UCL`. La versión es `<src/clubs>+<src/europe>`, porque el modelo depende de los dos árboles. Solo entra la fase de liga: en las eliminatorias, la ida y la vuelta repetirían el par local-visita que usa `match_id`, y el cuadro depende de un sorteo. En `live.json`, la Champions va en `ucl`, contra la base (1/X/2 de las Champions anteriores), sobre la misma muestra y sin mercado. `all`, `by_league` y `by_version` siguen siendo las cinco ligas, así que el titular no cambió.
+Las predicciones van al mismo almacén con `league = UCL`. La versión es `<src/clubs>+<src/europe>`, porque el modelo depende de los dos árboles. Al principio solo entraba la fase de liga; las eliminatorias se agregaron el 14-nov (T2, abajo). En `live.json`, la Champions va en `ucl`, contra la base (1/X/2 de las Champions anteriores), sobre la misma muestra y sin mercado. `all`, `by_league` y `by_version` siguen siendo las cinco ligas, así que el titular no cambió.
+
+**Eliminatorias en el almacén (T2, 14-nov-2026).** Lo que se midió en los feeds de 2024-25 y 2025-26, los dos con el formato de 36 (en caché, `data/cache/clubs/europe/`):
+- **Rondas.** Las eliminatorias son las `RoundNumber` 9 a 17: playoff 9/10, octavos 11/12, cuartos 13/14, semis 15/16 y final 17, con 8, 8, 8, 8, 4, 4, 2, 2 y 1 partidos. `Group` viene vacío. Las dos temporadas son idénticas.
+- **Ids.** La ida y la vuelta no chocan entre sí (se invierte la localía; 0 cruces repetidos dentro de las eliminatorias). El choque es con la fase de liga: 6 cruces local-visita de eliminatorias en 2024-25 y 7 en 2025-26 ya se habían jugado en la fase de liga (por ejemplo, Benfica–Real Madrid en la ronda 9 de 2025-26). Por eso el id de eliminatorias lleva la ronda: `UCL-2627-R9-Benfica-Real_Madrid`. Sin ronda, el id es el de siempre (test contra todas las filas UCL del almacén).
+- **Prórroga.** El marcador del feed no la marca. En 2024-25, 2 de 22 vueltas terminan con el global empatado (Liverpool–PSG y Atlético–Real Madrid), así que seguro hubo prórroga, y la final 2025-26 terminó 1-1. **OJO:** que el feed incluye los goles de la prórroga lo sé de memoria (PSV 3-1 Juventus, 2024-25), no por un comando. Como el modelo predice los 90', al almacén van **solo las idas** (rondas 9, 11, 13 y 15; 22 partidos por temporada), que nunca tienen prórroga. Se eligen por ronda, no por resultado, así que la muestra no tiene sesgo. Las vueltas y la final salen en la web marcadas "no se guarda", y la final se predice en cancha neutral.
+
+Fail fast por ronda (`run.knockout_phase`): una ronda entra solo si trae los partidos esperados, todos sus clubes tienen rating y ningún club juega dos veces. Si no, se salta entera, con ⚠️ en el log y el motivo en `ucl.json` → `ko.skipped`, porque una predicción guardada no se corrige. El resto del ciclo sigue igual. `ko.state` vale `sin_publicar`, `publicado`, `incompleto` o `atrasado`, que es cuando la fase de liga terminó hace más de 14 días y el playoff no aparece. Las métricas de la UCL suman `by_stage` (`liga` y `eliminatorias`), cada una contra la base sobre su muestra. En un ensayo con el feed actual más las eliminatorias de 2025-26 corridas un año, el fail fast saltó las rondas 9 y 10 porque Qarabağ no tiene rating en el ajuste de hoy; con otro club en su lugar, entraron las 9 rondas y las 8 idas del playoff al almacén. Ese ensayo no está en el repo; lo cubren los tests de `tests/test_ucl_eliminatorias.py`.
+
+Pendiente de T2 (paso 3): simular desde el cuadro sorteado en lugar de sortearlo en cada corrida. **OJO:** no se sabe si fixturedownload publica las rondas antes del sorteo con nombres provisionales. Si lo hace, el fail fast las salta hasta que lleguen los clubes reales.
 
 **Horario real (medido el 12-nov-2026):** GitHub no garantiza la hora del cron. Hora de arranque de las corridas programadas del cron de las 05:30 UTC:
 
@@ -652,13 +661,14 @@ Saber nombrar tus limitaciones es la señal más fuerte de madurez técnica en u
 - [x] Champions en el ciclo diario: fase de liga en el almacén (`league = UCL`), Monte Carlo de la tabla de 36 y métricas aparte contra la base (§14.1)
 - [x] Champions en la web: próximos partidos, tabla simulada de la fase de liga y backtest contra la base
 - [x] Champions: cuadro de eliminatorias simulado hasta P(campeón) con el reglamento 2026/27 (§12.5)
+- [x] Champions: idas de eliminatorias en el almacén, con la ronda en el id y validadas por ronda (§14.1)
 
 ### 16.2 Pendiente
 
 La cola de trabajo, con contexto, pasos y criterio de cierre de cada tarea, está en [`docs/ROADMAP.md`](ROADMAP.md). En orden:
 
 1. **Calibración de la Champions:** localía europea y escala de los ratings, elegidas en validación (2021-22 a 2023-24), por el empate sobrestimado (§12.5).
-2. **Eliminatorias de la Champions en el almacén:** un `match_id` que distinga la ida de la vuelta, para guardar esos partidos. La simulación hasta P(campeón) ya está (§12.5).
+2. **Eliminatorias de la Champions:** las idas ya van al almacén (§14.1); falta simular desde el cuadro sorteado, después del sorteo de fines de enero de 2027.
 3. **Horario real del ciclo diario:** el cron de las 05:30 UTC arranca de hecho entre las 09:39 y las 14:08; desde el 12-nov hay un respaldo a las 00:17 UTC, cuyo horario real falta medir (§14.1).
 
 Después, sin orden fijo: xG como feature del supervisado, Austria y Noruega, cuotas de la Champions, copas nacionales y Conference, selecciones (más de 48, ρ sobre el historial), otros torneos, releer las métricas en vivo con temporadas enteras e infraestructura solo si hace falta.
