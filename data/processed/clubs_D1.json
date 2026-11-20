@@ -590,7 +590,11 @@
    "tbc": false,
    "home": "Bayern Munich",
    "away": "FC Koln",
-   "odds": null,
+   "odds": [
+    1.07,
+    12.63,
+    21.5
+   ],
    "model": [
     0.8731,
     0.0844,
@@ -604,7 +608,11 @@
     3,
     0
    ],
-   "market": null
+   "market": [
+    0.8815,
+    0.0747,
+    0.0439
+   ]
   },
   {
    "day": "2026-11-21",
@@ -612,7 +620,11 @@
    "tbc": false,
    "home": "Elversberg",
    "away": "Freiburg",
-   "odds": null,
+   "odds": [
+    3.41,
+    3.74,
+    1.97
+   ],
    "model": [
     0.4099,
     0.2477,
@@ -626,7 +638,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.2745,
+    0.2503,
+    0.4752
+   ]
   },
   {
    "day": "2026-11-21",
@@ -634,7 +650,11 @@
    "tbc": false,
    "home": "M'gladbach",
    "away": "Dortmund",
-   "odds": null,
+   "odds": [
+    5.03,
+    4.4,
+    1.56
+   ],
    "model": [
     0.2254,
     0.2348,
@@ -648,7 +668,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.1863,
+    0.213,
+    0.6007
+   ]
   },
   {
    "day": "2026-11-21",
@@ -656,7 +680,11 @@
    "tbc": false,
    "home": "Union Berlin",
    "away": "RB Leipzig",
-   "odds": null,
+   "odds": [
+    5.59,
+    4.62,
+    1.49
+   ],
    "model": [
     0.2206,
     0.2371,
@@ -670,7 +698,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.1677,
+    0.203,
+    0.6293
+   ]
   },
   {
    "day": "2026-11-21",
@@ -678,7 +710,11 @@
    "tbc": false,
    "home": "Ein Frankfurt",
    "away": "Hoffenheim",
-   "odds": null,
+   "odds": [
+    2.33,
+    3.85,
+    2.65
+   ],
    "model": [
     0.4656,
     0.2177,
@@ -692,7 +728,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.4025,
+    0.2436,
+    0.3539
+   ]
   },
   {
    "day": "2026-11-21",
@@ -700,7 +740,11 @@
    "tbc": false,
    "home": "Leverkusen",
    "away": "Paderborn",
-   "odds": null,
+   "odds": [
+    1.27,
+    6.16,
+    8.72
+   ],
    "model": [
     0.6829,
     0.1805,
@@ -714,7 +758,11 @@
     2,
     1
    ],
-   "market": null
+   "market": [
+    0.7397,
+    0.1525,
+    0.1077
+   ]
   },
   {
    "day": "2026-11-21",
@@ -722,7 +770,11 @@
    "tbc": false,
    "home": "Schalke 04",
    "away": "Stuttgart",
-   "odds": null,
+   "odds": [
+    3.91,
+    3.98,
+    1.79
+   ],
    "model": [
     0.2475,
     0.2379,
@@ -736,7 +788,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.24,
+    0.2358,
+    0.5242
+   ]
   },
   {
    "day": "2026-11-22",
@@ -744,7 +800,11 @@
    "tbc": false,
    "home": "Augsburg",
    "away": "Mainz",
-   "odds": null,
+   "odds": [
+    2.64,
+    3.78,
+    2.34
+   ],
    "model": [
     0.382,
     0.2556,
@@ -758,7 +818,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.3538,
+    0.2471,
+    0.3991
+   ]
   },
   {
    "day": "2026-11-22",
@@ -766,7 +830,11 @@
    "tbc": false,
    "home": "Werder Bremen",
    "away": "Hamburg",
-   "odds": null,
+   "odds": [
+    1.67,
+    4.14,
+    4.42
+   ],
    "model": [
     0.4428,
     0.2561,
@@ -780,7 +848,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.5614,
+    0.2265,
+    0.2121
+   ]
   }
  ],
  "calendar": [

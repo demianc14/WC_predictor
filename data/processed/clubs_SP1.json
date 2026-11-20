@@ -692,7 +692,11 @@
    "tbc": false,
    "home": "Ath Bilbao",
    "away": "Espanol",
-   "odds": null,
+   "odds": [
+    1.48,
+    4.38,
+    6.23
+   ],
    "model": [
     0.5217,
     0.2683,
@@ -706,7 +710,11 @@
     1,
     0
    ],
-   "market": null
+   "market": [
+    0.6347,
+    0.2145,
+    0.1508
+   ]
   },
   {
    "day": "2026-11-21",
@@ -714,7 +722,11 @@
    "tbc": false,
    "home": "Alaves",
    "away": "La Coruna",
-   "odds": null,
+   "odds": [
+    2.17,
+    3.25,
+    3.35
+   ],
    "model": [
     0.4379,
     0.2809,
@@ -728,7 +740,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.4319,
+    0.2884,
+    0.2798
+   ]
   },
   {
    "day": "2026-11-21",
@@ -736,7 +752,11 @@
    "tbc": false,
    "home": "Vallecano",
    "away": "Valencia",
-   "odds": null,
+   "odds": [
+    1.91,
+    3.44,
+    3.93
+   ],
    "model": [
     0.4525,
     0.2864,
@@ -750,7 +770,11 @@
     1,
     0
    ],
-   "market": null
+   "market": [
+    0.4899,
+    0.272,
+    0.2381
+   ]
   },
   {
    "day": "2026-11-21",
@@ -758,7 +782,11 @@
    "tbc": false,
    "home": "Sevilla",
    "away": "Betis",
-   "odds": null,
+   "odds": [
+    2.92,
+    3.37,
+    2.34
+   ],
    "model": [
     0.346,
     0.2563,
@@ -772,7 +800,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.3211,
+    0.2782,
+    0.4007
+   ]
   },
   {
    "day": "2026-11-21",
@@ -780,7 +812,11 @@
    "tbc": false,
    "home": "Real Madrid",
    "away": "Celta",
-   "odds": null,
+   "odds": [
+    1.16,
+    7.68,
+    14.19
+   ],
    "model": [
     0.7135,
     0.1776,
@@ -794,7 +830,11 @@
     2,
     0
    ],
-   "market": null
+   "market": [
+    0.8112,
+    0.1225,
+    0.0663
+   ]
   },
   {
    "day": "2026-11-22",
@@ -802,7 +842,11 @@
    "tbc": false,
    "home": "Barcelona",
    "away": "Villarreal",
-   "odds": null,
+   "odds": [
+    1.2,
+    7.34,
+    10.31
+   ],
    "model": [
     0.7117,
     0.1535,
@@ -816,7 +860,11 @@
     2,
     1
    ],
-   "market": null
+   "market": [
+    0.7813,
+    0.1277,
+    0.0909
+   ]
   },
   {
    "day": "2026-11-22",
@@ -824,7 +872,11 @@
    "tbc": false,
    "home": "Santander",
    "away": "Sociedad",
-   "odds": null,
+   "odds": [
+    3.17,
+    4.03,
+    1.99
+   ],
    "model": [
     0.4111,
     0.2218,
@@ -838,7 +890,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.2959,
+    0.2328,
+    0.4714
+   ]
   },
   {
    "day": "2026-11-22",
@@ -846,7 +902,11 @@
    "tbc": false,
    "home": "Osasuna",
    "away": "Malaga",
-   "odds": null,
+   "odds": [
+    1.8,
+    3.53,
+    4.38
+   ],
    "model": [
     0.4976,
     0.2503,
@@ -860,7 +920,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.5206,
+    0.2655,
+    0.2139
+   ]
   },
   {
    "day": "2026-11-22",
@@ -868,7 +932,11 @@
    "tbc": false,
    "home": "Getafe",
    "away": "Ath Madrid",
-   "odds": null,
+   "odds": [
+    5.87,
+    3.86,
+    1.56
+   ],
    "model": [
     0.2319,
     0.303,
@@ -882,7 +950,11 @@
     0,
     1
    ],
-   "market": null
+   "market": [
+    0.1591,
+    0.242,
+    0.5988
+   ]
   },
   {
    "day": "2026-11-23",
@@ -890,7 +962,11 @@
    "tbc": false,
    "home": "Levante",
    "away": "Elche",
-   "odds": null,
+   "odds": [
+    2.15,
+    3.54,
+    3.11
+   ],
    "model": [
     0.449,
     0.2589,
@@ -904,7 +980,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.435,
+    0.2642,
+    0.3007
+   ]
   }
  ],
  "calendar": [
