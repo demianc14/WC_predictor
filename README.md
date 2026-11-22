@@ -7,7 +7,7 @@ Predictor de fútbol para las cinco grandes ligas europeas, la Champions League 
 - **Ciclo diario todo o nada:** `python -m src.pipeline.daily` descarga todas las fuentes a una carpeta temporal; si una falla o llega vacía, termina con código 2 y no modifica nada ([cómo funciona](#ciclo-diario-y-métricas-en-vivo)).
 - **Almacén solo para agregar, auditado por git:** [`data/predictions/predicciones.csv`](data/predictions/predicciones.csv) nunca se sobrescribe (el código lo verifica antes de escribir) y el historial de git prueba que cada fila existía antes del partido.
 - **Evaluación honesta contra el mercado:** Brier, RPS y log-loss sobre la misma muestra para modelo, base y cuotas de cierre, siempre con n. Resultado actual: el modelo le gana a la base, pero [pierde contra el mercado](#clubes-las-cinco-grandes-ligas) en las cinco ligas en 2025-26.
-- **160 tests sin red** (`pytest --collect-only`), más ruff y mypy en CI.
+- **170 tests sin red** (`pytest --collect-only`), más ruff y mypy en CI.
 
 > El proyecto nació como predictor del Mundial 2026 y de ahí conserva el nombre. El Mundial, las selecciones y el Breaking News Engine están en el [archivo](docs/archivo-mundial.md).
 
@@ -145,7 +145,7 @@ Sin instalar Python. Un mismo `Dockerfile` arma dos imágenes sobre `python:3.11
 
 ```bash
 make docker-build    # construye las dos con la versión del modelo y el commit de git
-make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 160 tests que CI
+make docker-test     # docker run --rm wc-predictor:ml pytest -q  → los mismos 170 tests que CI
 make docker-daily    # el ciclo diario con ./data y ./app montados (escribe con tu usuario)
 make docker-train    # el entrenamiento completo, con ./data y ./docs montados
 make docker-serve    # la web en http://localhost:8000
@@ -172,7 +172,7 @@ python -m src.europe.run               # Champions
 python -m src.pipeline.daily           # ciclo diario completo
 python -m tools.export_frontend        # reinyecta los datos en app/index.html
 python -m tools.capturas               # capturas y GIF de la web en docs/img/ (pip install pillow)
-pytest                                 # 160 tests, sin red
+pytest                                 # 170 tests, sin red
 ruff check .                           # lo mismo que corre CI
 mypy                                   # tipos: src/ y tools/ (configurado en pyproject.toml)
 ```

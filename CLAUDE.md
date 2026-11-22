@@ -30,7 +30,7 @@ el tamaño del stack.
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 158 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 170 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6

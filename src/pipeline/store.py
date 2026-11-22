@@ -51,14 +51,19 @@ def key(row: dict) -> tuple[str, str]:
     return row["match_id"], row["model_version"]
 
 
+def parse(text: str, origin: str = "el almacén") -> list[dict]:
+    """Filas de un CSV del almacén; `origin` solo sirve para el mensaje de error."""
+    rows = list(csv.DictReader(io.StringIO(text, newline="")))
+    if rows and list(rows[0]) != COLUMNS:
+        raise StoreError(f"Columnas inesperadas en {origin}: {list(rows[0])}")
+    return rows
+
+
 def load(path: Path = PATH) -> list[dict]:
     if not path.exists():
         return []
     with path.open(encoding="utf-8", newline="") as f:
-        rows = list(csv.DictReader(f))
-    if rows and list(rows[0]) != COLUMNS:
-        raise StoreError(f"Columnas inesperadas en {path}: {list(rows[0])}")
-    return rows
+        return parse(f.read(), str(path))
 
 
 def add_predictions(rows: list[dict], new: list[dict]) -> tuple[list[dict], int]:

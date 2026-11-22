@@ -52,7 +52,7 @@ WC_predictor/
 │   └── cli.py                      ← interfaz de línea de comandos
 ├── tools/                          ← export a la web y capturas; el resto son scripts puntuales del Mundial
 ├── app/index.html                  ← interfaz web autocontenida (datos inyectados por tools/export_frontend.py)
-├── tests/                          ← 158 tests con pytest, sin red; fixtures en tests/fixtures/
+├── tests/                          ← 170 tests con pytest, sin red; fixtures en tests/fixtures/
 ├── .github/workflows/              ← ci.yml, daily.yml, pages.yml (§14.2)
 ├── Dockerfile · Makefile           ← dos imágenes reproducibles (§14.3)
 └── docs/                           ← esta bitácora, ROADMAP.md (cola de tareas), RESULTADOS_ML.md y ml/
@@ -339,7 +339,7 @@ python -m src.pipeline.daily                              # descarga, predice, r
 python -m tools.export_frontend                           # reinyecta los datos en app/index.html
 
 # calidad
-pytest            # 158 tests, sin red
+pytest            # 170 tests, sin red
 ruff check .
 mypy
 ```
