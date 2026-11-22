@@ -5,7 +5,7 @@
 Predictor de fútbol para las cinco grandes ligas europeas, la Champions League y las selecciones, con un ciclo diario que publica cada predicción antes del partido y la mide después. **Web:** https://demianc14.github.io/WC_predictor/ (se actualiza sola cada día).
 
 - **Ciclo diario todo o nada:** `python -m src.pipeline.daily` descarga todas las fuentes a una carpeta temporal; si una falla o llega vacía, termina con código 2 y no modifica nada ([cómo funciona](#ciclo-diario-y-métricas-en-vivo)).
-- **Almacén solo para agregar, auditado por git:** [`data/predictions/predicciones.csv`](data/predictions/predicciones.csv) nunca se sobrescribe (el código lo verifica antes de escribir) y el historial de git prueba que cada fila existía antes del partido.
+- **Almacén solo para agregar, auditado por git:** [`data/predictions/predicciones.csv`](data/predictions/predicciones.csv) nunca se sobrescribe (el código lo verifica antes de escribir, y `python -m src.pipeline.audit` revisa cada commit del archivo en CI y antes de cada commit del bot) y el historial de git prueba que cada fila existía antes del partido.
 - **Evaluación honesta contra el mercado:** Brier, RPS y log-loss sobre la misma muestra para modelo, base y cuotas de cierre, siempre con n. Resultado actual: el modelo le gana a la base, pero [pierde contra el mercado](#clubes-las-cinco-grandes-ligas) en las cinco ligas en 2025-26.
 - **170 tests sin red** (`pytest --collect-only`), más ruff y mypy en CI.
 
