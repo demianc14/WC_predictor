@@ -30,7 +30,7 @@ el tamaño del stack.
 
 ```bash
 pip install -e ".[dev]"                   # núcleo + [ml] (sklearn) + [llm] (anthropic) + herramientas
-pytest                                    # 158 tests, sin red (tests/conftest.py la bloquea)
+pytest                                    # 170 tests, sin red (tests/conftest.py la bloquea)
 ruff check . && mypy                      # lo mismo que corre CI
 python -m src.clubs.run [--league SP1]    # ajusta ligas → data/processed/clubs_<div>.json
 python -m src.clubs.h2h SP1 barcelona "real madrid" --odds 1.95 3.9 3.6
@@ -38,6 +38,7 @@ python -m src.europe.run                  # Champions → data/processed/ucl.jso
 python -m src.ml.train --leagues all      # entrena y regenera docs/RESULTADOS_ML.md
 python -m src.ml.report data/ml/runs/<run>  # regenera el reporte sin reentrenar
 python -m src.pipeline.daily              # ciclo diario completo (descarga, predice, exporta)
+python -m src.pipeline.audit [--worktree] # historial de git del almacén: solo-para-agregar
 python -m tools.export_frontend           # reinyecta los datos en app/index.html
 python -m tools.capturas                  # capturas, GIF y portadas → docs/img/ (pillow + Chrome)
 make docker-build docker-test             # imágenes wc-predictor (app) y wc-predictor:ml

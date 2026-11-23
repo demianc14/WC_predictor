@@ -38,6 +38,11 @@ jobs:
       - run: pip install -e .
       - name: Ciclo diario
         run: python -m src.pipeline.daily
+      # Los push del bot no disparan CI: el almacén se audita contra HEAD antes de commitear.
+      # El checkout es superficial, así que aquí solo compara HEAD con lo nuevo; el historial
+      # completo lo audita CI.
+      - name: Auditoría del almacén
+        run: python -m src.pipeline.audit --worktree
       - name: Commit si hubo cambios
         run: |
           git config user.name "github-actions[bot]"
