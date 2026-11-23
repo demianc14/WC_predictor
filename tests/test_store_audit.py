@@ -5,6 +5,7 @@
 Los repos de estos tests son temporales y locales, con datos ficticios.
 """
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -14,6 +15,15 @@ from src.pipeline import audit, store
 
 ROOT = Path(__file__).resolve().parent.parent
 REL = Path("data/predictions/predicciones.csv")
+
+
+@pytest.fixture(autouse=True)
+def _con_git():
+    """La imagen Docker no trae git (ni .git): ahí se saltan. En CI fuera de Docker, no."""
+    if shutil.which("git") is None:
+        if os.environ.get("CI") == "true":
+            pytest.fail("CI sin git: la auditoría del almacén no se puede probar")
+        pytest.skip("sin git en PATH (imagen Docker)")
 
 
 def _row(mid: str, p1: str = "0.5000", result: str = "") -> dict:
