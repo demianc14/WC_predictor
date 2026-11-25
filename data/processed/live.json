@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-24T16:04:04Z",
+ "updated": "2026-11-25T08:26:48Z",
  "since": "2026-10-20T19:12:01Z",
- "n_predictions": 355,
- "n_matches": 251,
- "n_pending": 48,
+ "n_predictions": 356,
+ "n_matches": 252,
+ "n_pending": 49,
  "all": {
   "n": 203,
   "model": {
