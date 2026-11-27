@@ -692,7 +692,11 @@
    "tbc": false,
    "home": "Nott'm Forest",
    "away": "Chelsea",
-   "odds": null,
+   "odds": [
+    2.41,
+    3.34,
+    2.88
+   ],
    "model": [
     0.4148,
     0.2588,
@@ -706,7 +710,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.3909,
+    0.282,
+    0.3271
+   ]
   },
   {
    "day": "2026-11-28",
@@ -714,7 +722,11 @@
    "tbc": false,
    "home": "Leeds",
    "away": "Coventry",
-   "odds": null,
+   "odds": [
+    1.46,
+    4.44,
+    6.36
+   ],
    "model": [
     0.5385,
     0.2438,
@@ -728,7 +740,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.6417,
+    0.211,
+    0.1473
+   ]
   },
   {
    "day": "2026-11-28",
@@ -736,7 +752,11 @@
    "tbc": false,
    "home": "Man United",
    "away": "Brentford",
-   "odds": null,
+   "odds": [
+    2.09,
+    3.7,
+    3.17
+   ],
    "model": [
     0.4218,
     0.2437,
@@ -750,7 +770,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.4496,
+    0.254,
+    0.2964
+   ]
   },
   {
    "day": "2026-11-28",
@@ -758,7 +782,11 @@
    "tbc": false,
    "home": "Ipswich",
    "away": "Aston Villa",
-   "odds": null,
+   "odds": [
+    3.49,
+    3.77,
+    1.96
+   ],
    "model": [
     0.3109,
     0.2428,
@@ -772,7 +800,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.2698,
+    0.2498,
+    0.4804
+   ]
   },
   {
    "day": "2026-11-29",
@@ -780,7 +812,11 @@
    "tbc": false,
    "home": "Everton",
    "away": "Liverpool",
-   "odds": null,
+   "odds": [
+    4.33,
+    3.78,
+    1.76
+   ],
    "model": [
     0.2799,
     0.2651,
@@ -794,7 +830,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.2171,
+    0.2487,
+    0.5342
+   ]
   },
   {
    "day": "2026-11-29",
@@ -802,7 +842,11 @@
    "tbc": false,
    "home": "Brighton",
    "away": "Newcastle",
-   "odds": null,
+   "odds": [
+    1.56,
+    4.4,
+    5.15
+   ],
    "model": [
     0.4983,
     0.2369,
@@ -816,7 +860,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.6033,
+    0.2139,
+    0.1828
+   ]
   },
   {
    "day": "2026-11-29",
@@ -824,7 +872,11 @@
    "tbc": false,
    "home": "Crystal Palace",
    "away": "Hull",
-   "odds": null,
+   "odds": [
+    1.87,
+    3.69,
+    3.85
+   ],
    "model": [
     0.5189,
     0.2528,
@@ -838,7 +890,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.5019,
+    0.2543,
+    0.2438
+   ]
   },
   {
    "day": "2026-11-29",
@@ -846,7 +902,11 @@
    "tbc": false,
    "home": "Fulham",
    "away": "Bournemouth",
-   "odds": null,
+   "odds": [
+    2.73,
+    3.42,
+    2.46
+   ],
    "model": [
     0.3624,
     0.272,
@@ -860,7 +920,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.3439,
+    0.2745,
+    0.3816
+   ]
   },
   {
    "day": "2026-11-29",
@@ -868,7 +932,11 @@
    "tbc": false,
    "home": "Sunderland",
    "away": "Tottenham",
-   "odds": null,
+   "odds": [
+    3.62,
+    3.36,
+    2.04
+   ],
    "model": [
     0.3512,
     0.2886,
@@ -882,7 +950,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.2596,
+    0.2797,
+    0.4607
+   ]
   },
   {
    "day": "2026-11-29",
@@ -890,7 +962,11 @@
    "tbc": false,
    "home": "Arsenal",
    "away": "Man City",
-   "odds": null,
+   "odds": [
+    1.97,
+    3.65,
+    3.55
+   ],
    "model": [
     0.4736,
     0.273,
@@ -904,7 +980,11 @@
     1,
     1
    ],
-   "market": null
+   "market": [
+    0.4774,
+    0.2577,
+    0.2649
+   ]
   },
   {
    "day": "2026-12-01",
